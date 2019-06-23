@@ -1,0 +1,34 @@
+{
+  "author": "Roel van Uden",
+  "description": "Your personal manga collection on your server. Your content, your rules.",
+  "license": "MIT",
+  "main": "server",
+  "name": "mangaloyalty-client",
+  "repository": "git://github.com/mangaloyalty/mangaloyalty-client",
+  "version": "0.2.0",
+  "bin": {
+    "mangaloyalty-client": "./bin/mangaloyalty-client"
+  },
+  "dependencies": {
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "@types/react": "16.4.16",
+    "@types/react-dom": "16.0.9",
+    "@material-ui/core": "3.2.0",
+    "@material-ui/icons": "3.0.1",
+    "mobx": "5.5.0",
+    "mobx-react": "5.2.8",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "typescript": "3.5.1",
+    "webpack": "4.35.0",
+    "webpack-cli": "3.3.4",
+    "webpack-dev-middleware": "3.7.0"
+  },
+  "scripts": {
+    "prepack": "webpack-cli --config webpack.prod.js",
+    "prepare": "tsc",
+    "start": "node ."
+  }
+}
