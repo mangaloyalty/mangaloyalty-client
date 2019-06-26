@@ -11,13 +11,13 @@ export class FooterComponent extends React.Component {
         </mui.Grid>
         <mui.Paper style={styles.navigation}>
           <mui.Divider />
-          <mui.BottomNavigation showLabels value={app.routeManager.viewType - 1}>
+          <mui.BottomNavigation showLabels value={app.screenManager.rootType - 1}>
             <mui.BottomNavigationAction icon={<app.icons.Home />}
-              label={app.language.library}
-              onClick={() => app.routeManager.changeView(app.ViewType.Library)} />
+              label={app.language.menuBottomLibrary}
+              onClick={() => app.screenManager.changeRoot(app.RootType.Library)} />
             <mui.BottomNavigationAction icon={<app.icons.Public />}
-              label={app.language.remote}
-              onClick={() => app.routeManager.changeView(app.ViewType.Remote)} />
+              label={app.language.menuBottomRemote}
+              onClick={() => app.screenManager.changeRoot(app.RootType.Remote)} />
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />
@@ -35,7 +35,6 @@ const styles = app.styles({
   navigation: {
     bottom: 0,
     position: 'fixed',
-    width: '100%',
-    zIndex: 1000
+    width: '100%'
   }
 });

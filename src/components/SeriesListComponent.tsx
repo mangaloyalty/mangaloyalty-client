@@ -2,8 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: Show a (configureable) message when empty.
-export class SeriesListComponent extends React.Component<{seriesList: app.ISeriesList, onClick: (seriesListItem: app.ISeriesListItem) => void}> {
+export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, seriesList: app.ISeriesList, onClick: (seriesListItem: app.ISeriesListItem) => void}> {
   componentWillReceiveProps() {
     window.scrollTo(0, 0);
   }
@@ -11,7 +10,9 @@ export class SeriesListComponent extends React.Component<{seriesList: app.ISerie
   render() {
     return (
       <mui.Grid style={styles.container}>
-        {this.props.seriesList.map((seriesListItem) => (
+        {!this.props.seriesList.length
+          ? <app.CenterComponent body={this.props.emptyBody} title={this.props.emptyTitle} />
+          : this.props.seriesList.map((seriesListItem) => (
           <mui.Grid key={seriesListItem.url} style={styles.series} onClick={() => this.props.onClick(seriesListItem)}>
             <img src={`data:;base64, ${seriesListItem.image}`} style={styles.image} />
             <mui.Typography style={styles.title}>{seriesListItem.title}</mui.Typography>

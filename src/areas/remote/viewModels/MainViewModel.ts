@@ -4,7 +4,7 @@ import * as mobx from 'mobx';
 
 export class MainViewModel {
   constructor() {
-    this.provider = new area.ProviderViewModel(app.settings.defaultProvider);
+    this.provider = new area.ProviderViewModel(app.settings.providerDefaultName);
     this.provider.refreshAsync();
   }
 
@@ -29,9 +29,6 @@ export class MainViewModel {
   
   @mobx.observable
   provider: area.ProviderViewModel;
-
-  @mobx.observable
-  providerNames = app.settings.providers;
 
   @mobx.observable
   searchTitle = '';
