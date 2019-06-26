@@ -9,8 +9,10 @@ export class MainController extends React.Component {
 
   render() {
     return (
-      <app.FocusComponent onFocus={this._onFocus.bind(this)}>
-        <app.HeaderComponent additionalMenu={<area.MenuComponent vm={this.state.vm} />} title={app.language.title} showDisconnect={true} onSearch={this._onSearch.bind(this)}>
+      <app.FocusComponent onFocus={() => this._onFocus()}>
+        <app.HeaderComponent title={app.language.title} showDisconnect={true}
+          additionalMenu={<area.MenuComponent vm={this.state.vm} />}
+          onSearch={(value) => this._onSearch(value)}>
           <app.FooterComponent>
             <area.MainView vm={this.state.vm} />
           </app.FooterComponent>
@@ -20,10 +22,12 @@ export class MainController extends React.Component {
   }
 
   private _onFocus() {
+    if (app.dialogManager.hasDialog) return;
     this.state.vm.refreshAsync();
   }
 
   private _onSearch(value: string) {
-    this.state.vm.changeSearch(value);
+    this.state.vm.changeSearchTitle(value);
+    this.state.vm.refreshAsync();
   }
 }

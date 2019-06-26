@@ -4,7 +4,6 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: Icon red (of manifest)
 // TODO: Support infinite scroll while pages are available.
 @mobxReact.observer
 export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> {
@@ -13,7 +12,9 @@ export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> 
       <mui.Grid>
         <app.LoadingComponent open={this.props.vm.isLoading} />
         {this.props.vm.seriesList && <mui.Grid key={this.props.vm.name}>
-          <app.SeriesListComponent seriesList={this.props.vm.seriesList} onClick={this._onClick.bind(this)} />
+          <app.SeriesListComponent
+            seriesList={this.props.vm.seriesList}
+            onClick={(seriesListItem) => this._onClick(seriesListItem)} />
         </mui.Grid>}
       </mui.Grid>
     );

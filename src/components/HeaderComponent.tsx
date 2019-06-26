@@ -11,10 +11,10 @@ export class HeaderComponent extends React.Component<{additionalMenu?: React.Rea
     return (
       <mui.Grid>
         <mui.AppBar className="ios-inset-top">
-          {this.props.onSearch && this.state.showSearch
+          {this.state.showSearch
             ? <app.SearchComponent additionalMenu={this.props.additionalMenu} showDisconnect={this.props.showDisconnect} 
-                onClose={this._onClose.bind(this)}    
-                onSearch={this.props.onSearch} />
+                onClose={() => this._onClose()}    
+                onSearch={(value) => this.props.onSearch && this.props.onSearch(value)} />
             : <mui.Toolbar>
             <mui.Typography color="inherit" variant="h6" style={styles.container}>
               {this.props.title}
@@ -38,7 +38,7 @@ export class HeaderComponent extends React.Component<{additionalMenu?: React.Rea
 
   private _onClose() {
     if (!this.props.onSearch) return;
-    this.props.onSearch('');
+    this.props.onSearch!('');
     this.setState({showSearch: false});
   }
 }

@@ -8,14 +8,14 @@ export class ContextApi {
   }
 
   async remotePopularAsync(providerName: app.IProviderName, pageNumber = 1) {
-    const response = await this._http.getAsync(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
-    const result = response.status === 200 ? response.parseJson<app.IRemotePopularResponse>() : undefined;
-    return result;
+    const request = this._http.getAsync(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
+    const response = await request.runAsync<app.IRemotePopularResponse>();
+    return response;
   }
 
   async remoteSearch(providerName: app.IProviderName, title: string, pageNumber = 1) {
-    const response = await this._http.getAsync(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
-    const result = response.status === 200 ? response.parseJson<app.IRemoteSearchResponse>() : undefined;
-    return result;
+    const request = this._http.getAsync(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
+    const response = await request.runAsync<app.IRemoteSearchResponse>();
+    return response;
   }
 }
