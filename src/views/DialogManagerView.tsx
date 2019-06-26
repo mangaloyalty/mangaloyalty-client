@@ -6,19 +6,19 @@ import * as React from 'react';
 @mobxReact.observer
 export class DialogManagerView extends React.Component {
   render() {
-    return app.dialogManager.items.map((item, itemIndex) => (
-      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={itemIndex === app.dialogManager.items.length - 1}>
+    return app.dialogManager.dialogs.map((dialog, index) => (
+      <mui.Dialog key={dialog.id} fullWidth maxWidth={false} open={index === app.dialogManager.dialogs.length - 1}>
         <mui.DialogContent>
           <mui.DialogContentText>
-            {item.body}
-            {item.error && <pre style={styles.error}>
-              {item.error}
-            </pre>}
+            {dialog.body}
           </mui.DialogContentText>
+          {dialog.error && <pre style={styles.error}>
+            {dialog.error}
+          </pre>}
         </mui.DialogContent>
         <mui.DialogActions>
-          {item.buttons.map((button, index) => (
-            <mui.Button color={index === item.buttons.length - 1 ? "primary" : "default"} onClick={() => item.send(index)}>
+          {dialog.buttons.map((button, index) => (
+            <mui.Button key={index} color={index === dialog.buttons.length - 1 ? "primary" : "default"} onClick={() => dialog.send(index)}>
               {button}
             </mui.Button>
           ))}

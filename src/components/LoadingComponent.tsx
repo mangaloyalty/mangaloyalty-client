@@ -16,10 +16,10 @@ export class LoadingComponent extends React.Component<{open: boolean}> {
 
 const styles = app.styles({
   progress: {
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    height: '100%',
     outline: 0
   }
 });

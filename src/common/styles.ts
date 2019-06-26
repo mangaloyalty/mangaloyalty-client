@@ -1,3 +1,3 @@
-export function styles<K extends string, T extends React.CSSProperties>(items: Record<K, T>) {
-  return items;
+export function styles<K extends string, T extends React.CSSProperties>(records: Record<K, T>) {
+  return records;
 }

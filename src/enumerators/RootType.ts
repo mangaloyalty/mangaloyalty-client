@@ -1,4 +1,4 @@
-export enum ViewType {
+export enum RootType {
   Connect,
   Library,
   Remote

@@ -21,12 +21,12 @@ export class MenuComponent extends React.Component<{additionalMenu?: React.React
                   <mui.MenuList onClick={() => this.setState({anchorEl: undefined})}>
                     {this.props.additionalMenu}
                     {this.props.additionalMenu && <mui.Divider />}
-                    {this.props.showDisconnect && <mui.MenuItem onClick={() => app.routeManager.changeView(app.ViewType.Connect)}>
+                    {this.props.showDisconnect && <mui.MenuItem onClick={() => app.screenManager.changeRoot(app.RootType.Connect)}>
                       <mui.ListItemIcon>
                         <app.icons.ExitToApp />
                       </mui.ListItemIcon>
                       <mui.Typography>
-                        {app.language.disconnect}
+                        {app.language.menuTopDisconnect}
                       </mui.Typography>
                     </mui.MenuItem>}
                   </mui.MenuList>

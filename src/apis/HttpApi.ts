@@ -1,3 +1,5 @@
+import * as app from '..';
+
 export class HttpApi {
   private readonly _baseUrl: string;
 
@@ -29,7 +31,7 @@ export class HttpApi {
     return {runAsync: async <TResult>() => {
       const http = await this._xhrAsync(method, relativeUrl, data);
       const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
-      const result = http && http.status == 200 ? parseJson<TResult>(http.responseText) : undefined;
+      const result = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
       return {error, result};
     }};
   }
@@ -37,7 +39,7 @@ export class HttpApi {
   private async _xhrAsync<T>(method: string, relativeUrl: string, data?: T) {
     return await new Promise<XMLHttpRequest | undefined>((resolve) => {
       const request = new XMLHttpRequest();
-      request.timeout = 10000;
+      request.timeout = app.settings.httpTimeout;
       request.open(method, this._baseUrl + relativeUrl);
       request.addEventListener('abort', () => resolve());
       request.addEventListener('error', () => resolve());
