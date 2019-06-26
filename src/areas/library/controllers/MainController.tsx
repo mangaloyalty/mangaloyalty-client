@@ -5,7 +5,7 @@ import * as React from 'react';
 export class MainController extends React.Component {
   render() {
     return (
-      <app.FocusComponent onFocus={this._onFocus.bind(this)}>
+      <app.FocusComponent onFocus={() => this._onFocus()}>
         <app.HeaderComponent title={app.language.title} showDisconnect={true}>
           <app.FooterComponent>
             <area.MainView />
@@ -16,5 +16,6 @@ export class MainController extends React.Component {
   }
 
   private _onFocus() {
+    if (app.dialogManager.hasDialog) return;
   }
 }

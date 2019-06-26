@@ -1,34 +1,31 @@
 import * as app from '../../..';
 import * as mobx from 'mobx';
 
-// TODO: Normalize refreshAsync?
 export class ProviderViewModel {
-  private readonly _context: app.ContextApi;
+  private readonly _context = app.serviceManager.get<app.ContextApi>('ContextApi');
 
   constructor(name: app.IProviderName) {
-    this._context = app.serviceManager.get<app.ContextApi>('ContextApi');
     this.name = name;
   }
 
   @mobx.action
-  changeSearch(search: string) {
-    this.search = search;
-    this.refreshAsync();
+  changeSearchTitle(searchTitle: string) {
+    this.searchTitle = searchTitle;
   }
 
   @mobx.action
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const seriesList = this.search
-      ? await this._context.remoteSearch(this.name, this.search)
+    const seriesList = this.searchTitle
+      ? await this._context.remoteSearch(this.name, this.searchTitle)
       : await this._context.remotePopularAsync(this.name);
-    if (seriesList) {
+    if (seriesList.result) {
       mobx.runInAction(() => {
-        this.seriesList = seriesList;
+        this.seriesList = seriesList.result;
         this.isLoading = false;
       });
-    } else if (await app.dialogManager.openErrorAsync()) {
+    } else if (await app.dialogManager.errorAsync(seriesList.error)) {
       this.refreshAsync(true);
     }
   }
@@ -40,7 +37,7 @@ export class ProviderViewModel {
   name: app.IProviderName;
 
   @mobx.observable
-  search = '';
+  searchTitle = '';
 
   @mobx.observable
   seriesList?: app.ISeriesList;

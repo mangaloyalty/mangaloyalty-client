@@ -8,10 +8,10 @@ export class SearchComponent extends React.Component<{additionalMenu?: React.Rea
       <mui.AppBar className="ios-inset-top">
         <mui.Toolbar>
           <mui.InputBase autoFocus fullWidth style={styles.container}
-            onBlur={this._onBlur.bind(this)}
-            onKeyDown={this._onKeyDown.bind(this)} />
+            onBlur={(ev) => this._onBlur(ev)}
+            onKeyDown={(ev) => this._onKeyDown(ev)} />
           <mui.Grid style={styles.menu}>
-            <mui.IconButton color="inherit" onClick={this.props.onClose}>
+            <mui.IconButton color="inherit" onClick={() => this.props.onClose()}>
               <app.icons.Close />
             </mui.IconButton>
             <app.MenuComponent additionalMenu={this.props.additionalMenu} showDisconnect={this.props.showDisconnect} />
@@ -21,9 +21,8 @@ export class SearchComponent extends React.Component<{additionalMenu?: React.Rea
     );
   }
 
-  private _onBlur(ev: React.FocusEvent<HTMLInputElement>) {
-    if (!this.props.onSearch) return;
-    this.props.onSearch(ev.currentTarget.value);
+  private _onBlur(ev: React.FocusEvent<HTMLDivElement>) {
+    this.props.onSearch((ev.currentTarget as HTMLInputElement).value);
   }
 
   private _onKeyDown(ev: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) {
