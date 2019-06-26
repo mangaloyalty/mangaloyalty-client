@@ -1,4 +1,5 @@
 export * from './language';
+export * from './settings';
 export * from './apis/ContextApi';
 export * from './apis/HttpApi';
 export * from './common/icons';
@@ -15,5 +16,7 @@ export * from './enumerators/ViewType';
 export * from './managers/dialogManager';
 export * from './managers/routeManager';
 export * from './managers/serviceManager';
+export * from './views/DialogManagerView';
+export * from './views/RouteManagerView';
 export * from './typings/openapi';
 import './launch';

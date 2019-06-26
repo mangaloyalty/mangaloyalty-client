@@ -4,6 +4,6 @@ export const language = {
   remote: 'Remote',
   title: 'MangaLoyalty',
   refresh: 'Refresh',
-  errorBody: 'The server could not be reached. Check your connection or try again later.',
+  errorBody: 'Oops! Your server could not be reached or returned an error. Check your device and server connectivity, and then try again.',
   errorButtons: ['Disconnect', 'Retry'],
 };

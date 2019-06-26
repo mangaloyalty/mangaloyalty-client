@@ -5,27 +5,36 @@ export class HttpApi {
     this._baseUrl = baseUrl;
   }
 
-  async deleteAsync<T>(relativeUrl: string, data?: T) {
-    return this._fetchAsync('DELETE', relativeUrl, data);
+  deleteAsync<T>(relativeUrl: string, data?: T) {
+    return this._create('DELETE', relativeUrl, data);
   }
 
-  async getAsync(relativeUrl: string) {
-    return this._fetchAsync('GET', relativeUrl);
+  getAsync(relativeUrl: string) {
+    return this._create('GET', relativeUrl);
   }
 
-  async patchAsync<T>(relativeUrl: string, data: T) {
-    return this._fetchAsync('PATCH', relativeUrl, data);
+  patchAsync<T>(relativeUrl: string, data: T) {
+    return this._create('PATCH', relativeUrl, data);
   }
 
-  async postAsync<T>(relativeUrl: string, data: T) {
-    return this._fetchAsync('POST', relativeUrl, data);
+  postAsync<T>(relativeUrl: string, data: T) {
+    return this._create('POST', relativeUrl, data);
   }
 
-  async putAsync<T>(relativeUrl: string, data: T) {
-    return this._fetchAsync('PUT', relativeUrl, data);
+  putAsync<T>(relativeUrl: string, data: T) {
+    return this._create('PUT', relativeUrl, data);
   }
 
-  private async _createAsync<T>(method: string, relativeUrl: string, data?: T) {
+  private _create<T>(method: string, relativeUrl: string, data?: T) {
+    return {runAsync: async <TResult>() => {
+      const http = await this._xhrAsync(method, relativeUrl, data);
+      const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
+      const result = http && http.status == 200 ? parseJson<TResult>(http.responseText) : undefined;
+      return {error, result};
+    }};
+  }
+
+  private async _xhrAsync<T>(method: string, relativeUrl: string, data?: T) {
     return await new Promise<XMLHttpRequest | undefined>((resolve) => {
       const request = new XMLHttpRequest();
       request.timeout = 10000;
@@ -39,19 +48,22 @@ export class HttpApi {
       request.send(data ? JSON.stringify(data) : undefined);
     });
   }
+}
 
-  private async _fetchAsync<T>(method: string, relativeUrl: string, data?: T) {
-    const response = await this._createAsync(method, relativeUrl, data);
-    const status = response ? response.status : 0;
-    const text = response ? response.responseText : '';
-    return {parseJson: <TParse>() => parseJson<TParse>(text), status, text};
+function parseError(text: string) {
+  try {
+    const result = JSON.parse(text) as {message?: string};
+    const error = result && result.message;
+    return error;
+  } catch (error) {
+    return;
   }
 }
 
 function parseJson<T>(text: string) {
   try {
     return JSON.parse(text) as T;
-  } catch (e) {
-    return undefined;
+  } catch (error) {
+    return;
   }
 }

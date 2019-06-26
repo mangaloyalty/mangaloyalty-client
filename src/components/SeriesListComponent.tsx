@@ -2,8 +2,12 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: No results, show a message?
+// TODO: Show a (configureable) message when empty.
 export class SeriesListComponent extends React.Component<{seriesList: app.ISeriesList, onClick: (seriesListItem: app.ISeriesListItem) => void}> {
+  componentWillReceiveProps() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     return (
       <mui.Grid style={styles.container}>
