@@ -6,7 +6,7 @@ export class MainController extends React.Component {
   render() {
     return (
       <app.FocusComponent onFocus={() => this._onFocus()}>
-        <app.HeaderComponent title={app.language.title} showDisconnect={true}>
+        <app.HeaderComponent title={app.language.app} showDisconnect={true}>
           <app.FooterComponent>
             <area.MainView />
           </app.FooterComponent>
@@ -16,6 +16,7 @@ export class MainController extends React.Component {
   }
 
   private _onFocus() {
-    if (app.dialogManager.hasDialog) return;
+    if (app.dialogManager.dialogs.length) return;
+    if (app.settings.autoRefresh) {}
   }
 }

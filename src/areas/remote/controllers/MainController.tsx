@@ -10,7 +10,7 @@ export class MainController extends React.Component {
   render() {
     return (
       <app.FocusComponent onFocus={() => this._onFocus()}>
-        <app.HeaderComponent title={app.language.title} showDisconnect={true}
+        <app.HeaderComponent title={app.language.app} showDisconnect={true}
           additionalMenu={<area.MenuComponent vm={this.state.vm} />}
           onSearch={(value) => this._onSearch(value)}>
           <app.FooterComponent>
@@ -22,8 +22,8 @@ export class MainController extends React.Component {
   }
 
   private _onFocus() {
-    if (app.dialogManager.hasDialog) return;
-    this.state.vm.refreshAsync();
+    if (app.dialogManager.dialogs.length) return;
+    if (app.settings.autoRefresh) this.state.vm.refreshAsync();
   }
 
   private _onSearch(value: string) {

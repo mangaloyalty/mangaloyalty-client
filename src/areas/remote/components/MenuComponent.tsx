@@ -11,7 +11,7 @@ export class MenuComponent extends React.Component<{vm: area.MainViewModel}> {
           <app.icons.Refresh />
         </mui.ListItemIcon>
         <mui.Typography>
-          {app.language.refresh}
+          {app.language.menuTopRefresh}
         </mui.Typography>
       </mui.MenuItem>
     );

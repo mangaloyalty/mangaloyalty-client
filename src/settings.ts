@@ -1,6 +1,8 @@
 import * as app from '.';
 
 export const settings = {
-  defaultProvider: 'fanfox' as app.IProviderName,
-  providers: ['batoto', 'fanfox'] as app.IProviderName[]
+  autoRefresh: true,
+  httpTimeout: 30000,
+  providerDefaultName: 'fanfox' as app.IProviderName,
+  providerNames: ['batoto', 'fanfox'] as app.IProviderName[]
 };
