@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, seriesList: app.ISeriesList, onClick: (series: app.ISeriesListItem) => void}> {
+export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, series: app.ISeriesList, onClick: (series: app.ISeriesListItem) => void}> {
   componentWillReceiveProps() {
     window.scrollTo(0, 0);
   }
@@ -10,16 +10,16 @@ export class SeriesListComponent extends React.Component<{emptyBody: string, emp
   render() {
     return (
       <mui.Grid style={styles.container}>
-        {!this.props.seriesList.length
+        {!this.props.series.length
           ? <app.CenterComponent
               body={this.props.emptyBody}
               title={this.props.emptyTitle} />
-          : this.props.seriesList.map((seriesListItem) => (
-          <mui.Grid key={seriesListItem.url} style={styles.series} onClick={() => this.props.onClick(seriesListItem)}>
-            <img src={`data:;base64, ${seriesListItem.image}`} style={styles.image} />
-            <mui.Typography style={styles.title}>{seriesListItem.title}</mui.Typography>
-          </mui.Grid>
-        ))}
+          : this.props.series.map((series) => (
+              <mui.Grid key={series.url} style={styles.series} onClick={() => this.props.onClick(series)}>
+                <img src={`data:;base64, ${series.image}`} style={styles.image} />
+                <mui.Typography style={styles.title}>{series.title}</mui.Typography>
+              </mui.Grid>
+            ))}
       </mui.Grid>
     );
   }

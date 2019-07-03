@@ -13,8 +13,8 @@ export class HeaderComponent extends React.Component<{menu?: React.ReactElement<
         <mui.AppBar className="disablePadding ios-inset-top">
           {this.state.showSearch
             ? <app.HeaderSearchBarComponent menu={this.props.menu}
-                onClose={() => this.props.onSearch && Boolean(this.props.onSearch('')) || this.setState({showSearch: false})}
-                onSearch={(value) => this.props.onSearch && this.props.onSearch(value)} />
+                onClose={() => Boolean(this.props.onSearch!('')) || this.setState({showSearch: false})}
+                onSearch={(value) => this.props.onSearch!(value)} />
             : <app.HeaderTitleBarComponent menu={this.props.menu} title={this.props.title}
                 onBack={this.props.onBack}
                 onSearch={this.props.onSearch && (() => this.setState({showSearch: true}))} />}

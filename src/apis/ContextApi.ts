@@ -9,19 +9,19 @@ export class ContextApi {
 
   async remotePopularAsync(providerName: app.IProviderName, pageNumber = 1) {
     const request = this._http.getAsync(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
-    const response = await request.runAsync<app.IRemotePopularResponse>();
+    const response = await request.startAsync<app.IRemotePopularResponse>();
     return response;
   }
 
   async remoteSearch(providerName: app.IProviderName, title: string, pageNumber = 1) {
     const request = this._http.getAsync(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
-    const response = await request.runAsync<app.IRemoteSearchResponse>();
+    const response = await request.startAsync<app.IRemoteSearchResponse>();
     return response;
   }
 
   async remoteSeries(url: string) {
     const request = this._http.getAsync(`/remote/series?url=${encodeURIComponent(url)}`);
-    const response = await request.runAsync<app.IRemoteSeriesResponse>();
+    const response = await request.startAsync<app.IRemoteSeriesResponse>();
     return response;
   }
 }

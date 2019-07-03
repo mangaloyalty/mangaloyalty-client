@@ -28,7 +28,7 @@ export class HttpApi {
   }
 
   private _create<T>(method: string, relativeUrl: string, data?: T) {
-    return {runAsync: async <TResult>() => {
+    return {startAsync: async <TResult>() => {
       const http = await this._xhrAsync(method, relativeUrl, data);
       const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
       const result = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
