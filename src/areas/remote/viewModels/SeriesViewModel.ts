@@ -1,4 +1,5 @@
 import * as app from '../../..';
+import * as areas from '../..';
 import * as mobx from 'mobx';
 const core = app.core;
 
@@ -18,8 +19,12 @@ export class SeriesViewModel {
   async openAsync(chapter: app.ISeriesDetailChapter) {
     try {
       this.isLoading = true;
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // session em
-      console.log(chapter);
+      const session = await this._context.remoteStart(chapter.url);
+      if (session.result) {
+        core.screen.open(areas.session.ChapterController, session.result);
+      } else if (await core.dialog.errorAsync(session.error)) {
+        this.openAsync(chapter);
+      }
     } finally {
       mobx.runInAction(() => {
         this.isLoading = false;
@@ -31,13 +36,13 @@ export class SeriesViewModel {
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const seriesDetail = await this._context.remoteSeries(this._url);
-    if (seriesDetail.result) {
+    const series = await this._context.remoteSeries(this._url);
+    if (series.result) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = seriesDetail.result;
+        this.source = series.result;
       });
-    } else if (await core.dialog.errorAsync(seriesDetail.error)) {
+    } else if (await core.dialog.errorAsync(series.error)) {
       this.refreshAsync(true);
     }
   }

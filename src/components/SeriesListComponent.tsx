@@ -30,17 +30,16 @@ const styles = app.styles({
     display: 'flex',
     flexFlow: 'row wrap',
     justifyContent: 'center',
-    margin: '8px 4px'
+    margin: '8px 0'
   },
   series: {
-    float: 'left',
     margin: 4,
-    width: 166
+    width: 158,
   },
   image: {
     objectFit: 'cover',
     height: 220,
-    width: 160
+    width: 158
   },
   title: {
     overflow: 'hidden',

@@ -2,7 +2,7 @@ import * as app from '..';
 import * as React from 'react';
 const core = app.core;
 
-export abstract class RefreshComponent extends React.Component<{onRefresh: () => void}> {
+export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
   private readonly _container: React.RefObject<HTMLDivElement>;
   private readonly _handler: () => void;
   
