@@ -2,6 +2,7 @@ import * as app from '../../..';
 import * as area from '..';
 import * as mobxReact from 'mobx-react';
 import * as React from 'react';
+const core = app.core;
 
 @mobxReact.observer
 export class MainController extends React.Component {
@@ -11,17 +12,17 @@ export class MainController extends React.Component {
 
   render() {
     return (
-      <app.FocusComponent onFocus={() => !app.dialogManager.dialogs.length && this.state.vm.refreshAsync()}>
+      <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={app.language.app}
-          menu={<area.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()} />}
-          onBack={() => app.screenManager.changeRoot(app.RootType.Connect)}
-          onSearch={(value) => this.state.vm.changeSearchTitle(value)}>
+          menu={<area.MenuComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          onBack={() => core.screen.changeRoot(app.RootType.Connect)}
+          onSearch={(value) => this.state.vm.changeSearch(value)}>
           <app.FooterComponent>
             <area.MainView vm={this.state.vm} />
           </app.FooterComponent>
         </app.HeaderComponent>
-      </app.FocusComponent>
+      </app.RefreshComponent>
     );
   }
 }

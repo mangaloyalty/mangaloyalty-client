@@ -1,20 +1,23 @@
 import * as app from '..';
 import * as mobx from 'mobx';
+const core = app.core;
 
-class DialogManager {
-  private _previousId = 0;
+export class DialogManager {
+  constructor() {
+    this.items = [];
+  }
 
   @mobx.action
   async errorAsync(error?: string) {
     return await this._openAsync(app.language.errorBody, app.language.errorButtons, error).then((index) => {
       if (index) return true;
-      app.screenManager.changeRoot(app.RootType.Connect);
+      core.screen.changeRoot(app.RootType.Connect);
       return false;
     });
   }
 
   @mobx.observable
-  dialogs = [] as {
+  items: {
     body: string;
     buttons: string[];
     error?: string;
@@ -24,11 +27,11 @@ class DialogManager {
 
   private _openAsync(body: string, buttons: string[], error?: string) {
     return new Promise<number>((resolve) => {
-      const id = ++this._previousId;
-      this.dialogs.push({body, buttons, error, id, send: (index: number) => {
-        for (let i = 0; i < this.dialogs.length; i++) {
-          if (this.dialogs[i].id !== id) continue;
-          mobx.runInAction(() => this.dialogs.splice(i, 1));
+      const id = this.items.length + 1;
+      this.items.push({body, buttons, error, id, send: (index: number) => {
+        for (let i = 0; i < this.items.length; i++) {
+          if (this.items[i].id !== id) continue;
+          mobx.runInAction(() => this.items.splice(i, 1));
           resolve(index);
           return;
         }
@@ -36,5 +39,3 @@ class DialogManager {
     });
   }
 }
-
-export const dialogManager = new DialogManager();

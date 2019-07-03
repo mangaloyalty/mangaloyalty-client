@@ -15,7 +15,7 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
             <mui.Typography>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
             <mui.Grid style={styles.clear} />
           </mui.Paper>
-          <mui.Paper>
+          {this.props.vm.chapters && <mui.Paper>
             <mui.List>
               {this.props.vm.chapters.map((chapter) => (
                 <mui.ListItem key={chapter.url} button onClick={() => this.props.vm.openAsync(chapter)}>
@@ -35,7 +35,7 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
                 </mui.ListItem>
               ))}
             </mui.List>
-          </mui.Paper>
+          </mui.Paper>}
         </mui.Grid>}
       </mui.Grid>
     );

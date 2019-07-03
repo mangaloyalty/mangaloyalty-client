@@ -5,6 +5,7 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+const core = app.core;
 
 @mobxReact.observer
 class App extends React.Component {
@@ -22,7 +23,7 @@ class App extends React.Component {
 @mobxReact.observer
 class Root extends React.Component {
   render() {
-    switch (app.screenManager.rootType) {
+    switch (core.screen.rootType) {
       case app.RootType.Library:
         return <areas.library.MainController />;
       case app.RootType.Remote:
@@ -35,11 +36,10 @@ class Root extends React.Component {
 
 (function() {
   // TODO: Temp.
-  app.serviceManager.set('ContextApi', new app.ContextApi(location.protocol + '//' + location.hostname + ':7783'));
-  app.screenManager.changeRoot(app.RootType.Remote);
-
-  app.screenManager.open(Root);
-  app.screenManager.open(areas.remote.SeriesController, {title: "Aoi Hana", url: "https://fanfox.net/manga/aoi_hana/"});
+  core.service.set('ContextApi', new app.ContextApi(location.protocol + '//' + location.hostname + ':7783'));
+  core.screen.changeRoot(app.RootType.Remote);
+  core.screen.open(Root);
+  core.screen.open(areas.remote.SeriesController, {title: "Aoi Hana", url: "https://fanfox.net/manga/aoi_hana/"});
   mobx.configure({enforceActions: 'observed'});
   ReactDOM.render(<App />, document.getElementById('container'));
 })();

@@ -6,14 +6,14 @@ export class HeaderTitleBarComponent extends React.Component<{menu?: React.React
   render() {
     return (
       <mui.Toolbar>
-        {this.props.onBack && <mui.IconButton color="inherit" style={styles.back} onClick={() => this.props.onBack && this.props.onBack()}>
+        {this.props.onBack && <mui.IconButton color="inherit" style={styles.back} onClick={() => this.props.onBack!()}>
           <app.icons.ArrowBackIos />
         </mui.IconButton>}
         <mui.Typography color="inherit" variant="h6" style={styles.title}>
           {this.props.title}
         </mui.Typography>
         <mui.Grid style={styles.menu}>
-          {this.props.onSearch && <mui.IconButton color="inherit" onClick={() => this.props.onSearch && this.props.onSearch()}>
+          {this.props.onSearch && <mui.IconButton color="inherit" onClick={() => this.props.onSearch!()}>
             <app.icons.Search />
           </mui.IconButton>}
           {this.props.menu && <app.HeaderMenuComponent menu={this.props.menu} />}

@@ -2,6 +2,7 @@ import * as app from '../../..';
 import * as area from '..';
 import * as mobxReact from 'mobx-react';
 import * as React from 'react';
+const core = app.core;
 
 @mobxReact.observer
 export class SeriesController extends React.Component<{title: string, url: string}> {
@@ -11,14 +12,14 @@ export class SeriesController extends React.Component<{title: string, url: strin
 
   render() {
     return (
-      <app.FocusComponent onFocus={() => !app.dialogManager.dialogs.length && this.state.vm.refreshAsync()}>
+      <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={this.state.vm.title}
-          menu={<area.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()} />}
-          onBack={() => app.screenManager.close()}>
+          menu={<area.MenuComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          onBack={() => core.screen.close()}>
           <area.SeriesView vm={this.state.vm} />
         </app.HeaderComponent>
-      </app.FocusComponent>
+      </app.RefreshComponent>
     );
   }
 }

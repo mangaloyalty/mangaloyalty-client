@@ -1,12 +1,16 @@
-const entries: {[key: string]: any} = {};
+export class ServiceManager {
+  private _entries: {[key: string]: any};
 
-export const serviceManager = {
+  constructor() {
+    this._entries = {};
+  }
+  
   get<T>(key: string) {
-    if (!entries[key]) throw new Error(`Service does not exist: ${key}`);
-    return entries[key] as T;
-  },
+    if (!this._entries[key]) throw new Error(`Service does not exist: ${key}`);
+    return this._entries[key] as T;
+  }
 
   set<T>(key: string, value?: T) {
-    entries[key] = value;
+    this._entries[key] = value;
   }
-};
+}
