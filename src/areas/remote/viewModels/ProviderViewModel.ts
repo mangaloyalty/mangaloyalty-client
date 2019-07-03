@@ -1,16 +1,28 @@
 import * as app from '../../..';
+import * as area from '..';
 import * as mobx from 'mobx';
 
 export class ProviderViewModel {
   private readonly _context = app.serviceManager.get<app.ContextApi>('ContextApi');
 
-  constructor(name: app.IProviderName) {
+  constructor(name: app.IProviderName, searchTitle: string) {
     this.name = name;
+    this.searchTitle = searchTitle;
+    this.refreshAsync();
   }
 
   @mobx.action
   changeSearchTitle(searchTitle: string) {
     this.searchTitle = searchTitle;
+    this.refreshAsync();
+  }
+
+  @mobx.action
+  open(series: app.ISeriesListItem) {
+    app.screenManager.open(area.SeriesController, {
+      title: series.title,
+      url: series.url
+    });
   }
 
   @mobx.action
@@ -22,7 +34,7 @@ export class ProviderViewModel {
       : await this._context.remotePopularAsync(this.name);
     if (seriesList.result) {
       mobx.runInAction(() => {
-        this.seriesList = seriesList.result;
+        this.series = seriesList.result;
         this.isLoading = false;
       });
     } else if (await app.dialogManager.errorAsync(seriesList.error)) {
@@ -40,5 +52,5 @@ export class ProviderViewModel {
   searchTitle = '';
 
   @mobx.observable
-  seriesList?: app.ISeriesList;
+  series?: app.ISeriesList;
 }

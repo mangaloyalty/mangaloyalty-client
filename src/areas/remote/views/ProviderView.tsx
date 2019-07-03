@@ -11,13 +11,12 @@ export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> 
   render() {
     return (
       <mui.Grid>
-        <app.LoadingComponent open={this.props.vm.isLoading} />
-        {this.props.vm.seriesList && <mui.Grid key={this.props.vm.name}>
+        {this.props.vm.series && <mui.Grid key={this.props.vm.name}>
           <app.SeriesListComponent
             emptyBody={app.language.remoteEmptyBody}
             emptyTitle={app.language.remoteEmptyTitle}
-            seriesList={this.props.vm.seriesList}
-            onClick={(seriesListItem) => app.screenManager.push(<area.SeriesController title={seriesListItem.title} url={seriesListItem.url} />)} />
+            seriesList={this.props.vm.series}
+            onClick={(series) => this.props.vm.open(series)} />
         </mui.Grid>}
       </mui.Grid>
     );

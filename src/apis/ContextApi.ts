@@ -18,4 +18,10 @@ export class ContextApi {
     const response = await request.runAsync<app.IRemoteSearchResponse>();
     return response;
   }
+
+  async remoteSeries(url: string) {
+    const request = this._http.getAsync(`/remote/series?url=${encodeURIComponent(url)}`);
+    const response = await request.runAsync<app.IRemoteSeriesResponse>();
+    return response;
+  }
 }

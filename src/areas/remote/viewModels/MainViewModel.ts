@@ -3,21 +3,15 @@ import * as area from '..';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  constructor() {
-    this.provider = new area.ProviderViewModel(app.settings.providerDefaultName);
-    this.provider.refreshAsync();
-  }
-
   @mobx.action
   changeProvider(name: app.IProviderName) {
-    if (this.provider.name === name) return;
-    this.provider = new area.ProviderViewModel(name);
-    this.provider.changeSearchTitle(this.searchTitle);
-    this.provider.refreshAsync();
+    if (name === this.provider.name) return;
+    this.provider = new area.ProviderViewModel(name, this.searchTitle);
   }
 
   @mobx.action
   changeSearchTitle(searchTitle: string) {
+    if (searchTitle === this.searchTitle) return;
     this.provider.changeSearchTitle(searchTitle);
     this.searchTitle = searchTitle;
   }
@@ -26,9 +20,14 @@ export class MainViewModel {
   refreshAsync() {
     this.provider.refreshAsync();
   }
+
+  @mobx.computed
+  get isLoading() {
+    return this.provider.isLoading;
+  }
   
   @mobx.observable
-  provider: area.ProviderViewModel;
+  provider = new area.ProviderViewModel(app.settings.providerDefaultName, '');
 
   @mobx.observable
   searchTitle = '';

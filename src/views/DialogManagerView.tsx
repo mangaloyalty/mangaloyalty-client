@@ -18,7 +18,7 @@ export class DialogManagerView extends React.Component {
         </mui.DialogContent>
         <mui.DialogActions>
           {dialog.buttons.map((button, index) => (
-            <mui.Button key={index} color={index === dialog.buttons.length - 1 ? "primary" : "default"} onClick={() => dialog.send(index)}>
+            <mui.Button key={index} color={index === dialog.buttons.length - 1 ? 'primary' : 'default'} onClick={() => dialog.send(index)}>
               {button}
             </mui.Button>
           ))}

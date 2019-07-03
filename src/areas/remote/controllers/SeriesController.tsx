@@ -1,17 +1,24 @@
 import * as app from '../../..';
-import * as mui from '@material-ui/core';
+import * as area from '..';
+import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
+@mobxReact.observer
 export class SeriesController extends React.Component<{title: string, url: string}> {
   state = {
-    // vm: new area.SeriesViewModel()
+    vm: new area.SeriesViewModel(this.props.title, this.props.url)
   };
 
   render() {
     return (
-      <mui.Grid onClick={() => app.screenManager.pop()}>
-        {this.props.title} - {this.props.url}
-      </mui.Grid>
+      <app.FocusComponent onFocus={() => !app.dialogManager.dialogs.length && this.state.vm.refreshAsync()}>
+        <app.LoadingComponent open={this.state.vm.isLoading} />
+        <app.HeaderComponent title={this.state.vm.title}
+          menu={<area.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          onBack={() => app.screenManager.close()}>
+          <area.SeriesView vm={this.state.vm} />
+        </app.HeaderComponent>
+      </app.FocusComponent>
     );
   }
 }
