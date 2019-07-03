@@ -24,4 +24,16 @@ export class ContextApi {
     const response = await request.startAsync<app.IRemoteSeriesResponse>();
     return response;
   }
+
+  async remoteStart(url: string) {
+    const request = this._http.getAsync(`/remote/start?url=${encodeURIComponent(url)}`);
+    const response = await request.startAsync<app.IRemoteStartResponse>();
+    return response;
+  }
+
+  async sessionList() {
+    const request = this._http.getAsync('/session');
+    const response = await request.startAsync<app.ISessionListResponse>();
+    return response;
+  }
 }

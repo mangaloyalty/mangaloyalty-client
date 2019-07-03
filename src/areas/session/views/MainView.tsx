@@ -4,28 +4,22 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: When the chapter list is enormous, rendering takes a while (Tomo-chan wa Onnanoko!)
 @mobxReact.observer
-export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
+export class MainView extends React.Component<{vm: area.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        {this.props.vm.image && <mui.Paper style={styles.info}>
-          <img src={`data:;base64, ${this.props.vm.image}`} style={styles.image} />
-          <mui.Typography>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
-          <mui.Grid style={styles.clear} />
-        </mui.Paper>}
-        {this.props.vm.chapters && Boolean(this.props.vm.chapters.length) && <mui.Paper>
+        {this.props.vm.sessions && Boolean(this.props.vm.sessions.length) && <mui.Paper>
           <mui.List>
-            {this.props.vm.chapters.map((chapter) => (
-              <mui.ListItem key={chapter.url} button onClick={() => this.props.vm.openAsync(chapter)}>
+            {this.props.vm.sessions.map((session) => (
+              <mui.ListItem key={session.id} button onClick={() => this.props.vm.openAsync(session)}>
                 <mui.ListItemAvatar>
                   <mui.Avatar>
                     <app.icons.Folder />
                   </mui.Avatar>
                 </mui.ListItemAvatar>
                 <mui.Typography variant="subheading" style={styles.title}>
-                  {chapter.title}
+                  {session.url}
                 </mui.Typography>
                 <mui.ListItemSecondaryAction>
                   <mui.Icon>
@@ -46,15 +40,8 @@ const styles = app.styles({
     marginBottom: 16,
     padding: 24
   },
-  image: {
-    float: 'left',
-    marginRight: 8,
-    width: 166
-  },
-  clear: {
-    clear: 'both'
-  },
   title: {
+    fontStyle: 'italic',
     paddingLeft: 16,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
