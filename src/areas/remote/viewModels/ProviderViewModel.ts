@@ -20,10 +20,7 @@ export class ProviderViewModel {
 
   @mobx.action
   open(series: app.ISeriesListItem) {
-    core.screen.open(area.SeriesController, {
-      title: series.title,
-      url: series.url
-    });
+    core.screen.open(area.SeriesController, series);
   }
 
   @mobx.action

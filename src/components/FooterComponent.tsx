@@ -21,6 +21,10 @@ export class FooterComponent extends React.Component {
               icon={<app.icons.Public />}
               label={app.language.menuBottomRemote}
               onClick={() => core.screen.changeRoot(app.RootType.Remote)} />
+            {app.settings.developerMode && <mui.BottomNavigationAction
+              icon={<app.icons.Portrait />}
+              label={app.language.menuBottomSession}
+              onClick={() => core.screen.changeRoot(app.RootType.Session)} />}
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />
