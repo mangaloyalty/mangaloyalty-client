@@ -1,7 +1,9 @@
 import * as app from '../../..';
 import * as area from '..';
+import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
+@mobxReact.observer
 export class MainController extends React.Component {
   state = {
     vm: new area.MainViewModel()
@@ -9,25 +11,17 @@ export class MainController extends React.Component {
 
   render() {
     return (
-      <app.FocusComponent onFocus={() => this._onFocus()}>
-        <app.HeaderComponent title={app.language.app} showDisconnect={true}
-          additionalMenu={<area.MenuComponent vm={this.state.vm} />}
-          onSearch={(value) => this._onSearch(value)}>
+      <app.FocusComponent onFocus={() => !app.dialogManager.dialogs.length && this.state.vm.refreshAsync()}>
+        <app.LoadingComponent open={this.state.vm.isLoading} />
+        <app.HeaderComponent title={app.language.app}
+          menu={<area.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          onBack={() => app.screenManager.changeRoot(app.RootType.Connect)}
+          onSearch={(value) => this.state.vm.changeSearchTitle(value)}>
           <app.FooterComponent>
             <area.MainView vm={this.state.vm} />
           </app.FooterComponent>
         </app.HeaderComponent>
       </app.FocusComponent>
     );
-  }
-
-  private _onFocus() {
-    if (app.dialogManager.dialogs.length) return;
-    if (app.settings.autoRefresh) this.state.vm.refreshAsync();
-  }
-
-  private _onSearch(value: string) {
-    this.state.vm.changeSearchTitle(value);
-    this.state.vm.refreshAsync();
   }
 }

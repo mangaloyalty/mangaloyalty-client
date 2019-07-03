@@ -38,7 +38,8 @@ class Root extends React.Component {
   app.serviceManager.set('ContextApi', new app.ContextApi(location.protocol + '//' + location.hostname + ':7783'));
   app.screenManager.changeRoot(app.RootType.Remote);
 
-  app.screenManager.push(<Root />);
+  app.screenManager.open(Root);
+  app.screenManager.open(areas.remote.SeriesController, {title: "Aoi Hana", url: "https://fanfox.net/manga/aoi_hana/"});
   mobx.configure({enforceActions: 'observed'});
   ReactDOM.render(<App />, document.getElementById('container'));
 })();
