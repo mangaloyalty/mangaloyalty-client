@@ -2,7 +2,7 @@ import * as app from '../../..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
+export class MenuComponent extends React.Component<{onRefresh: () => void}> {
   render() {
     return (
       <mui.MenuItem onClick={() => this.props.onRefresh()}>

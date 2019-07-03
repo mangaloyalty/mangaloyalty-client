@@ -18,7 +18,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
             ))}
           </mui.Tabs>
         </mui.Paper>
-        <mui.Grid style={styles.seriesList}>
+        <mui.Grid style={styles.series}>
           <area.ProviderView vm={this.props.vm.provider} />
         </mui.Grid>
       </mui.Grid>
@@ -32,7 +32,7 @@ const styles = app.styles({
     top: 64,
     width: '100%'
   },
-  seriesList: {
+  series: {
     paddingTop: 48
   }
 });

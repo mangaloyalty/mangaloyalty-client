@@ -1,4 +1,4 @@
-export * from './components/RefreshComponent';
+export * from './components/MenuComponent';
 export * from './controllers/MainController';
 export * from './controllers/SeriesController';
 export * from './viewModels/MainViewModel';

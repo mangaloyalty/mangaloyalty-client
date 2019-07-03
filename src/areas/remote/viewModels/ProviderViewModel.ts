@@ -1,25 +1,26 @@
 import * as app from '../../..';
 import * as area from '..';
 import * as mobx from 'mobx';
+const core = app.core;
 
 export class ProviderViewModel {
-  private readonly _context = app.serviceManager.get<app.ContextApi>('ContextApi');
+  private readonly _context: app.ContextApi;
+  private readonly _name: app.IProviderName;
 
-  constructor(name: app.IProviderName, searchTitle: string) {
-    this.name = name;
-    this.searchTitle = searchTitle;
-    this.refreshAsync();
+  constructor(name: app.IProviderName) {
+    this._context = core.service.get('ContextApi');
+    this._name = name;
   }
 
   @mobx.action
-  changeSearchTitle(searchTitle: string) {
-    this.searchTitle = searchTitle;
+  changeSearch(search: string) {
+    this.search = search;
     this.refreshAsync();
   }
 
   @mobx.action
   open(series: app.ISeriesListItem) {
-    app.screenManager.open(area.SeriesController, {
+    core.screen.open(area.SeriesController, {
       title: series.title,
       url: series.url
     });
@@ -29,28 +30,35 @@ export class ProviderViewModel {
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const seriesList = this.searchTitle
-      ? await this._context.remoteSearch(this.name, this.searchTitle)
+    const seriesList = this.search
+      ? await this._context.remoteSearch(this.name, this.search)
       : await this._context.remotePopularAsync(this.name);
     if (seriesList.result) {
       mobx.runInAction(() => {
-        this.series = seriesList.result;
         this.isLoading = false;
+        this.source = seriesList.result;
       });
-    } else if (await app.dialogManager.errorAsync(seriesList.error)) {
+    } else if (await core.dialog.errorAsync(seriesList.error)) {
       this.refreshAsync(true);
     }
+  }
+
+  @mobx.computed
+  get name() {
+    return this._name;
+  }
+
+  @mobx.computed
+  get series() {
+    return this.source;
   }
 
   @mobx.observable
   isLoading = false;
 
   @mobx.observable
-  name: app.IProviderName;
+  search = '';
 
   @mobx.observable
-  searchTitle = '';
-
-  @mobx.observable
-  series?: app.ISeriesList;
+  private source?: app.ISeriesList;
 }
