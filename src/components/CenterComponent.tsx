@@ -22,6 +22,7 @@ const styles = app.styles({
     left: '50%',
     position: 'absolute',
     top: '50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    width: 320
   }
 });

@@ -12,10 +12,12 @@ export class FooterComponent extends React.Component {
         <mui.Paper style={styles.navigation}>
           <mui.Divider />
           <mui.BottomNavigation showLabels value={app.screenManager.rootType - 1}>
-            <mui.BottomNavigationAction icon={<app.icons.Home />}
+            <mui.BottomNavigationAction
+              icon={<app.icons.Home />}
               label={app.language.menuBottomLibrary}
               onClick={() => app.screenManager.changeRoot(app.RootType.Library)} />
-            <mui.BottomNavigationAction icon={<app.icons.Public />}
+            <mui.BottomNavigationAction
+              icon={<app.icons.Public />}
               label={app.language.menuBottomRemote}
               onClick={() => app.screenManager.changeRoot(app.RootType.Remote)} />
           </mui.BottomNavigation>

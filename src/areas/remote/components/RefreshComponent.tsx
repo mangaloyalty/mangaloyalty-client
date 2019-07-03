@@ -1,12 +1,11 @@
 import * as app from '../../..';
-import * as area from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class MenuComponent extends React.Component<{vm: area.MainViewModel}> {
+export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
   render() {
     return (
-      <mui.MenuItem onClick={() => this.props.vm.refreshAsync()}>
+      <mui.MenuItem onClick={() => this.props.onRefresh()}>
         <mui.ListItemIcon>
           <app.icons.Refresh />
         </mui.ListItemIcon>

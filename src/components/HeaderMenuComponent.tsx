@@ -2,13 +2,13 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class MenuComponent extends React.Component<{additionalMenu?: React.ReactElement<any>, showDisconnect?: boolean}> {
+export class HeaderMenuComponent extends React.Component<{menu: React.ReactElement<any>}> {
   state = {
     anchorEl: undefined,
   };
 
   render() {
-    return (this.props.additionalMenu || this.props.showDisconnect) && (
+    return (
       <mui.Grid style={styles.menu}>
         <mui.IconButton color="inherit" onClick={(ev) => this.setState({anchorEl: ev.currentTarget})}>
           <app.icons.MoreVert />
@@ -19,16 +19,7 @@ export class MenuComponent extends React.Component<{additionalMenu?: React.React
               <mui.Paper>
                 <mui.ClickAwayListener onClickAway={() => this.setState({anchorEl: undefined})}>
                   <mui.MenuList onClick={() => this.setState({anchorEl: undefined})}>
-                    {this.props.additionalMenu}
-                    {this.props.additionalMenu && <mui.Divider />}
-                    {this.props.showDisconnect && <mui.MenuItem onClick={() => app.screenManager.changeRoot(app.RootType.Connect)}>
-                      <mui.ListItemIcon>
-                        <app.icons.ExitToApp />
-                      </mui.ListItemIcon>
-                      <mui.Typography>
-                        {app.language.menuTopDisconnect}
-                      </mui.Typography>
-                    </mui.MenuItem>}
+                    {this.props.menu}
                   </mui.MenuList>
                 </mui.ClickAwayListener>
               </mui.Paper>

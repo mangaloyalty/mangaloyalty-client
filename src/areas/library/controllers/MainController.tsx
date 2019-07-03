@@ -5,8 +5,8 @@ import * as React from 'react';
 export class MainController extends React.Component {
   render() {
     return (
-      <app.FocusComponent onFocus={() => this._onFocus()}>
-        <app.HeaderComponent title={app.language.app} showDisconnect={true}>
+      <app.FocusComponent onFocus={() => !app.dialogManager.dialogs.length && this._onFocus()}>
+        <app.HeaderComponent title={app.language.app} onBack={() => app.screenManager.changeRoot(app.RootType.Connect)}>
           <app.FooterComponent>
             <area.MainView />
           </app.FooterComponent>
@@ -16,7 +16,6 @@ export class MainController extends React.Component {
   }
 
   private _onFocus() {
-    if (app.dialogManager.dialogs.length) return;
-    if (app.settings.autoRefresh) {}
+    // Replace me for inline when implementing this library.
   }
 }
