@@ -11,5 +11,11 @@ export const language = {
   remoteSeriesSummary: 'No summary is available for this series.',
   session: 'Session',
   sessionEmptyBody: 'No sessions have been found. When a chapter is being read, a session is created and will appear in this section.',
-  sessionEmptyTitle: '何もない'
+  sessionEmptyTitle: '何もない',
+  sessionToastNextActive: 'Going to the next chapter!',
+  sessionToastNextRepeat: 'Open the next chapter?',
+  sessionToastNextUnavailable: 'No next chapter available.',
+  sessionToastPreviousActive: 'Going to the previous chapter!',
+  sessionToastPreviousRepeat: 'Open the previous chapter?',
+  sessionToastPreviousUnavailable: 'No previous chapter available.'
 };
