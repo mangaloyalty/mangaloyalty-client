@@ -10,6 +10,7 @@ export class ScreenManager {
 
   @mobx.action
   changeRoot(rootType: app.RootType) {
+    while (this.items.length > 1) this.items.pop();
     this.rootType = rootType;
   }
   

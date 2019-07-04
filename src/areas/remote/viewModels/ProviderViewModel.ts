@@ -1,14 +1,13 @@
 import * as app from '../../..';
 import * as area from '..';
 import * as mobx from 'mobx';
-const core = app.core;
 
 export class ProviderViewModel {
   private readonly _context: app.ContextApi;
-  private readonly _name: app.IProviderName;
+  private readonly _name: string;
 
-  constructor(name: app.IProviderName) {
-    this._context = core.service.get('ContextApi');
+  constructor(name: string) {
+    this._context = app.core.service.get('ContextApi');
     this._name = name;
   }
 
@@ -20,7 +19,10 @@ export class ProviderViewModel {
 
   @mobx.action
   open(series: app.ISeriesListItem) {
-    core.screen.open(area.SeriesController, series);
+    app.core.screen.open(area.SeriesController, {
+      title: series.title,
+      url: series.url
+    });
   }
 
   @mobx.action
@@ -35,7 +37,7 @@ export class ProviderViewModel {
         this.isLoading = false;
         this.source = seriesList.result;
       });
-    } else if (await core.dialog.errorAsync(seriesList.error)) {
+    } else if (await app.core.dialog.errorAsync(seriesList.error)) {
       this.refreshAsync(true);
     }
   }
