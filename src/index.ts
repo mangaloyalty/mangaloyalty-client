@@ -12,7 +12,6 @@ export * from './common/theme';
 export * from './components/CenterComponent';
 export * from './components/FooterComponent';
 export * from './components/HeaderComponent';
-export * from './components/HeaderMenuComponent';
 export * from './components/HeaderSearchBarComponent';
 export * from './components/HeaderTitleBarComponent';
 export * from './components/LoadingComponent';

@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class HeaderSearchBarComponent extends React.Component<{menu?: React.ReactElement<any>, onClose: () => void, onSearch: (value: string) => void}> {
+export class HeaderSearchBarComponent extends React.Component<{icon?: React.ReactElement<any>, onClose: () => void, onSearch: (value: string) => void}> {
   render() {
     return (
       <mui.Toolbar>
@@ -16,7 +16,7 @@ export class HeaderSearchBarComponent extends React.Component<{menu?: React.Reac
           <mui.IconButton color="inherit" onClick={() => this.props.onClose()}>
             <app.icons.Close />
           </mui.IconButton>
-          {this.props.menu && <app.HeaderMenuComponent menu={this.props.menu} />}
+          {this.props.icon}
         </mui.Grid>
       </mui.Toolbar>
     );

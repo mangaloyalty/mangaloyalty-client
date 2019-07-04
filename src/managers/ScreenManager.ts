@@ -10,7 +10,6 @@ export class ScreenManager {
 
   @mobx.action
   changeRoot(rootType: app.RootType) {
-    while (this.items.length > 1) this.items.pop();
     this.rootType = rootType;
   }
   
@@ -26,6 +25,11 @@ export class ScreenManager {
     if (previous) previous.scrollX = window.scrollX;
     if (previous) previous.scrollY = window.scrollY;
     this.items.push({element, scrollX: 0, scrollY: 0});
+  }
+
+  @mobx.computed
+  get isChildVisible() {
+    return this.items.length > 1;
   }
 
   @mobx.observable

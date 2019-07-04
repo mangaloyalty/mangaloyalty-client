@@ -8,7 +8,7 @@ export class MainController extends React.Component {
   render() {
     return (
       <app.RefreshComponent onRefresh={() => { /* DON'T FORGET ME */ }}>
-        <app.HeaderComponent title={app.language.app} onBack={() => app.core.screen.changeRoot(app.RootType.Connect)}>
+        <app.HeaderComponent title={app.language.library} onBack={() => app.core.dialog.disconnectAsync()}>
           <app.FooterComponent>
             <area.MainView />
           </app.FooterComponent>

@@ -13,8 +13,8 @@ export class MainViewModel {
   @mobx.action
   openAsync(session: app.ISessionListItem) {
     app.core.screen.open(area.ChapterController, {
-      pageNumber: 1,
-      session: session
+      session: session,
+      title: session.url
     });
   }
 

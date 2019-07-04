@@ -1,6 +1,6 @@
 export * from './classes/Loader';
 export * from './classes/Touch';
-export * from './components/MenuComponent';
+export * from './components/RefreshIconComponent';
 export * from './controllers/ChapterController';
 export * from './controllers/MainController';
 export * from './providers/fanfoxProvider';
