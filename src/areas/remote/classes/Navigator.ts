@@ -21,19 +21,19 @@ export class Navigator implements app.INavigator {
   }
 
   async openCurrent() {
-    return await this._openOrCreateAsync(false);
+    await this._openOrCreateAsync(false);
   }
   
   async openNextAsync() {
     if (!this.hasNext) return;
     this._index--;
-    return await this._openOrCreateAsync(true);
+    await this._openOrCreateAsync(true);
   }
 
   async openPreviousAsync() {
     if (!this.hasPrevious) return;
     this._index++;
-    return await this._openOrCreateAsync(true);
+    await this._openOrCreateAsync(true);
   }
 
   private async _createAsync(shouldClose: boolean) {

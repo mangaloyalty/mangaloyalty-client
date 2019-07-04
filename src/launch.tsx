@@ -14,6 +14,7 @@ class App extends React.Component {
         <mui.CssBaseline />
         <app.DialogManagerView />
         <app.ScreenManagerView />
+        <app.ToastManagerView />
       </mui.MuiThemeProvider>
     );
   }

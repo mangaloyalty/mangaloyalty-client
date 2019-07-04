@@ -46,9 +46,9 @@ export class ChapterView extends React.Component<{vm: area.ChapterViewModel}> {
     if (y < tresholdY) {
       this.props.vm.toggleControls();
     } else if (x < tresholdX) {
-      this.props.vm.pageNextAsync();
+      this.props.vm.imageNextAsync();
     } else {
-      this.props.vm.pagePreviousAsync();
+      this.props.vm.imagePreviousAsync();
     }
   }
 }
