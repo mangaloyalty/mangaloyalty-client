@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class HeaderComponent extends React.Component<{menu?: React.ReactElement<any>, title: string, onBack?: () => void, onSearch?: (value: string) => void}> {
+export class HeaderComponent extends React.Component<{icon?: React.ReactElement<any>, title: string, onBack?: () => void, onSearch?: (value: string) => void}> {
   state = {
     showSearch: false
   };
@@ -12,10 +12,10 @@ export class HeaderComponent extends React.Component<{menu?: React.ReactElement<
       <mui.Grid>
         <mui.AppBar className="disablePadding ios-inset-top">
           {this.state.showSearch
-            ? <app.HeaderSearchBarComponent menu={this.props.menu}
+            ? <app.HeaderSearchBarComponent icon={this.props.icon}
                 onClose={() => Boolean(this.props.onSearch!('')) || this.setState({showSearch: false})}
                 onSearch={(value) => this.props.onSearch!(value)} />
-            : <app.HeaderTitleBarComponent menu={this.props.menu} title={this.props.title}
+            : <app.HeaderTitleBarComponent icon={this.props.icon} title={this.props.title}
                 onBack={this.props.onBack}
                 onSearch={this.props.onSearch && (() => this.setState({showSearch: true}))} />}
         </mui.AppBar>

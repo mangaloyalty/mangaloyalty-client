@@ -44,11 +44,11 @@ export class ChapterView extends React.Component<{vm: area.ChapterViewModel}> {
     const tresholdX = innerWidth / 2;
     const tresholdY = innerHeight / 3;
     if (y < tresholdY) {
-      this.props.vm.toggleHeader();
+      this.props.vm.toggleControls();
     } else if (x < tresholdX) {
-      this.props.vm.navigateNextAsync();
+      this.props.vm.pageNextAsync();
     } else {
-      this.props.vm.navigatePreviousAsync();
+      this.props.vm.pagePreviousAsync();
     }
   }
 }

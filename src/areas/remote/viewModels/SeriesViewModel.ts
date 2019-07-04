@@ -22,8 +22,8 @@ export class SeriesViewModel {
       const session = await this._context.remoteStart(chapter.url);
       if (session.result) {
         app.core.screen.open(areas.session.ChapterController, {
-          pageNumber: 1,
-          session: session.result
+          session: session.result,
+          title: chapter.title
         });
       } else if (await app.core.dialog.errorAsync(session.error)) {
         this.openAsync(chapter);
