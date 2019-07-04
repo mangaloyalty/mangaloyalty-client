@@ -13,7 +13,7 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
       <mui.Grid>
         {this.props.vm.image && <mui.Paper style={styles.info}>
           <img src={`data:;base64, ${this.props.vm.image}`} style={styles.image} />
-          <mui.Typography>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
+          <mui.Typography style={styles.summary}>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
           <mui.Grid style={styles.clear} />
         </mui.Paper>}
         {this.props.vm.chapters && this.props.vm.chapters.length !== 0 && <mui.Paper>
@@ -51,6 +51,9 @@ const styles = app.styles({
     float: 'left',
     marginRight: 8,
     width: 166
+  },
+  summary: {
+    wordBreak: 'break-word'
   },
   clear: {
     clear: 'both'

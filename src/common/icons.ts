@@ -1,4 +1,6 @@
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Close from '@material-ui/icons/Close';
 import Folder from '@material-ui/icons/Folder';
@@ -7,4 +9,4 @@ import Portrait from '@material-ui/icons/Portrait';
 import Public from '@material-ui/icons/Public';
 import Refresh from '@material-ui/icons/Refresh';
 import Search from '@material-ui/icons/Search';
-export const icons = {ArrowBackIos, ChevronRight, Close, Folder, Home, Portrait, Public, Refresh, Search};
+export const icons = {ArrowBack, ArrowBackIos, ArrowForward, ChevronRight, Close, Folder, Home, Portrait, Public, Refresh, Search};

@@ -1,5 +1,6 @@
 export * from './classes/Loader';
 export * from './classes/Touch';
+export * from './components/NavigatorIconComponent';
 export * from './components/RefreshIconComponent';
 export * from './controllers/ChapterController';
 export * from './controllers/MainController';
