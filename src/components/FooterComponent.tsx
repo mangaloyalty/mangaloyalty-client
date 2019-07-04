@@ -1,7 +1,6 @@
 import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
-const core = app.core;
 
 export class FooterComponent extends React.Component {
   render() {
@@ -12,19 +11,19 @@ export class FooterComponent extends React.Component {
         </mui.Grid>
         <mui.Paper style={styles.navigation}>
           <mui.Divider />
-          <mui.BottomNavigation showLabels value={core.screen.rootType - 1}>
+          <mui.BottomNavigation showLabels value={app.core.screen.rootType - 1}>
             <mui.BottomNavigationAction
               icon={<app.icons.Home />}
               label={app.language.menuBottomLibrary}
-              onClick={() => core.screen.changeRoot(app.RootType.Library)} />
+              onClick={() => app.core.screen.changeRoot(app.RootType.Library)} />
             <mui.BottomNavigationAction
               icon={<app.icons.Public />}
               label={app.language.menuBottomRemote}
-              onClick={() => core.screen.changeRoot(app.RootType.Remote)} />
-            {app.settings.developerMode && <mui.BottomNavigationAction
+              onClick={() => app.core.screen.changeRoot(app.RootType.Remote)} />
+            <mui.BottomNavigationAction
               icon={<app.icons.Portrait />}
               label={app.language.menuBottomSession}
-              onClick={() => core.screen.changeRoot(app.RootType.Session)} />}
+              onClick={() => app.core.screen.changeRoot(app.RootType.Session)} />
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />

@@ -9,7 +9,7 @@ export class MainViewModel {
   }
   
   @mobx.action
-  changeProvider(name: app.IProviderName) {
+  changeProvider(name: string) {
     if (name === this.provider.name) return;
     this.provider = new area.ProviderViewModel(name);
     this.provider.changeSearch(this.search);

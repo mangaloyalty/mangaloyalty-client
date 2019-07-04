@@ -1,7 +1,6 @@
 import * as app from '../../..';
 import * as areas from '../..';
 import * as mobx from 'mobx';
-const core = app.core;
 
 export class SeriesViewModel {
   private readonly _context: app.ContextApi;
@@ -9,20 +8,24 @@ export class SeriesViewModel {
   private readonly _url: string;
 
   constructor(title: string, url: string) {
-    this._context = core.service.get('ContextApi');
+    this._context = app.core.service.get('ContextApi');
     this._title = title;
     this._url = url;
     this.refreshAsync();
   }
   
+  // TECH: Check existing session first and try to open it instead.
   @mobx.action
   async openAsync(chapter: app.ISeriesDetailChapter) {
     try {
       this.isLoading = true;
       const session = await this._context.remoteStart(chapter.url);
       if (session.result) {
-        core.screen.open(areas.session.ChapterController, session.result);
-      } else if (await core.dialog.errorAsync(session.error)) {
+        app.core.screen.open(areas.session.ChapterController, {
+          pageNumber: 1,
+          session: session.result
+        });
+      } else if (await app.core.dialog.errorAsync(session.error)) {
         this.openAsync(chapter);
       }
     } finally {
@@ -42,7 +45,7 @@ export class SeriesViewModel {
         this.isLoading = false;
         this.source = series.result;
       });
-    } else if (await core.dialog.errorAsync(series.error)) {
+    } else if (await app.core.dialog.errorAsync(series.error)) {
       this.refreshAsync(true);
     }
   }

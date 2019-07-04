@@ -1,20 +1,23 @@
 import * as app from '../../..';
 import * as area from '..';
 import * as mobxReact from 'mobx-react';
+import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class ChapterController extends React.Component<{id: number, pageCount: number}> {
+export class ChapterController extends React.Component<{pageNumber: number, session: app.ISessionListItem}> {
   state = {
-    vm: new area.ChapterViewModel(this.props.id, this.props.pageCount)
+    vm: new area.ChapterViewModel(this.props.pageNumber, this.props.session)
   };
 
   render() {
     return (
-      <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
+      <mui.Grid>
+        {this.state.vm.isHeaderVisible && <app.HeaderComponent title={app.language.app}
+          onBack={() => app.core.screen.close()} />}
         <app.LoadingComponent open={this.state.vm.isLoading} />
-        <div>TODO</div>
-      </app.RefreshComponent>
+        <area.ChapterView vm={this.state.vm} />
+      </mui.Grid>
     );
   }
 }

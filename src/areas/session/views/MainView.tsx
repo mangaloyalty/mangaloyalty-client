@@ -9,7 +9,10 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        {this.props.vm.sessions && Boolean(this.props.vm.sessions.length) && <mui.Paper>
+        {this.props.vm.sessions && this.props.vm.sessions.length === 0 && <app.CenterComponent
+          body={app.language.sessionEmptyBody}
+          title={app.language.sessionEmptyTitle} />}
+        {this.props.vm.sessions && this.props.vm.sessions.length !== 0 && <mui.Paper>
           <mui.List>
             {this.props.vm.sessions.map((session) => (
               <mui.ListItem key={session.id} button onClick={() => this.props.vm.openAsync(session)}>

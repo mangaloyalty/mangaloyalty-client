@@ -2,13 +2,12 @@ import * as app from '..';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
-const core = app.core;
 
 @mobxReact.observer
 export class DialogManagerView extends React.Component {
   render() {
-    return core.dialog.items.map((item, index) => (
-      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === core.dialog.items.length - 1}>
+    return app.core.dialog.items.map((item, index) => (
+      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1}>
         <mui.DialogContent>
           <mui.DialogContentText>
             {item.body}

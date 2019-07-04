@@ -7,13 +7,13 @@ export class ContextApi {
     this._http = new app.HttpApi(baseUrl);
   }
 
-  async remotePopularAsync(providerName: app.IProviderName, pageNumber = 1) {
+  async remotePopularAsync(providerName: string, pageNumber = 1) {
     const request = this._http.getAsync(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
     const response = await request.startAsync<app.IRemotePopularResponse>();
     return response;
   }
 
-  async remoteSearch(providerName: app.IProviderName, title: string, pageNumber = 1) {
+  async remoteSearch(providerName: string, title: string, pageNumber = 1) {
     const request = this._http.getAsync(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
     const response = await request.startAsync<app.IRemoteSearchResponse>();
     return response;
@@ -34,6 +34,12 @@ export class ContextApi {
   async sessionList() {
     const request = this._http.getAsync('/session');
     const response = await request.startAsync<app.ISessionListResponse>();
+    return response;
+  }
+
+  async sessionPage(sessionId: number, pageNumber: number) {
+    const request = this._http.getAsync(`/session/${sessionId}?pageNumber=${pageNumber}`);
+    const response = await request.startAsync<app.ISessionPageResponse>();
     return response;
   }
 }

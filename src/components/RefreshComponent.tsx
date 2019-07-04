@@ -1,6 +1,5 @@
 import * as app from '..';
 import * as React from 'react';
-const core = app.core;
 
 export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
   private readonly _container: React.RefObject<HTMLDivElement>;
@@ -28,9 +27,8 @@ export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
     );
   }
 
-  private _onFocus() {
-    if (core.dialog.items.length) return;
+  private _onFocus() {  
     if (!this._container.current || !this._container.current.offsetHeight) return;
-    this.props.onRefresh();
+    if (!app.core.dialog.items.length) this.props.onRefresh();
   }
 }

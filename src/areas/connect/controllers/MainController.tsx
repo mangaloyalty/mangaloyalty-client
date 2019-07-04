@@ -3,6 +3,8 @@ import * as area from '..';
 import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
+// TODO: Implement me.
+
 @mobxReact.observer
 export class MainController extends React.Component {
   render() {

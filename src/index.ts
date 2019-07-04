@@ -1,3 +1,5 @@
+export * from './language';
+export * from './settings';
 export * from './managers/DialogManager';
 export * from './managers/ScreenManager';
 export * from './managers/ServiceManager';
@@ -20,6 +22,4 @@ export * from './enumerators/RootType';
 export * from './views/DialogManagerView';
 export * from './views/ScreenManagerView';
 export * from './typings/openapi';
-export * from './language';
-export * from './settings';
 import './launch';
