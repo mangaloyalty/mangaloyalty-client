@@ -9,6 +9,8 @@ export class ChapterViewModel {
   private readonly _loader: area.Loader;
   private readonly _navigator?: app.INavigator;
   private readonly _session: app.ISessionListItem;
+  private _imageNextTime?: number;
+  private _imagePreviousTime?: number;
   private _pageNumber: number;
 
   constructor(session: app.ISessionListItem, navigator?: app.INavigator, pageNumber?: number) {
@@ -20,36 +22,56 @@ export class ChapterViewModel {
     this.updateAsync();
   }
 
-  // TODO: Chapter switch should have a confirmation toast, or a notification about end-is-reached.
   @mobx.action
   async chapterNextAsync() {
-    if (this._navigator && this._navigator.hasNext) {
+    if (!this._navigator || !this._navigator.hasNext) {
+      app.core.toast.add(app.language.sessionToastNextUnavailable);
+    } else {
       this.isLoading = true;
-      return await this._navigator.openNextAsync();
+      app.core.toast.add(app.language.sessionToastNextActive);
+      await this._navigator.openNextAsync();
     }
   }
 
-  // TODO: Chapter switch should have a confirmation toast, or a notification about end-is-reached.
   @mobx.action
   async chapterPreviousAsync() {
-    if (this._navigator && this._navigator.hasPrevious) {
+    if (!this._navigator || !this._navigator.hasPrevious) {
+      app.core.toast.add(app.language.sessionToastPreviousUnavailable);
+    } else {
       this.isLoading = true;
-      return await this._navigator.openPreviousAsync();
+      app.core.toast.add(app.language.sessionToastPreviousActive);
+      await this._navigator.openPreviousAsync();
     }
   }
 
   @mobx.action
-  async pageNextAsync() {
-    if (this._pageNumber >= this._session.pageCount) return await this.chapterNextAsync();
-    this._pageNumber++;
-    return await this.updateAsync();
+  async imageNextAsync() {
+    if (this._pageNumber < this._session.pageCount) {
+      this._pageNumber++;
+      await this.updateAsync();
+    } else if (!this._navigator || !this._navigator.hasNext) {
+      app.core.toast.add(app.language.sessionToastNextUnavailable);
+    } else if (!this._imageNextTime || this._imageNextTime < Date.now()) {
+      app.core.toast.add(app.language.sessionToastNextRepeat);
+      this._imageNextTime = Date.now() + app.settings.toastTimeout;
+    } else {
+      await this.chapterNextAsync();
+    }
   }
 
   @mobx.action
-  async pagePreviousAsync() {
-    if (this._pageNumber <= 1) return await this.chapterPreviousAsync();
-    this._pageNumber--;
-    return await this.updateAsync();
+  async imagePreviousAsync() {
+    if (this._pageNumber > 1) {
+      this._pageNumber--;
+      await this.updateAsync();
+    } else if (!this._navigator || !this._navigator.hasPrevious) {
+      app.core.toast.add(app.language.sessionToastPreviousUnavailable);
+    } else if (!this._imagePreviousTime || this._imagePreviousTime < Date.now()) {
+      app.core.toast.add(app.language.sessionToastPreviousRepeat);
+      this._imagePreviousTime = Date.now() + app.settings.toastTimeout;
+    } else {
+      await this.chapterPreviousAsync();
+    }
   }
 
   @mobx.action

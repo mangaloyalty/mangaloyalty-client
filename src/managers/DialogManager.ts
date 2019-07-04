@@ -43,12 +43,8 @@ export class DialogManager {
     return await new Promise<number>((resolve) => {
       const id = this.items.length + 1;
       this.items.push({body, buttons, error, id, send: (index: number) => {
-        for (let i = 0; i < this.items.length; i++) {
-          if (this.items[i].id !== id) continue;
-          mobx.runInAction(() => this.items.splice(i, 1));
-          resolve(index);
-          return;
-        }
+        mobx.runInAction(() => this.items.pop());
+        resolve(index);
       }});
     });
   }
