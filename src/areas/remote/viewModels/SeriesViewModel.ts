@@ -1,5 +1,5 @@
 import * as app from '../../..';
-import * as areas from '../..';
+import * as area from '..';
 import * as mobx from 'mobx';
 
 export class SeriesViewModel {
@@ -14,25 +14,13 @@ export class SeriesViewModel {
     this.refreshAsync();
   }
   
-  // TECH: Check existing session first and try to open it instead.
   @mobx.action
   async openAsync(chapter: app.ISeriesDetailChapter) {
-    try {
-      this.isLoading = true;
-      const session = await this._context.remoteStart(chapter.url);
-      if (session.result) {
-        app.core.screen.open(areas.session.ChapterController, {
-          session: session.result,
-          title: chapter.title
-        });
-      } else if (await app.core.dialog.errorAsync(session.error)) {
-        this.openAsync(chapter);
-      }
-    } finally {
-      mobx.runInAction(() => {
-        this.isLoading = false;
-      });
-    }
+    if (!this.source) return;
+    const navigator = new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source);
+    this.isLoading = true;
+    await navigator.openCurrent();
+    mobx.runInAction(() => this.isLoading = false);
   }
 
   @mobx.action
@@ -46,7 +34,7 @@ export class SeriesViewModel {
         this.source = series.result;
       });
     } else if (await app.core.dialog.errorAsync(series.error)) {
-      this.refreshAsync(true);
+      await this.refreshAsync(true);
     }
   }
 

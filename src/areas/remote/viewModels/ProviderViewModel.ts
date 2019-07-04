@@ -38,7 +38,7 @@ export class ProviderViewModel {
         this.source = seriesList.result;
       });
     } else if (await app.core.dialog.errorAsync(seriesList.error)) {
-      this.refreshAsync(true);
+      await this.refreshAsync(true);
     }
   }
 

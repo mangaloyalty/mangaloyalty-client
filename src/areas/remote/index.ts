@@ -1,3 +1,4 @@
+export * from './classes/Navigator';
 export * from './components/RefreshIconComponent';
 export * from './controllers/MainController';
 export * from './controllers/SeriesController';

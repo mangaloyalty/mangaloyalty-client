@@ -21,4 +21,5 @@ export * from './enumerators/RootType';
 export * from './views/DialogManagerView';
 export * from './views/ScreenManagerView';
 export * from './typings/openapi';
+export * from './typings/system';
 import './launch';
