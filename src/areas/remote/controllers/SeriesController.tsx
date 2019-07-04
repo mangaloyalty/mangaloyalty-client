@@ -14,7 +14,7 @@ export class SeriesController extends React.Component<{title: string, url: strin
       <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={this.state.vm.title}
-          menu={<area.MenuComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          icon={<area.RefreshIconComponent onRefresh={() => this.state.vm.refreshAsync()} />}
           onBack={() => app.core.screen.close()}>
           <area.SeriesView vm={this.state.vm} />
         </app.HeaderComponent>

@@ -9,7 +9,7 @@ import * as React from 'react';
 export class MainController extends React.Component {
   render() {
     return (
-      <app.HeaderComponent title={app.language.app}>
+      <app.HeaderComponent title={app.language.connect}>
         <area.MainView />
       </app.HeaderComponent>
     );
