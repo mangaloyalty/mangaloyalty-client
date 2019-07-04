@@ -29,7 +29,7 @@ export class MainViewModel {
         this.source = sessionList.result;
       });
     } else if (await app.core.dialog.errorAsync(sessionList.error)) {
-      this.refreshAsync(true);
+      await this.refreshAsync(true);
     }
   }
 
