@@ -1,8 +1,8 @@
-import * as app from '../../..';
+const baseUrl = 'https://fanfox.net';
 
 export const fanfoxProvider = {
   isSupported(url: string) {
-    return url.startsWith(app.settings.providerBaseUrlFanfox)
+    return url.startsWith(baseUrl);
   },
 
   async processAsync(image: string) {

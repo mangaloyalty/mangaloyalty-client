@@ -1,8 +1,9 @@
 export const settings = {
-  httpTimeout: 15000, // 15s
-  providerBaseUrlFanfox: 'https://fanfox.net',
+  contextKey: 'ContextApi',
+  contextTimeout: 15000,
+  packageData: require('../package.json'),
   providerDefaultName: 'fanfox',
   providerNames: ['batoto', 'fanfox'],
-  sessionPreloadRange: 3,
-  toastTimeout: 5000 // 5s
+  sessionLoadRange: 3,
+  toastTimeout: 5000
 };

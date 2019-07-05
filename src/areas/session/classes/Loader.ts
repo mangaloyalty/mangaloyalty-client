@@ -19,16 +19,18 @@ export class Loader {
   }
 
   private _expire(pageNumber: number) {
-    const minimumPreserve = pageNumber - app.settings.sessionPreloadRange;
-    const maximumPreserve = pageNumber + app.settings.sessionPreloadRange;
+    const minimum = pageNumber - app.settings.sessionLoadRange;
+    const maximum = pageNumber + app.settings.sessionLoadRange;
     for (let i = 1; i < this._session.pageCount; i++) {
-      if (i >= minimumPreserve && i <= maximumPreserve) continue;
+      if (i >= minimum && i <= maximum) continue;
       delete this._cache[i];
     }
   }
 
   private _load(pageNumber: number) {
-    for (let i = pageNumber - app.settings.sessionPreloadRange; i <= pageNumber + app.settings.sessionPreloadRange; i++) {
+    const minimum = pageNumber - app.settings.sessionLoadRange;
+    const maximum = pageNumber + app.settings.sessionLoadRange;
+    for (let i = minimum; i <= maximum; i++) {
       if (i < 1 || i > this._session.pageCount) continue;
       this._cache[i] = this._cache[i] || this._pageAsync(i);
     }

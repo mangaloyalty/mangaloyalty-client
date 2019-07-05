@@ -5,12 +5,17 @@ import * as React from 'react';
 export class ScreenManager {
   constructor() {
     this.items = [];
-    this.rootType = 0;
+    this.rootType = app.RootType.Connect;
   }
 
   @mobx.action
   changeRoot(rootType: app.RootType) {
-    this.rootType = rootType;
+    if (rootType == app.RootType.Connect) {
+      app.core.storage.clear();
+      this.rootType = rootType;
+    } else {
+      this.rootType = rootType;
+    }
   }
   
   @mobx.action

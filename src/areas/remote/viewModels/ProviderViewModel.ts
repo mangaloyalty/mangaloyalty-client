@@ -7,7 +7,7 @@ export class ProviderViewModel {
   private readonly _name: string;
 
   constructor(name: string) {
-    this._context = app.core.service.get('ContextApi');
+    this._context = app.core.service.get(app.settings.contextKey);
     this._name = name;
   }
 
