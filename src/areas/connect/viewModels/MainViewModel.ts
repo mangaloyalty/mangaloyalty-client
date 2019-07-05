@@ -22,8 +22,8 @@ export class MainViewModel {
     const context = new app.ContextApi(this.server);
     const openapi = await context.connectAsync();
     if (openapi.result && checkVersion(openapi.result)) {
-      app.core.service.set(app.settings.contextKey, context);
       app.core.storage.set(serverKey, this.server);
+      app.core.service.set(app.settings.contextKey, context);
       app.core.screen.changeRoot(app.RootType.Remote);
     } else if (openapi.result) {
       await app.core.dialog.connectAsync();
