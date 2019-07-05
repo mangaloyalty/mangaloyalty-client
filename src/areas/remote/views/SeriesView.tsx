@@ -4,7 +4,7 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TECH: When the chapter list is enormous, rendering takes a while (Tomo-chan wa Onnanoko!)
+// TODO: When the chapter list is enormous, rendering takes a while (Tomo-chan wa Onnanoko!)
 // UX: Author(s) and Genre(s) are not visualized right now. Should we?
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {

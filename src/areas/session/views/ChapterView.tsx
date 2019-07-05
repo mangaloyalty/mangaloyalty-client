@@ -33,8 +33,7 @@ export class ChapterView extends React.Component<{vm: area.ChapterViewModel}> {
     return (
       <mui.Grid>
         {this.props.vm.imageUrl && <div ref={this._container} style={styles.container}>
-          <img src={this.props.vm.imageUrl} style={styles.image}
-            onContextMenu={(ev) => ev.preventDefault()} />
+          <img src={this.props.vm.imageUrl} style={styles.image} onContextMenu={(ev) => ev.preventDefault()} />
         </div>}
       </mui.Grid>
     );
@@ -58,14 +57,14 @@ const styles = app.styles({
     bottom: 0,
     left: 0,
     right: 0,
-    position: 'absolute',
+    position: 'fixed',
     top: 0
   },
   image: {
     left: '50%',
     maxHeight: '100%',
     maxWidth: '100%',
-    position: 'absolute',
+    position: 'fixed',
     top: '50%',
     transform: 'translate(-50%, -50%)'
   }

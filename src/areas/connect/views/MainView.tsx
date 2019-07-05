@@ -38,14 +38,14 @@ const styles = app.styles({
     bottom: 0,
     left: 0,
     right: 0,
-    position: 'absolute',
+    position: 'fixed',
     top: 0
   },
   paper: {
     left: '50%',
     padding: 24,
     paddingTop: 48,
-    position: 'absolute',
+    position: 'fixed',
     top: '50%',
     transform: 'translate(-50%, -50%)',
     width: 320
@@ -53,7 +53,7 @@ const styles = app.styles({
   avatar: {
     left: '50%',
     height: 64,
-    position: 'absolute',
+    position: 'fixed',
     transform: 'translate(-50%, -50%)',
     top: 0,
     width: 64

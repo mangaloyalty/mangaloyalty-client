@@ -29,7 +29,7 @@ const styles = app.styles({
     display: 'flex',
     flexFlow: 'row wrap',
     justifyContent: 'center',
-    margin: '8px 0'
+    margin: 4
   },
   series: {
     cursor: 'pointer',

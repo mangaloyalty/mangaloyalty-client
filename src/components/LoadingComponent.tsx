@@ -20,13 +20,13 @@ const styles = app.styles({
     left: 0,
     right: 0,
     outline: 0,
-    position: 'absolute',
+    position: 'fixed',
     top: 0
   },
   icon: {
     animation: 'none',
     left: '50%',
-    position: 'absolute',
+    position: 'fixed',
     top: '50%',
     transform: 'translate(-50%, -50%)'
   }
