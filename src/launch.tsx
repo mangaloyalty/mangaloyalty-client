@@ -7,6 +7,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // TODO: Make a PWA check for Android/iPhone/iPad with PWA instructions before loading root.
 // TODO: Make app available offline using a manifest.
+// APPLE: iPhone login screen can bounce
+// APPLE: iPhone X+ should support ios-inset-top (in combination with apple-mobile-web-app-status-bar-style=black-translucent).
 
 @mobxReact.observer
 class App extends React.Component {

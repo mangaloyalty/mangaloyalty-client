@@ -6,11 +6,11 @@ export class HeaderComponent extends React.Component<{icon?: React.ReactElement<
   state = {
     showSearch: false
   };
-
+    
   render() {
     return (
       <mui.Grid>
-        <mui.AppBar className="disablePadding ios-inset-top">
+        <mui.AppBar className="disablePadding">
           {this.state.showSearch
             ? <app.HeaderSearchBarComponent icon={this.props.icon}
                 onClose={() => Boolean(this.props.onSearch!('')) || this.setState({showSearch: false})}
