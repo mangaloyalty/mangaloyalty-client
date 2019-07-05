@@ -14,7 +14,7 @@ export class ChapterViewModel {
   private _pageNumber: number;
 
   constructor(session: app.ISessionListItem, navigator?: app.INavigator, pageNumber?: number) {
-    this._context = app.core.service.get('ContextApi');
+    this._context = app.core.service.get(app.settings.contextKey);
     this._loader = new area.Loader(this._context, session);
     this._navigator = navigator;
     this._pageNumber = pageNumber || 1;

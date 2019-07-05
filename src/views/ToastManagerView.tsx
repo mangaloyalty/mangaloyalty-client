@@ -25,7 +25,8 @@ const styles = app.styles({
     margin: 8,
     pointerEvents: 'none',
     position: 'fixed',
-    right: 0
+    right: 0,
+    zIndex: 2000
   },
   typography: {
     background: 'rgba(0, 0, 0, 0.75)',

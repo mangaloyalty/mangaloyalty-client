@@ -6,7 +6,7 @@ export class MainViewModel {
   private readonly _context: app.ContextApi;
 
   constructor() {
-    this._context = app.core.service.get('ContextApi');
+    this._context = app.core.service.get(app.settings.contextKey);
     this.refreshAsync();
   }
 
