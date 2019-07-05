@@ -42,7 +42,7 @@ export class Navigator implements app.INavigator {
     if (session.result) {
       this.screen(chapter, session.result, shouldClose);
     } else if (await app.core.dialog.errorAsync(session.error)) {
-      await this._openOrCreateAsync(shouldClose);
+      await this._createAsync(shouldClose);
     }
   }
 

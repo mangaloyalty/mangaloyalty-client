@@ -2,8 +2,6 @@ import * as app from '../../..';
 import * as area from '..';
 import * as mobx from 'mobx';
 
-// TODO: Reading settings (LTR, RTL).
-
 export class ChapterViewModel {
   private readonly _context: app.ContextApi;
   private readonly _loader: area.Loader;

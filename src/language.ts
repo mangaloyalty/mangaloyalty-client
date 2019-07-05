@@ -1,9 +1,9 @@
 export const language = {
-  basicConnectBody: 'Oops! The server is not supported. Check your device and server version, ensure both are up-to-date, and then try again.',
+  basicConnectBody: 'The server version is not supported. Please update!',
   basicConnectButtons: ['OK'],
-  basicDisconnectBody: 'You are about to disconnect from the server. You will have to reenter connection and credential information to reconnect. Are you sure you wish to continue?',
+  basicDisconnectBody: 'You are about to disconnect from the server. Are you sure?',
   basicDisconnectButtons: ['Yes', 'No'],
-  basicErrorBody: 'Oops! The server could not be reached or returned an error. Check your device and server connectivity, and then try again.',
+  basicErrorBody: 'The server could not be reached or returned an error.',
   basicErrorButtons: ['Cancel', 'Retry'],
   basicIconBack: 'Back',
   basicIconClose: 'Close',
