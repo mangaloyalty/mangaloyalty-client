@@ -32,6 +32,7 @@ const styles = app.styles({
     margin: '8px 0'
   },
   series: {
+    cursor: 'pointer',
     margin: 4,
     width: 158,
   },

@@ -20,7 +20,7 @@ export class HeaderComponent extends React.Component<{icon?: React.ReactElement<
                 onSearch={this.props.onSearch && (() => this.setState({showSearch: true}))} />}
         </mui.AppBar>
         <mui.Grid className="ios-inset-top ios-inset-bottom">
-          <mui.Grid style={styles.children}>
+          <mui.Grid style={{...styles.children, ...app.limiter}}>
             {this.props.children}
           </mui.Grid>
         </mui.Grid>

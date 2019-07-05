@@ -7,12 +7,12 @@ export class NavigatorIconComponent extends React.Component<{vm: area.ChapterVie
   render() {
     return (
       <mui.Grid>
-        <mui.IconButton color="inherit" onClick={() => this.props.vm.chapterNextAsync()}>
+        <app.ButtonComponent title={app.language.sessionIconNextChapter} onClick={() => this.props.vm.chapterNextAsync()}>
           <app.icons.ArrowBack />
-        </mui.IconButton>
-        <mui.IconButton color="inherit" onClick={() => this.props.vm.chapterPreviousAsync()}>
+        </app.ButtonComponent>
+        <app.ButtonComponent title={app.language.sessionIconPreviousChapter} onClick={() => this.props.vm.chapterPreviousAsync()}>
           <app.icons.ArrowForward />
-        </mui.IconButton>
+        </app.ButtonComponent>
       </mui.Grid>
     );
   }

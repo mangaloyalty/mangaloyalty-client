@@ -7,7 +7,7 @@ import * as React from 'react';
 export class DialogManagerView extends React.Component {
   render() {
     return app.core.dialog.items.map((item, index) => (
-      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1}>
+      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1} style={app.limiter}>
         <mui.DialogContent>
           <mui.DialogContentText>
             {item.body}
