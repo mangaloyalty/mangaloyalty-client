@@ -5,7 +5,7 @@ import * as React from 'react';
 export class HeaderSearchBarComponent extends React.Component<{icon?: React.ReactElement<any>, onClose: () => void, onSearch: (value: string) => void}> {
   render() {
     return (
-      <mui.Toolbar style={app.limiter}>
+      <mui.Toolbar className="ios-inset-top" style={app.limiter}>
         <app.ButtonComponent title={app.language.basicIconBack} style={styles.back} onClick={() => this.props.onClose()}>
           <app.icons.ArrowBackIos />
         </app.ButtonComponent>

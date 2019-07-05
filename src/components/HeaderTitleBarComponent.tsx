@@ -5,7 +5,7 @@ import * as React from 'react';
 export class HeaderTitleBarComponent extends React.Component<{icon?: React.ReactElement<any>, title: string, onBack?: () => void, onSearch?: () => void}> {
   render() {
     return (
-      <mui.Toolbar style={app.limiter}>
+      <mui.Toolbar className="ios-inset-top" style={app.limiter}>
         {this.props.onBack && <app.ButtonComponent title={app.language.basicIconBack} style={styles.back} onClick={() => this.props.onBack!()}>
           <app.icons.ArrowBackIos />
         </app.ButtonComponent>}

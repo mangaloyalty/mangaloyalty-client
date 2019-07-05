@@ -1,6 +1,8 @@
 {
   "display": "standalone",
   "name": "MangaLoyalty",
+  "background_color": "#F44336",
+  "theme_color": "#000000",
   "icons": [{
     "density": "0.75",
     "sizes": "36x36",
