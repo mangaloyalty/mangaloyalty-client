@@ -9,7 +9,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <mui.Paper style={styles.paper}>
+        {this.props.vm.isVisible && <mui.Paper style={styles.paper}>
           <mui.Avatar style={styles.avatar}>
             <app.icons.Person style={styles.avatarIcon} />
           </mui.Avatar>
@@ -27,7 +27,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
               {app.language.connect}
             </mui.Button>
           </mui.Grid>
-        </mui.Paper>
+        </mui.Paper>}
       </mui.Grid>
     );
   }

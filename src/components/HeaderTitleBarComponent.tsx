@@ -5,24 +5,23 @@ import * as React from 'react';
 export class HeaderTitleBarComponent extends React.Component<{icon?: React.ReactElement<any>, title: string, onBack?: () => void, onSearch?: () => void}> {
   render() {
     return (
-      <mui.Toolbar>
-        {this.props.onBack && <mui.IconButton color="inherit" style={styles.back} onClick={() => this.props.onBack!()}>
+      <mui.Toolbar style={app.limiter}>
+        {this.props.onBack && <app.ButtonComponent title={app.language.basicIconBack} style={styles.back} onClick={() => this.props.onBack!()}>
           <app.icons.ArrowBackIos />
-        </mui.IconButton>}
+        </app.ButtonComponent>}
         <mui.Typography color="inherit" variant="h6" style={styles.title}>
           {this.props.title}
         </mui.Typography>
         <mui.Grid style={styles.menu}>
-          {this.props.onSearch && <mui.IconButton color="inherit" onClick={() => this.props.onSearch!()}>
+          {this.props.onSearch && <app.ButtonComponent title={app.language.basicIconSearch} onClick={() => this.props.onSearch!()}>
             <app.icons.Search />
-          </mui.IconButton>}
+          </app.ButtonComponent>}
           {this.props.icon}
         </mui.Grid>
       </mui.Toolbar>
     );
   }
 }
-
 
 const styles = app.styles({
   back: {

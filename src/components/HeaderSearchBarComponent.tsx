@@ -5,17 +5,17 @@ import * as React from 'react';
 export class HeaderSearchBarComponent extends React.Component<{icon?: React.ReactElement<any>, onClose: () => void, onSearch: (value: string) => void}> {
   render() {
     return (
-      <mui.Toolbar>
-        <mui.IconButton color="inherit" style={styles.back} onClick={() => this.props.onClose()}>
+      <mui.Toolbar style={app.limiter}>
+        <app.ButtonComponent title={app.language.basicIconBack} style={styles.back} onClick={() => this.props.onClose()}>
           <app.icons.ArrowBackIos />
-        </mui.IconButton>
+        </app.ButtonComponent>
         <mui.InputBase autoFocus fullWidth style={styles.title}
           onBlur={(ev) => ((value) => value ? this.props.onSearch(value) : this.props.onClose())((ev.currentTarget as HTMLInputElement).value)}
           onKeyDown={(ev) => ev.keyCode === 13 && ev.currentTarget.blur()} />
         <mui.Grid style={styles.menu}>
-          <mui.IconButton color="inherit" onClick={() => this.props.onClose()}>
+          <app.ButtonComponent title={app.language.basicIconClose} onClick={() => this.props.onClose()}>
             <app.icons.Close />
-          </mui.IconButton>
+          </app.ButtonComponent>
           {this.props.icon}
         </mui.Grid>
       </mui.Toolbar>

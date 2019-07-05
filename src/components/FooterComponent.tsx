@@ -9,7 +9,7 @@ export class FooterComponent extends React.Component {
         <mui.Grid style={styles.children}>
           {this.props.children}
         </mui.Grid>
-        <mui.Paper style={styles.navigation}>
+        <mui.Paper style={{...styles.navigation, ...app.limiter}}>
           <mui.Divider />
           <mui.BottomNavigation showLabels value={app.core.screen.rootType - 1}>
             <mui.BottomNavigationAction
@@ -40,7 +40,6 @@ const styles = app.styles({
   },
   navigation: {
     bottom: 0,
-    position: 'fixed',
-    width: '100%'
+    position: 'fixed'
   }
 });
