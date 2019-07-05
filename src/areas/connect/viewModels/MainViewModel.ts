@@ -5,7 +5,8 @@ const serverKey = 'Server';
 export class MainViewModel {
   constructor() {
     if (!this.server) return;
-    this.connectAsync();
+    this.isVisible = false;
+    this.connectAsync().then(() => mobx.runInAction(() => this.isVisible = true));
   }
 
   @mobx.action
@@ -25,7 +26,7 @@ export class MainViewModel {
       app.core.storage.set(serverKey, this.server);
       app.core.screen.changeRoot(app.RootType.Remote);
     } else if (openapi.result) {
-      await app.core.dialog.versionAsync();
+      await app.core.dialog.connectAsync();
       mobx.runInAction(() => this.isLoading = false);
     } else if (await app.core.dialog.errorAsync(openapi.error)) {
       await this.connectAsync(true);
@@ -45,6 +46,9 @@ export class MainViewModel {
 
   @mobx.observable
   isLoading = false;
+
+  @mobx.observable
+  isVisible = true;
 
   @mobx.observable
   server = app.core.storage.get(serverKey);

@@ -5,6 +5,7 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+// TODO: Make a PWA check for Android/iPhone/iPad with PWA instructions before loading root.
 // TODO: Make app available offline using a manifest.
 
 @mobxReact.observer

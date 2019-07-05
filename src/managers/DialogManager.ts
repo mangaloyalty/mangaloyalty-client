@@ -7,6 +7,13 @@ export class DialogManager {
   }
 
   @mobx.action
+  async connectAsync() {
+    return await this._openAsync(app.language.basicConnectBody, app.language.basicConnectButtons).then(() => {
+      return true;
+    });
+  }
+  
+  @mobx.action
   async disconnectAsync() {
     return await this._openAsync(app.language.basicDisconnectBody, app.language.basicDisconnectButtons).then((index) => {
       if (index) return true;
@@ -22,13 +29,6 @@ export class DialogManager {
       if (app.core.screen.isChildVisible) app.core.screen.close();
       else app.core.screen.changeRoot(app.RootType.Connect);
       return false;
-    });
-  }
-
-  @mobx.action
-  async versionAsync() {
-    return await this._openAsync(app.language.basicVersionBody, app.language.basicVersionButtons).then(() => {
-      return true;
     });
   }
 
