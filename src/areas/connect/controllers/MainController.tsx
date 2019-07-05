@@ -1,17 +1,21 @@
 import * as app from '../../..';
 import * as area from '..';
 import * as mobxReact from 'mobx-react';
+import * as mui from '@material-ui/core';
 import * as React from 'react';
-
-// TODO: Implement me.
 
 @mobxReact.observer
 export class MainController extends React.Component {
+  state = {
+    vm: new area.MainViewModel()
+  }
+
   render() {
     return (
-      <app.HeaderComponent title={app.language.connect}>
-        <area.MainView />
-      </app.HeaderComponent>
+      <mui.Grid>
+        <app.LoadingComponent open={this.state.vm.isLoading} />
+        <area.MainView vm={this.state.vm} />
+      </mui.Grid>
     );
   }
 }

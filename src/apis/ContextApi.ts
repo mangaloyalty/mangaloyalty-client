@@ -4,7 +4,15 @@ export class ContextApi {
   private readonly _http: app.HttpApi;
 
   constructor(baseUrl: string) {
-    this._http = new app.HttpApi(baseUrl);
+    this._http = !baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')
+      ? new app.HttpApi(`http://${baseUrl}:7783`)
+      : new app.HttpApi(baseUrl);
+  }
+
+  async connectAsync() {
+    const request = this._http.getAsync('/openapi.json');
+    const response = await request.startAsync<app.IOpenApi>();
+    return response;
   }
 
   async remotePopularAsync(providerName: string, pageNumber = 1) {

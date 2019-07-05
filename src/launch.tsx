@@ -5,6 +5,7 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+// TODO: Make app available offline using a manifest.
 
 @mobxReact.observer
 class App extends React.Component {
@@ -37,11 +38,7 @@ class Root extends React.Component {
 }
 
 (function() {
-  // TODO: Temp.
-  app.core.service.set('ContextApi', new app.ContextApi(location.protocol + '//' + location.hostname + ':7783'));
-  app.core.screen.changeRoot(app.RootType.Remote);
   app.core.screen.open(Root);
-  // core.screen.open(areas.remote.SeriesController, {title: "Aoi Hana", url: "https://fanfox.net/manga/aoi_hana/"});
   mobx.configure({enforceActions: 'observed'});
   ReactDOM.render(<App />, document.getElementById('container'));
 })();

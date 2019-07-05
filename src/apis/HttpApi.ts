@@ -39,7 +39,7 @@ export class HttpApi {
   private async _xhrAsync<T>(method: string, relativeUrl: string, data?: T) {
     return await new Promise<XMLHttpRequest | undefined>((resolve) => {
       const request = new XMLHttpRequest();
-      request.timeout = app.settings.httpTimeout;
+      request.timeout = app.settings.contextTimeout;
       request.open(method, this._baseUrl + relativeUrl);
       request.addEventListener('abort', () => resolve());
       request.addEventListener('error', () => resolve());

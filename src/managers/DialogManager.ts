@@ -25,6 +25,13 @@ export class DialogManager {
     });
   }
 
+  @mobx.action
+  async versionAsync() {
+    return await this._openAsync(app.language.basicVersionBody, app.language.basicVersionButtons).then(() => {
+      return true;
+    });
+  }
+
   @mobx.computed
   get isChildVisible() {
     return this.items.length !== 0;

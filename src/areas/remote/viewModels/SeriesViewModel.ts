@@ -8,7 +8,7 @@ export class SeriesViewModel {
   private readonly _url: string;
 
   constructor(title: string, url: string) {
-    this._context = app.core.service.get('ContextApi');
+    this._context = app.core.service.get(app.settings.contextKey);
     this._title = title;
     this._url = url;
     this.refreshAsync();
