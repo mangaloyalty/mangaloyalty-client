@@ -7,13 +7,13 @@ import * as React from 'react';
 export class ToastManagerView extends React.Component {
   render() {
     return (
-      <div className="ios-inset-bottom" style={styles.container}>
+      <mui.Grid className="ios-inset-bottom" style={styles.container}>
         {app.core.toast.items.map((item, index) => (
           <mui.Typography key={index} variant="body1" style={styles.typography}>
             {item}
           </mui.Typography>
         ))}
-      </div>
+      </mui.Grid>
     );
   }
 }

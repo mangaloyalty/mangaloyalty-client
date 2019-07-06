@@ -1,5 +1,5 @@
 export * from './classes/Navigator';
-export * from './components/RefreshIconComponent';
+export * from './components/IconComponent';
 export * from './controllers/MainController';
 export * from './controllers/SeriesController';
 export * from './viewModels/MainViewModel';
