@@ -1,10 +1,13 @@
-// Initialize the server router paths.
+// Initialize the server router.
 const express = require('express');
 const router = express.Router();
-router.use(express.static(`${__dirname}/public`));
+
+// Initialize the server router handlers.
+router.get('/', (_, res) => res.redirect('/web/'));
+router.use('/web', express.static(`${__dirname}/public`));
 
 // Initialize the server.
-if (require.main === module || (require.main && require.main.filename.endsWith('mangaloyalty-client'))) {
+if (require.main && require.main.filename.startsWith(__dirname)) {
   const server = express();
   server.disable('x-powered-by');
   server.use(router);
