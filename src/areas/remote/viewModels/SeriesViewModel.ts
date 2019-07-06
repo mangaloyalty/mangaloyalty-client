@@ -19,7 +19,7 @@ export class SeriesViewModel {
     if (!this.source) return;
     const navigator = new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source);
     this.isLoading = true;
-    await navigator.openCurrent();
+    await navigator.openCurrentAsync();
     mobx.runInAction(() => this.isLoading = false);
   }
 
