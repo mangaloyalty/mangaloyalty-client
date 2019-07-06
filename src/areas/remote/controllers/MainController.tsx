@@ -14,7 +14,7 @@ export class MainController extends React.Component {
       <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={app.language.remote}
-          icon={<area.RefreshIconComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          icon={<area.IconComponent onRefresh={() => this.state.vm.refreshAsync()} />}
           onBack={() => app.core.dialog.disconnectAsync()}
           onSearch={(value) => this.state.vm.changeSearch(value)}>
           <app.FooterComponent>

@@ -10,7 +10,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
     return (
       <mui.Grid>
         <mui.Paper style={{...styles.container, ...app.limiter}}>
-          <mui.Tabs fullWidth indicatorColor="primary"
+          <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={this.props.vm.provider.name}
             onChange={(_, providerName) => this.props.vm.changeProvider(providerName)}>
             {app.settings.providerNames.map((providerName) => (
@@ -18,7 +18,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
             ))}
           </mui.Tabs>
         </mui.Paper>
-        <mui.Grid style={styles.series}>
+        <mui.Grid style={styles.content}>
           <area.ProviderView vm={this.props.vm.provider} />
         </mui.Grid>
       </mui.Grid>
@@ -31,7 +31,7 @@ const styles = app.styles({
     position: 'fixed',
     top: 64
   },
-  series: {
+  content: {
     paddingTop: 48
   }
 });

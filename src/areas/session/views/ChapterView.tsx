@@ -32,9 +32,9 @@ export class ChapterView extends React.Component<{vm: area.ChapterViewModel}> {
   render() {
     return (
       <mui.Grid>
-        {this.props.vm.imageUrl && <div ref={this._container} style={styles.container}>
+        {this.props.vm.imageUrl && <mui.Grid ref={this._container} style={styles.container}>
           <img src={this.props.vm.imageUrl} style={styles.image} onContextMenu={(ev) => ev.preventDefault()} />
-        </div>}
+        </mui.Grid>}
       </mui.Grid>
     );
   }
