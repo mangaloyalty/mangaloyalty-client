@@ -7,33 +7,33 @@ export class HttpApi {
     this._baseUrl = baseUrl;
   }
 
-  deleteAsync<T>(relativeUrl: string, data?: T) {
+  delete<T>(relativeUrl: string, data?: T) {
     return this._create('DELETE', relativeUrl, data);
   }
 
-  getAsync(relativeUrl: string) {
+  get(relativeUrl: string) {
     return this._create('GET', relativeUrl);
   }
 
-  patchAsync<T>(relativeUrl: string, data: T) {
+  patch<T>(relativeUrl: string, data: T) {
     return this._create('PATCH', relativeUrl, data);
   }
 
-  postAsync<T>(relativeUrl: string, data: T) {
+  post<T>(relativeUrl: string, data: T) {
     return this._create('POST', relativeUrl, data);
   }
 
-  putAsync<T>(relativeUrl: string, data: T) {
+  put<T>(relativeUrl: string, data: T) {
     return this._create('PUT', relativeUrl, data);
   }
 
   private _create<T>(method: string, relativeUrl: string, data?: T) {
-    return {startAsync: async <TResult>() => {
+    return async <TResult>() => {
       const http = await this._xhrAsync(method, relativeUrl, data);
       const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
       const result = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
       return {error, result};
-    }};
+    };
   }
 
   private async _xhrAsync<T>(method: string, relativeUrl: string, data?: T) {
