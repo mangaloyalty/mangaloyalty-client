@@ -10,10 +10,10 @@ export class SeriesListComponent extends React.Component<{emptyBody: string, emp
   render() {
     return (
       <mui.Grid style={styles.container}>
-        {this.props.series.length === 0 && <app.CenterComponent
+        {this.props.series.items.length === 0 && <app.CenterComponent
           body={this.props.emptyBody}
           title={this.props.emptyTitle} />}
-        {this.props.series.length !== 0 && this.props.series.map((series) => (
+        {this.props.series.items.length !== 0 && this.props.series.items.map((series) => (
           <mui.Grid key={series.url} style={styles.series} onClick={() => this.props.onClick(series)}>
             <img src={`data:;base64, ${series.image}`} style={styles.image} />
             <mui.Typography style={styles.title}>{series.title}</mui.Typography>
