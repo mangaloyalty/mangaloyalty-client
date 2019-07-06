@@ -1,7 +1,5 @@
 import * as Hammer from 'hammerjs';
 
-// UX: Zoom with constraints of the image instead of the container.
-// UX: Zoom to the center of the pinch (ev.center).
 export class Touch {
   private _adjustScale = 1;
   private _adjustDeltaX = 0;

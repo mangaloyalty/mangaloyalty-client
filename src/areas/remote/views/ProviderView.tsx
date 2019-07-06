@@ -4,8 +4,6 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: Support infinite scroll while pages are available.
-// UX: EmptyComponent does not respect parent claimed tab space.
 @mobxReact.observer
 export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> {
   render() {

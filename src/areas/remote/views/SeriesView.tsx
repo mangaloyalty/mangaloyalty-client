@@ -4,9 +4,7 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: When the chapter list is enormous, rendering takes a while (Tomo-chan wa Onnanoko!)
-// UX: Author(s) and Genre(s) are not visualized right now. Should we?
-// UX: When no chapter is available, the quick read icon doesn't work, and no message is shown in the chapter tab.
+
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
   render() {
