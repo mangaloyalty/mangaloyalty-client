@@ -1,10 +1,10 @@
 // Initialize the server router paths.
 const express = require('express');
 const router = express.Router();
-router.use(express.static(`${__dirname}/../public`));
+router.use(express.static(`${__dirname}/public`));
 
 // Initialize the server.
-if (require.main === module) {
+if (require.main && require.main.filename.startsWith(__dirname)) {
   const server = express();
   server.disable('x-powered-by');
   server.use(router);
