@@ -11,7 +11,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  openAsync(session: app.ISessionListItem) {
+  open(session: app.ISessionListItem) {
     app.core.screen.open(area.ChapterController, {
       session: session,
       title: session.url

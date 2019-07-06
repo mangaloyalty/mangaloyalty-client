@@ -20,7 +20,7 @@ export class Navigator implements app.INavigator {
     return this._index + 1 < this._series.chapters.length;
   }
 
-  async openCurrent() {
+  async openCurrentAsync() {
     await this._openOrCreateAsync(false);
   }
   

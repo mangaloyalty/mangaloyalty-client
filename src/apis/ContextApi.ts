@@ -10,44 +10,44 @@ export class ContextApi {
   }
 
   async connectAsync() {
-    const request = this._http.getAsync('/openapi.json');
-    const response = await request.startAsync<app.IOpenApi>();
+    const request = this._http.get('/openapi.json');
+    const response = await request<app.IOpenApi>();
     return response;
   }
 
   async remotePopularAsync(providerName: string, pageNumber = 1) {
-    const request = this._http.getAsync(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
-    const response = await request.startAsync<app.IRemotePopularResponse>();
+    const request = this._http.get(`/remote/popular?providerName=${providerName}&pageNumber=${pageNumber}`);
+    const response = await request<app.IRemotePopularResponse>();
     return response;
   }
 
   async remoteSearch(providerName: string, title: string, pageNumber = 1) {
-    const request = this._http.getAsync(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
-    const response = await request.startAsync<app.IRemoteSearchResponse>();
+    const request = this._http.get(`/remote/search?providerName=${providerName}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
+    const response = await request<app.IRemoteSearchResponse>();
     return response;
   }
 
   async remoteSeries(url: string) {
-    const request = this._http.getAsync(`/remote/series?url=${encodeURIComponent(url)}`);
-    const response = await request.startAsync<app.IRemoteSeriesResponse>();
+    const request = this._http.get(`/remote/series?url=${encodeURIComponent(url)}`);
+    const response = await request<app.IRemoteSeriesResponse>();
     return response;
   }
 
   async remoteStart(url: string) {
-    const request = this._http.getAsync(`/remote/start?url=${encodeURIComponent(url)}`);
-    const response = await request.startAsync<app.IRemoteStartResponse>();
+    const request = this._http.get(`/remote/start?url=${encodeURIComponent(url)}`);
+    const response = await request<app.IRemoteStartResponse>();
     return response;
   }
 
   async sessionList() {
-    const request = this._http.getAsync('/session');
-    const response = await request.startAsync<app.ISessionListResponse>();
+    const request = this._http.get('/session');
+    const response = await request<app.ISessionListResponse>();
     return response;
   }
 
   async sessionPage(sessionId: number, pageNumber: number) {
-    const request = this._http.getAsync(`/session/${sessionId}?pageNumber=${pageNumber}`);
-    const response = await request.startAsync<app.ISessionPageResponse>();
+    const request = this._http.get(`/session/${sessionId}?pageNumber=${pageNumber}`);
+    const response = await request<app.ISessionPageResponse>();
     return response;
   }
 }

@@ -43,8 +43,10 @@ export class ChapterViewModel {
   }
 
   @mobx.action
-  async imageNextAsync() {
-    if (this._pageNumber < this._session.pageCount) {
+  async pressNextAsync() {
+    if (this.showControls) {
+      this.showControls = false;
+    } else if (this._pageNumber < this._session.pageCount) {
       this._pageNumber++;
       await this.updateAsync();
     } else if (!this._navigator || !this._navigator.hasNext) {
@@ -58,8 +60,10 @@ export class ChapterViewModel {
   }
 
   @mobx.action
-  async imagePreviousAsync() {
-    if (this._pageNumber > 1) {
+  async pressPreviousAsync() {
+    if (this.showControls) {
+      this.showControls = false;
+    } else if (this._pageNumber > 1) {
       this._pageNumber--;
       await this.updateAsync();
     } else if (!this._navigator || !this._navigator.hasPrevious) {
@@ -86,7 +90,6 @@ export class ChapterViewModel {
       mobx.runInAction(() => {
         this.isLoading = false;
         this.imageUrl = imageUrl;
-        this.showControls = false;
       });
     } catch (error) {
       if (await app.core.dialog.errorAsync(error)) {
