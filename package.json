@@ -5,7 +5,7 @@
   "main": "dist/server",
   "name": "mangaloyalty-client",
   "repository": "git://github.com/mangaloyalty/mangaloyalty-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "bin": {
     "mangaloyalty-client": "./bin/mangaloyalty-client"
   },
