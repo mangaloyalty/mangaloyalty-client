@@ -21,7 +21,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
                     <app.icons.Folder />
                   </mui.Avatar>
                 </mui.ListItemAvatar>
-                <mui.Typography variant="subheading" style={styles.title}>
+                <mui.Typography variant="subtitle1" style={styles.title}>
                   {session.url}
                 </mui.Typography>
                 <mui.ListItemSecondaryAction>

@@ -14,13 +14,13 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
             <app.icons.Person style={styles.avatarIcon} />
           </mui.Avatar>
           <mui.FormGroup>
-            <mui.TextField label={app.language.connectServer} required={true} variant="outlined" style={styles.input}
+            <mui.TextField label={app.language.connectServer} required variant="outlined" style={styles.input}
               error={this.props.vm.serverError} value={this.props.vm.server}
               onChange={(ev) => this.props.vm.changeServer(ev.currentTarget.value)} />
             <mui.TextField label={app.language.connectUsername} variant="outlined" style={styles.inputDisabled}
-              disabled={true} />
+              disabled />
             <mui.TextField label={app.language.connectPassword} variant="outlined" style={styles.inputDisabled}
-              disabled={true} />
+              disabled />
           </mui.FormGroup>
           <mui.Grid style={styles.control}>
             <mui.Button color="primary" variant="contained" onClick={() => this.props.vm.tryConnectAsync()}>

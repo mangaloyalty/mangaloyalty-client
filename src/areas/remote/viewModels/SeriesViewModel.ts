@@ -15,12 +15,23 @@ export class SeriesViewModel {
   }
   
   @mobx.action
+  changeShowChapters(showChapters: boolean) {
+    this.showChapters = showChapters;
+  }
+
+  @mobx.action
   async openAsync(chapter: app.ISeriesDetailChapter) {
     if (!this.source) return;
     const navigator = new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source);
     this.isLoading = true;
     await navigator.openCurrentAsync();
     mobx.runInAction(() => this.isLoading = false);
+  }
+
+  @mobx.action
+  async readAsync() {
+    if (!this.source) return;
+    return await this.openAsync(this.source.chapters[this.source.chapters.length - 1]);
   }
 
   @mobx.action
@@ -60,6 +71,9 @@ export class SeriesViewModel {
 
   @mobx.observable
   isLoading = false;
+
+  @mobx.observable
+  showChapters = false;
 
   @mobx.observable
   private source?: app.ISeriesDetail;

@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
@@ -21,9 +22,9 @@ export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
 
   render() {
     return (
-      <div ref={this._container}>
+      <mui.Grid ref={this._container}>
         {this.props.children}
-      </div>
+      </mui.Grid>
     );
   }
 
