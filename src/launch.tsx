@@ -1,3 +1,14 @@
+// TODO: Remote/Main: Support infinite scroll while pages are available.
+// UX: Generic: EmptyComponent does not respect parent claimed tab space.
+// UX: Reader: Direction (LTR, RTL).
+// UX: Reader: Mode (Page-By-Page, Webtoon/Scroll).
+// UX: Reader: Quick jump to page.
+// UX: Remote/Series: Author(s) and Genre(s) are not on-screen. They should be. 
+// UX: Remote/Series: When no chapter is available, the read icon does not work and no empty message is shown in the chapter tab.
+// UX: Remote/Series: When the chapter list is long, rendering takes a while (Tomo-chan wa Onnanoko!).
+// UX: Screen: Back button support (via window.history).
+// UX: Touch: Zoom with constraints of the image instead of the container.
+// UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as app from '.';
 import * as areas from './areas';
 import * as mobx from 'mobx';
@@ -6,12 +17,6 @@ import * as mui from '@material-ui/core';
 import * as muiStyles from '@material-ui/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// UX: Back button support for Android/Desktop (via History).
-// UX: Make a PWA check for Android/iPhone/iPad with PWA instructions before loading root.
-// UX: Make an appcache manifest (service-worker?). Challenge: Make development work with auto-reloads, and on-prod updates via appcache.
-// UX: Reader: Direction (LTR, RTL).
-// UX: Reader: Mode (Page-By-Page, Webtoon/Scroll).
-// UX: Reader: Quick jump to page.
 
 @mobxReact.observer
 class App extends React.Component {
