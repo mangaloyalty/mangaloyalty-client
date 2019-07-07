@@ -7,6 +7,9 @@
 // UX: Remote/Series: When no chapter is available, the read icon does not work and no empty message is shown in the chapter tab.
 // UX: Remote/Series: When the chapter list is long, rendering takes a while (Tomo-chan wa Onnanoko!).
 // UX: Screen: Back button support (via window.history).
+// UX: Touch: Support mouse-drag and mouse-scroll (Desktop-mode).
+// UX: Touch: Support swipe gestures for page navigation.
+// UX: Touch: Double click/tap for quick zoom-in on designated point.
 // UX: Touch: Zoom with constraints of the image instead of the container.
 // UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as app from '.';
