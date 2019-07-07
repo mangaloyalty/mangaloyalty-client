@@ -16,7 +16,8 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
           <mui.FormGroup>
             <mui.TextField label={app.language.connectServer} required variant="outlined" style={styles.input}
               error={this.props.vm.serverError} value={this.props.vm.server}
-              onChange={(ev) => this.props.vm.changeServer(ev.currentTarget.value)} />
+              onChange={(ev) => this.props.vm.changeServer(ev.currentTarget.value)}
+              onKeyDown={(ev) => ev.keyCode === 13 && this.props.vm.tryConnectAsync()} />
             <mui.TextField label={app.language.connectUsername} variant="outlined" style={styles.inputDisabled}
               disabled />
             <mui.TextField label={app.language.connectPassword} variant="outlined" style={styles.inputDisabled}
