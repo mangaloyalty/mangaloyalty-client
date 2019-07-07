@@ -8,7 +8,7 @@ export class DialogManagerView extends React.Component {
   render() {
     return app.core.dialog.items.map((item, index) => (
       <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1} style={app.limiter}>
-        <mui.DialogContent>
+        <mui.DialogContent style={styles.content}>
           <mui.DialogContentText>
             {item.body}
           </mui.DialogContentText>
@@ -29,6 +29,9 @@ export class DialogManagerView extends React.Component {
 }
 
 const styles = app.styles({
+  content: {
+    paddingTop: 24
+  },
   error: {
     height: 128,
     overflow: 'scroll'
