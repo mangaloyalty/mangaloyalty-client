@@ -4,7 +4,6 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
   render() {
@@ -15,37 +14,30 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
             <mui.Tab label={app.language.remoteSeriesAbout} value={0} />
-            <mui.Tab label={`${app.language.remoteSeriesChapters} (${this.props.vm.chapters.length || 0})`} value={1} />
+            <mui.Tab label={`${app.language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
           </mui.Tabs>
         </mui.Paper>}
-        {this.props.vm.chapters && <mui.Grid style={styles.content}>
+        {this.props.vm.chapters && <mui.Grid style={styles.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
-            <mui.Paper style={styles.info}>
-              <img src={`data:;base64, ${this.props.vm.image}`} style={styles.image} />
-              <mui.Typography style={styles.summary}>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
-              <mui.Grid style={styles.clear} />
+            <mui.Paper style={styles.seriesContent}>
+              <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
+              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
+              <mui.Grid style={styles.seriesClear} />
             </mui.Paper>
           </mui.Grid>}
-          {this.props.vm.showChapters && <mui.Paper>
-            <mui.List>
-              {this.props.vm.chapters.map((chapter) => (
-                <mui.ListItem key={chapter.url} button onClick={() => this.props.vm.openAsync(chapter)}>
-                  <mui.ListItemAvatar>
-                    <mui.Avatar>
-                      <app.icons.Folder />
-                    </mui.Avatar>
-                  </mui.ListItemAvatar>
-                  <mui.Typography variant="subtitle1" style={styles.title}>
+          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContent}>
+            <mui.Grid style={{height: 44 * this.props.vm.chapters.length}}>
+              <app.LazyComponent query={new app.LazyQuery(this.props.vm.chapters)} y={1680}>
+                {(chapter) => (
+                  <mui.Typography variant="subtitle1" style={styles.chapterItem} onClick={() => this.props.vm.openAsync(chapter)}>
                     {chapter.title}
-                  </mui.Typography>
-                  <mui.ListItemSecondaryAction>
-                    <mui.Icon>
+                    <mui.Icon style={styles.chapterIcon}>
                       <app.icons.ChevronRight />
                     </mui.Icon>
-                  </mui.ListItemSecondaryAction>
-                </mui.ListItem>
-              ))}
-            </mui.List>
+                  </mui.Typography>
+                )}
+              </app.LazyComponent>
+            </mui.Grid>
           </mui.Paper>}
         </mui.Grid>}
       </mui.Grid>
@@ -59,28 +51,38 @@ const styles = app.styles({
     top: 64,
     zIndex: 1
   },
-  content: {
+  containerBody: {
     paddingTop: 48
   },
-  info: {
-    marginBottom: 16,
-    padding: 24
+  seriesContent: {
+    padding: 16
   },
-  image: {
+  seriesImage: {
     float: 'left',
     marginRight: 8,
     width: 164
   },
-  summary: {
+  seriesSummary: {
     wordBreak: 'break-word'
   },
-  clear: {
+  seriesClear: {
     clear: 'both'
   },
-  title: {
-    paddingLeft: 16,
+  chapterContent: {
+    padding: 8
+  },
+  chapterItem: {
+    cursor: 'pointer',
     overflow: 'hidden',
+    padding: 8,
+    paddingRight: 24,
+    position: 'relative',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
+  },
+  chapterIcon: {
+    position: 'absolute',
+    right: 0,
+    top: 4
   }
 });
