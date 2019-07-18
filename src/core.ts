@@ -1,4 +1,4 @@
-import * as app from '..';
+import * as app from '.';
 
 export const core = {
   dialog: new app.DialogManager(),
