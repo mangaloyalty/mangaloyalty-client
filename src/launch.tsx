@@ -5,7 +5,6 @@
 // UX: Remote/Main: Support infinite scroll while pages are available.
 // UX: Remote/Series: Author(s) and Genre(s) are not on-screen. They should be. 
 // UX: Remote/Series: When no chapter is available, the read icon does not work and no empty message is shown in the chapter tab.
-// UX: Remote/Series: When the chapter list is long, rendering takes a while (Tomo-chan wa Onnanoko!).
 // UX: Screen: Back button support (via window.history).
 // UX: Touch: Support mouse-drag and mouse-scroll (Desktop-mode).
 // UX: Touch: Support swipe gestures for page navigation.
