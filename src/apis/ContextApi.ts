@@ -45,8 +45,8 @@ export class ContextApi {
     return response;
   }
 
-  async sessionPage(sessionId: number, pageNumber: number) {
-    const request = this._http.get(`/api/session/${sessionId}?pageNumber=${pageNumber}`);
+  async sessionPage(id: number, pageNumber: number) {
+    const request = this._http.get(`/api/session/${id}?pageNumber=${pageNumber}`);
     const response = await request<app.ISessionPageResponse>();
     return response;
   }

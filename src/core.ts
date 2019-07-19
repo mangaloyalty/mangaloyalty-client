@@ -1,9 +1,14 @@
-import * as app from '.';
+import {DialogManager} from './managers/DialogManager';
+import {ScreenManager} from './managers/ScreenManager';
+import {ServiceManager} from './managers/ServiceManager';
+import {StorageManager} from './managers/StorageManager';
+import {ToastManager} from './managers/ToastManager';
 
 export const core = {
-  dialog: new app.DialogManager(),
-  screen: new app.ScreenManager(),
-  service: new app.ServiceManager(),
-  storage: new app.StorageManager(),
-  toast: new app.ToastManager()
+  data: require('../package.json'),
+  dialog: new DialogManager(),
+  screen: new ScreenManager(),
+  service: new ServiceManager(),
+  storage: new StorageManager(),
+  toast: new ToastManager()
 };

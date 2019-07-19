@@ -5,7 +5,7 @@ import * as React from 'react';
 export class ScreenManager {
   constructor() {
     this.items = [];
-    this.rootType = app.RootType.Connect;
+    this.rootType = 0;
   }
 
   @mobx.action
@@ -27,8 +27,8 @@ export class ScreenManager {
   open<P, T extends React.Component<P, React.ComponentState>, C extends React.ComponentClass<P>>(type: React.ClassType<P, T, C>, props?: React.ClassAttributes<T> & P | null) {
     const element = React.createElement(type, props);
     const previous = this.items.length && this.items[this.items.length - 1];
-    if (previous) previous.scrollX = window.scrollX;
-    if (previous) previous.scrollY = window.scrollY;
+    if (previous) previous.scrollX = scrollX;
+    if (previous) previous.scrollY = scrollY;
     this.items.push({element, scrollX: 0, scrollY: 0});
   }
 

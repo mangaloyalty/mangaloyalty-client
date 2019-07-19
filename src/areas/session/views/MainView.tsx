@@ -12,26 +12,19 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
         {this.props.vm.sessions && this.props.vm.sessions.length === 0 && <app.CenterComponent
           body={app.language.sessionEmptyBody}
           title={app.language.sessionEmptyTitle} />}
-        {this.props.vm.sessions && this.props.vm.sessions.length !== 0 && <mui.Paper>
-          <mui.List>
-            {this.props.vm.sessions.map((session) => (
-              <mui.ListItem key={session.id} button onClick={() => this.props.vm.open(session)}>
-                <mui.ListItemAvatar>
-                  <mui.Avatar>
-                    <app.icons.Folder />
-                  </mui.Avatar>
-                </mui.ListItemAvatar>
-                <mui.Typography variant="subtitle1" style={styles.title}>
+        {this.props.vm.sessions && this.props.vm.sessions.length !== 0 && <mui.Paper style={styles.content}>
+          <mui.Grid style={{height: 44 * this.props.vm.sessions.length}}>
+            <app.LazyComponent query={new app.LazyQuery(this.props.vm.sessions)} y={1680}>
+              {(session) => (
+                <mui.Typography variant="subtitle1" style={styles.item} onClick={() => this.props.vm.open(session)}>
                   {session.url}
-                </mui.Typography>
-                <mui.ListItemSecondaryAction>
-                  <mui.Icon>
+                  <mui.Icon style={styles.icon}>
                     <app.icons.ChevronRight />
                   </mui.Icon>
-                </mui.ListItemSecondaryAction>
-              </mui.ListItem>
-            ))}
-          </mui.List>
+                </mui.Typography>
+              )}
+            </app.LazyComponent>
+          </mui.Grid>         
         </mui.Paper>}
       </mui.Grid>
     );
@@ -39,15 +32,22 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
 }
 
 const styles = app.styles({
-  info: {
-    marginBottom: 16,
-    padding: 24
+  content: {
+    padding: 8
   },
-  title: {
+  item: {
+    cursor: 'pointer',
     fontStyle: 'italic',
-    paddingLeft: 16,
     overflow: 'hidden',
+    padding: 8,
+    paddingRight: 24,
+    position: 'relative',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
+  },
+  icon: {
+    position: 'absolute',
+    right: 0,
+    top: 4
   }
 });
