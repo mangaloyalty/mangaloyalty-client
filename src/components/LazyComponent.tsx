@@ -32,27 +32,21 @@ export class LazyComponent<T> extends React.Component<{children: (item: T) => Re
   }
 
   private _attachHandlers() {
-    window.addEventListener('resize', this._eventHandler);
-    window.addEventListener('scroll', this._eventHandler);
+    addEventListener('resize', this._eventHandler);
+    addEventListener('scroll', this._eventHandler);
     if (this._scrollable) this._scrollable.addEventListener('scroll', this._eventHandler);
   }
 
   private _detachHandlers() {
-    window.removeEventListener('resize', this._eventHandler);
-    window.removeEventListener('scroll', this._eventHandler);
+    removeEventListener('resize', this._eventHandler);
+    removeEventListener('scroll', this._eventHandler);
     if (this._scrollable) this._scrollable.removeEventListener('scroll', this._eventHandler);
-  }
-
-  private _drainComponents(children: HTMLElement[]) {
-    if (!children.length) return;
-    for (let i = 0; i < 10 && children.length; i++) ReactDOM.unmountComponentAtNode(children.shift()!);
-    window.requestAnimationFrame(() => this._drainComponents(children));
   }
 
   private _removeChildren() {
     if (!this._children || !this._container) return;
     this._children.forEach(this._container.removeChild.bind(this._container));
-    this._drainComponents(this._children);
+    drainComponents(this._children);
     this._children = [];
   }
 
@@ -76,6 +70,12 @@ export class LazyComponent<T> extends React.Component<{children: (item: T) => Re
   }
 }
 
+function drainComponents(children: HTMLElement[]) {
+  if (!children.length) return;
+  for (let i = 0; i < 10 && children.length; i++) ReactDOM.unmountComponentAtNode(children.shift()!);
+  requestAnimationFrame(() => drainComponents(children));
+}
+
 function fetchScrollable(container: HTMLElement): HTMLElement | undefined {
   const canScroll = (value: string | null) => /^auto|scroll$/.test(value || '');
   const style = getComputedStyle(container);
@@ -85,20 +85,20 @@ function fetchScrollable(container: HTMLElement): HTMLElement | undefined {
 
 function isEndInViewPort(container: HTMLElement, scrollable?: HTMLElement, x?: number, y?: number) {
   const containerRectangle = container.getBoundingClientRect();
-  const containerBottom = containerRectangle.bottom + window.pageYOffset - (y || 0);
-  const containerRight = containerRectangle.right + window.pageXOffset - (x || 0);
+  const containerBottom = containerRectangle.bottom + pageYOffset - (y || 0);
+  const containerRight = containerRectangle.right + pageXOffset - (x || 0);
   if (scrollable && scrollable !== document.body) {
     const scrollableRectangle = scrollable.getBoundingClientRect();
-    const scrollableTop = scrollableRectangle.top + window.pageYOffset;
-    const scrollableLeft = scrollableRectangle.left + window.pageXOffset;
+    const scrollableTop = scrollableRectangle.top + pageYOffset;
+    const scrollableLeft = scrollableRectangle.left + pageXOffset;
     const scrollableBottom = scrollableTop + scrollable.offsetHeight;
     const scrollableRight = scrollableLeft + scrollable.offsetWidth;
     return containerBottom <= scrollableBottom && containerRight <= scrollableRight;
   } else {
-    const windowTop = window.pageYOffset;
-    const windowLeft = window.pageXOffset;
-    const windowBottom = windowTop + window.innerHeight;
-    const windowRight = windowLeft + window.innerWidth;
+    const windowTop = pageYOffset;
+    const windowLeft = pageXOffset;
+    const windowBottom = windowTop + innerHeight;
+    const windowRight = windowLeft + innerWidth;
     return containerBottom <= windowBottom && containerRight <= windowRight;
   }
 }

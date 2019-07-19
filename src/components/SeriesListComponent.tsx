@@ -4,7 +4,7 @@ import * as React from 'react';
 
 export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, series: app.ISeriesList, onClick: (series: app.ISeriesListItem) => void}> {
   componentWillReceiveProps() {
-    window.scrollTo(0, 0);
+    scrollTo(0, 0);
   }
 
   render() {

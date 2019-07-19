@@ -13,11 +13,11 @@ export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
   }
 
   componentDidMount() {
-    window.addEventListener('focus', this._handler);
+    addEventListener('focus', this._handler);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('focus', this._handler);
+    removeEventListener('focus', this._handler);
   }
 
   render() {
