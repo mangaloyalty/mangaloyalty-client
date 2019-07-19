@@ -7,7 +7,7 @@ import * as React from 'react';
 export class ScreenManagerView extends React.Component {
   componentDidUpdate() {
     const previous = app.core.screen.items[app.core.screen.items.length - 1];
-    window.scrollTo(previous.scrollX, previous.scrollY);  
+    scrollTo(previous.scrollX, previous.scrollY);  
   }
 
   render() {

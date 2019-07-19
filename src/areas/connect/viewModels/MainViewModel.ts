@@ -4,7 +4,7 @@ const serverKey = 'Server';
 
 export class MainViewModel {
   constructor() {
-    if (!this.server) return;
+    if (!app.core.storage.get(serverKey)) return;
     this.isVisible = false;
     this.connectAsync().then(() => mobx.runInAction(() => this.isVisible = true));
   }
@@ -18,7 +18,7 @@ export class MainViewModel {
   async connectAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    this.serverError = false;
+    this.hasServerError = false;
     const context = new app.ContextApi(this.server);
     const openapi = await context.connectAsync();
     if (openapi.result && checkVersion(openapi.result)) {
@@ -38,11 +38,14 @@ export class MainViewModel {
   @mobx.action
   async tryConnectAsync() {
     if (!this.server) {
-      this.serverError = true;
+      this.hasServerError = true;
     } else {
       await this.connectAsync();
     }
   }
+
+  @mobx.observable
+  hasServerError = false;
 
   @mobx.observable
   isLoading = false;
@@ -51,14 +54,11 @@ export class MainViewModel {
   isVisible = true;
 
   @mobx.observable
-  server = app.core.storage.get(serverKey);
-
-  @mobx.observable
-  serverError = false;
+  server = app.core.storage.get(serverKey) || location.hostname;
 }
 
 function checkVersion(openapi: app.IOpenApi) {
-  const client = parseVersion(app.settings.packageData.version);
+  const client = parseVersion(app.core.data.version);
   const server = parseVersion(openapi.info && openapi.info.version);
   return server.major === client.major && server.minor >= client.minor;
 }
