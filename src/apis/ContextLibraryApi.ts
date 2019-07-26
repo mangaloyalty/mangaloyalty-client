@@ -7,14 +7,16 @@ export class ContextLibraryApi {
     this._http = http;
   }
 
-  async listAsync(pageNumber = 1) {
-    const request = this._http.get(`/api/library?pageNumber=${pageNumber}`);
+  async listAsync(sortBy: app.IEnumeratorSortBy, title?: string, pageNumber?: number) {
+    const query = new app.HttpQuery().add('sortBy', sortBy).add('title', title).add('pageNumber', pageNumber);
+    const request = this._http.get('/api/library' + query);
     const response = await request<app.ILibraryListResponse>();
     return response;
   }
 
   async seriesCreateAsync(url: string) {
-    const request = this._http.post(`/api/library?url=${encodeURIComponent(url)}`);
+    const query = new app.HttpQuery().add('url', url);
+    const request = this._http.post('/api/library' + query);
     const response = await request<app.ILibrarySeriesCreateResponse>();
     return response;
   }
@@ -31,8 +33,9 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async seriesPatchAsync(seriesId: string, frequency: app.ILibraryFrequency, sync: boolean) {
-    const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}?frequency=${encodeURIComponent(frequency)}&sync=${sync}`);
+  async seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, sync: boolean) {
+    const query = new app.HttpQuery().add('frequency', frequency).add('sync', sync);
+    const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}` + query);
     const response = await request();
     return response;
   }
@@ -56,7 +59,8 @@ export class ContextLibraryApi {
   }
   
   async chapterPatchAsync(seriesId: string, chapterId: string, pageReadNumber: number) {
-    const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}/${encodeURIComponent(chapterId)}?pageReadNumber=${pageReadNumber}`);
+    const query = new app.HttpQuery().add('pageReadNumber', pageReadNumber);
+    const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}/${encodeURIComponent(chapterId)}` + query);
     const response = await request();
     return response;
   }

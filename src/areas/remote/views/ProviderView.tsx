@@ -13,7 +13,7 @@ export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> 
           <app.SeriesListComponent
             emptyBody={app.language.remoteEmptyBody}
             emptyTitle={app.language.remoteEmptyTitle}
-            series={this.props.vm.series}
+            series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.open(series)} />
         </mui.Grid>}
       </mui.Grid>

@@ -18,8 +18,8 @@ export class MainViewModel {
   @mobx.action
   changeSearch(search: string) {
     if (search === this.search) return;
-    this.provider.changeSearch(search);
     this.search = search;
+    this.provider.changeSearch(search);
   }
 
   @mobx.action

@@ -7,26 +7,30 @@ export class ContextRemoteApi {
     this._http = http;
   }
 
-  async popularAsync(providerName: string, pageNumber = 1) {
-    const request = this._http.get(`/api/remote/popular?providerName=${encodeURIComponent(providerName)}&pageNumber=${pageNumber}`);
+  async popularAsync(providerName: string, pageNumber?: number) {
+    const query = new app.HttpQuery().add('providerName', providerName).add('pageNumber', pageNumber);
+    const request = this._http.get('/api/remote/popular' + query);
     const response = await request<app.IRemotePopularResponse>();
     return response;
   }
 
-  async searchAsync(providerName: string, title: string, pageNumber = 1) {
-    const request = this._http.get(`/api/remote/search?providerName=${encodeURIComponent(providerName)}&title=${encodeURIComponent(title)}&pageNumber=${pageNumber}`);
+  async searchAsync(providerName: string, title: string, pageNumber?: number) {
+    const query = new app.HttpQuery().add('providerName', providerName).add('title', title).add('pageNumber', pageNumber);
+    const request = this._http.get('/api/remote/search' + query);
     const response = await request<app.IRemoteSearchResponse>();
     return response;
   }
 
   async seriesAsync(url: string) {
-    const request = this._http.get(`/api/remote/series?url=${encodeURIComponent(url)}`);
+    const query = new app.HttpQuery().add('url', url);
+    const request = this._http.get('/api/remote/series' + query);
     const response = await request<app.IRemoteSeriesResponse>();
     return response;
   }
 
   async startAsync(url: string) {
-    const request = this._http.get(`/api/remote/start?url=${encodeURIComponent(url)}`);
+    const query = new app.HttpQuery().add('url', url);
+    const request = this._http.get('/api/remote/start' + query);
     const response = await request<app.IRemoteStartResponse>();
     return response;
   }
