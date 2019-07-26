@@ -6,5 +6,11 @@ export interface INavigator {
 }
 
 export interface IOpenApi {
-  info?: {version?: string}
+  info?: {version?: string};
+}
+
+export interface ISeriesItem {
+  image: string;
+  title: string;
+  unreadCount?: number;
 }

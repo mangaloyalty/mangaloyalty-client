@@ -29,7 +29,8 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
 const styles = app.styles({
   container: {
     position: 'fixed',
-    top: 64
+    top: 64,
+    zIndex: 1
   },
   content: {
     paddingTop: 48
