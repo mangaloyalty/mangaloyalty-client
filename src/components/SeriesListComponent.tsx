@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, series: app.ISeriesList, onClick: (series: app.ISeriesListItem) => void}> {
+export class SeriesListComponent extends React.Component<{emptyBody: string, emptyTitle: string, series: app.IRemoteList, onClick: (series: app.IRemoteListItem) => void}> {
   componentWillReceiveProps() {
     scrollTo(0, 0);
   }

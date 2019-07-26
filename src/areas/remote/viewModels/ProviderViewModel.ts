@@ -18,7 +18,7 @@ export class ProviderViewModel {
   }
 
   @mobx.action
-  open(series: app.ISeriesListItem) {
+  open(series: app.IRemoteListItem) {
     app.core.screen.open(area.SeriesController, {
       title: series.title,
       url: series.url
@@ -59,5 +59,5 @@ export class ProviderViewModel {
   search = '';
 
   @mobx.observable
-  private source?: app.ISeriesList;
+  private source?: app.IRemoteList;
 }
