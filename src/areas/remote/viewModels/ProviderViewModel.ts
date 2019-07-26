@@ -30,12 +30,12 @@ export class ProviderViewModel {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
     const seriesList = this.search
-      ? await this._context.remoteSearch(this.name, this.search)
-      : await this._context.remotePopularAsync(this.name);
-    if (seriesList.result) {
+      ? await this._context.remote.searchAsync(this.name, this.search)
+      : await this._context.remote.popularAsync(this.name);
+    if (seriesList.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = seriesList.result;
+        this.source = seriesList.value;
       });
     } else if (await app.core.dialog.errorAsync(seriesList.error)) {
       await this.refreshAsync(true);

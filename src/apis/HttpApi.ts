@@ -15,15 +15,15 @@ export class HttpApi {
     return this._create('GET', relativeUrl);
   }
 
-  patch<T>(relativeUrl: string, data: T) {
+  patch<T>(relativeUrl: string, data?: T) {
     return this._create('PATCH', relativeUrl, data);
   }
 
-  post<T>(relativeUrl: string, data: T) {
+  post<T>(relativeUrl: string, data?: T) {
     return this._create('POST', relativeUrl, data);
   }
 
-  put<T>(relativeUrl: string, data: T) {
+  put<T>(relativeUrl: string, data?: T) {
     return this._create('PUT', relativeUrl, data);
   }
 
@@ -31,8 +31,9 @@ export class HttpApi {
     return async <TResult>() => {
       const http = await this._xhrAsync(method, relativeUrl, data);
       const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
-      const result = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
-      return {error, result};
+      const status = http && http.status || 0;
+      const value = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
+      return {error, status, value};
     };
   }
 
