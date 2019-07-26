@@ -14,7 +14,8 @@ export class ContextSessionApi {
   }
 
   async pageAsync(id: string, pageNumber: number) {
-    const request = this._http.get(`/api/session/${encodeURIComponent(id)}?pageNumber=${pageNumber}`);
+    const query = new app.HttpQuery().add('pageNumber', pageNumber);
+    const request = this._http.get(`/api/session/${encodeURIComponent(id)}` + query);
     const response = await request<app.ISessionPageResponse>();
     return response;
   }

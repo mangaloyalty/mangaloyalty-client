@@ -6,6 +6,7 @@ export * from './apis/ContextLibraryApi';
 export * from './apis/ContextRemoteApi';
 export * from './apis/ContextSessionApi';
 export * from './apis/HttpApi';
+export * from './apis/HttpQuery';
 export * from './classes/LazyQuery';
 export * from './common/icons';
 export * from './common/limiter';
