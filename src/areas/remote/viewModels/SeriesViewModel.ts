@@ -38,11 +38,11 @@ export class SeriesViewModel {
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const series = await this._context.remoteSeries(this._url);
-    if (series.result) {
+    const series = await this._context.remote.seriesAsync(this._url);
+    if (series.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = series.result;
+        this.source = series.value;
       });
     } else if (await app.core.dialog.errorAsync(series.error)) {
       await this.refreshAsync(true);

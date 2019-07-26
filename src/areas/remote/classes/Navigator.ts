@@ -38,9 +38,9 @@ export class Navigator implements app.INavigator {
 
   private async _createAsync(shouldClose: boolean) {
     const chapter = this._series.chapters[this._index];
-    const session = await this._context.remoteStart(chapter.url);
-    if (session.result) {
-      this.screen(chapter, session.result, shouldClose);
+    const session = await this._context.remote.startAsync(chapter.url);
+    if (session.value) {
+      this.screen(chapter, session.value, shouldClose);
     } else if (await app.core.dialog.errorAsync(session.error)) {
       await this._createAsync(shouldClose);
     }
@@ -48,8 +48,8 @@ export class Navigator implements app.INavigator {
 
   private async _openOrCreateAsync(shouldClose: boolean) {
     const chapter = this._series.chapters[this._index];
-    const sessionList = await this._context.sessionList();
-    const session = sessionList.result && sessionList.result.find((session) => chapter.url === session.url);
+    const sessionList = await this._context.session.listAsync();
+    const session = sessionList.value && sessionList.value.find((session) => chapter.url === session.url);
     if (session) {
       this.screen(chapter, session, shouldClose);
     } else {
