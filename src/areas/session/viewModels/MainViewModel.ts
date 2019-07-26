@@ -22,11 +22,11 @@ export class MainViewModel {
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const sessionList = await this._context.sessionList();
-    if (sessionList.result) {
+    const sessionList = await this._context.session.listAsync();
+    if (sessionList.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = sessionList.result;
+        this.source = sessionList.value;
       });
     } else if (await app.core.dialog.errorAsync(sessionList.error)) {
       await this.refreshAsync(true);

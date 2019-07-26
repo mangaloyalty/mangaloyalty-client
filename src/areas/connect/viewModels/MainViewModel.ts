@@ -21,11 +21,11 @@ export class MainViewModel {
     this.hasServerError = false;
     const context = new app.ContextApi(this.server);
     const openapi = await context.connectAsync();
-    if (openapi.result && checkVersion(openapi.result)) {
+    if (openapi.value && checkVersion(openapi.value)) {
       app.core.storage.set(serverKey, this.server);
       app.core.service.set(app.settings.contextKey, context);
-      app.core.screen.changeRoot(app.RootType.Remote);
-    } else if (openapi.result) {
+      app.core.screen.changeRoot(app.RootType.Library);
+    } else if (openapi.value) {
       await app.core.dialog.connectAsync();
       mobx.runInAction(() => this.isLoading = false);
     } else if (await app.core.dialog.errorAsync(openapi.error)) {
@@ -54,7 +54,13 @@ export class MainViewModel {
   isVisible = true;
 
   @mobx.observable
-  server = app.core.storage.get(serverKey) || location.hostname;
+  server = app.core.storage.get(serverKey) || buildServer();
+}
+
+function buildServer() {
+  return location.port === '7767'
+    ? `${location.hostname}:7783`
+    : `${location.hostname}:${location.port}`;
 }
 
 function checkVersion(openapi: app.IOpenApi) {
