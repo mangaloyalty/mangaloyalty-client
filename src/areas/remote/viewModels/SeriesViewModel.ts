@@ -20,7 +20,7 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async openAsync(chapter: app.ISeriesDetailChapter) {
+  async openAsync(chapter: app.IRemoteDetailChapter) {
     if (!this.source) return;
     const navigator = new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source);
     this.isLoading = true;
@@ -76,5 +76,5 @@ export class SeriesViewModel {
   showChapters = false;
 
   @mobx.observable
-  private source?: app.ISeriesDetail;
+  private source?: app.IRemoteDetail;
 }

@@ -5,9 +5,13 @@
   "main": "server",
   "name": "mangaloyalty-client",
   "repository": "git://github.com/mangaloyalty/mangaloyalty-client",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "bin": {
     "mangaloyalty-client": "./bin/mangaloyalty-client"
+  },
+  "engines": {
+    "node": ">= 12.0.0",
+    "npm": ">= 6.0.0"
   },
   "dependencies": {
     "express": "4.17.1"
