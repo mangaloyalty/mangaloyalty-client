@@ -5,48 +5,17 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type IEnumeratorFrequency = "never" | "hourly" | "daily" | "weekly";
+export type IEnumeratorFrequency = "never" | "hourly" | "daily" | "weekly" | "monthly";
 export type IEnumeratorProvider = "batoto" | "fanfox";
-export type IEnumeratorSortBy = "addedAt" | "lastChapterAddedAt" | "lastPageReadAt" | "title";
+export type IEnumeratorReadStatus = "all" | "unread" | "read";
+export type IEnumeratorSeriesStatus = "all" | "ongoing" | "completed";
+export type IEnumeratorSortKey = "addedAt" | "lastChapterAddedAt" | "lastPageReadAt" | "title";
 export type IProviderChapterUrl = string;
 export type IProviderSeriesUrl = string;
 export type ISessionList = ISessionListItem[];
 
 export interface ILibraryCreate {
   id: string;
-}
-export interface ILibraryDetail {
-  id: string;
-  addedAt: number;
-  lastChapterAddedAt?: number;
-  lastPageReadAt?: number;
-  lastSyncAt: number;
-  automation: ILibraryDetailAutomation;
-  chapters: ILibraryDetailChapter[];
-  series: ILibraryDetailSeries;
-}
-export interface ILibraryDetailAutomation {
-  frequency: IEnumeratorFrequency;
-  sync: boolean;
-}
-export interface ILibraryDetailChapter {
-  id: string;
-  addedAt: number;
-  deletedAt?: number;
-  syncAt?: number;
-  pageCount?: number;
-  pageReadNumber?: number;
-  title: string;
-  url: string;
-}
-export interface ILibraryDetailSeries {
-  authors: string[];
-  genres: string[];
-  image: string;
-  isCompleted: boolean;
-  summary?: string;
-  title: string;
-  url: string;
 }
 export interface ILibraryList {
   hasMorePages: boolean;
@@ -58,17 +27,37 @@ export interface ILibraryListItem {
   title: string;
   unreadCount: number;
 }
-export interface IRemoteDetail {
+export interface ILibrarySeries {
+  id: string;
+  addedAt: number;
+  lastChapterAddedAt?: number;
+  lastPageReadAt?: number;
+  lastSyncAt: number;
+  automation: ILibrarySeriesAutomation;
+  chapters: ILibrarySeriesChapter[];
+  source: ILibrarySeriesSource;
+}
+export interface ILibrarySeriesAutomation {
+  checkedAt?: number;
+  frequency: IEnumeratorFrequency;
+  syncAll: boolean;
+}
+export interface ILibrarySeriesChapter {
+  id: string;
+  addedAt: number;
+  deletedAt?: number;
+  syncAt?: number;
+  pageCount?: number;
+  pageReadNumber?: number;
+  title: string;
+  url: string;
+}
+export interface ILibrarySeriesSource {
   authors: string[];
-  chapters: IRemoteDetailChapter[];
   genres: string[];
   image: string;
   isCompleted: boolean;
   summary?: string;
-  title: string;
-  url: string;
-}
-export interface IRemoteDetailChapter {
   title: string;
   url: string;
 }
@@ -78,6 +67,20 @@ export interface IRemoteList {
 }
 export interface IRemoteListItem {
   image: string;
+  title: string;
+  url: string;
+}
+export interface IRemoteSeries {
+  authors: string[];
+  chapters: IRemoteSeriesChapter[];
+  genres: string[];
+  image: string;
+  isCompleted: boolean;
+  summary?: string;
+  title: string;
+  url: string;
+}
+export interface IRemoteSeriesChapter {
   title: string;
   url: string;
 }
@@ -91,7 +94,9 @@ export interface ISessionPage {
 }
 export interface ILibraryListContext {
   query: {
-    sortBy: IEnumeratorSortBy;
+    readStatus: IEnumeratorReadStatus;
+    seriesStatus: IEnumeratorSeriesStatus;
+    sortKey: IEnumeratorSortKey;
     title?: string;
     pageNumber?: number;
   };
@@ -186,13 +191,13 @@ export interface ISessionPageContext {
 
 export type ILibraryListResponse = ILibraryList;
 export type ILibrarySeriesCreateResponse = ILibraryCreate;
-export type ILibrarySeriesReadResponse = ILibraryDetail;
-export type ILibrarySeriesUpdateResponse = ILibraryDetail;
+export type ILibrarySeriesReadResponse = ILibrarySeries;
+export type ILibrarySeriesUpdateResponse = ILibrarySeries;
 export type ILibraryChapterReadResponse = ISessionListItem;
 export type ILibraryChapterUpdateResponse = ISessionListItem;
 export type IRemotePopularResponse = IRemoteList;
 export type IRemoteSearchResponse = IRemoteList;
-export type IRemoteSeriesResponse = IRemoteDetail;
+export type IRemoteSeriesResponse = IRemoteSeries;
 export type IRemoteStartResponse = ISessionListItem;
 export type ISessionListResponse = ISessionList;
 export type ISessionPageResponse = ISessionPage;

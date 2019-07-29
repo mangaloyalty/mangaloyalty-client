@@ -7,14 +7,14 @@ export class ContextRemoteApi {
     this._http = http;
   }
 
-  async popularAsync(providerName: string, pageNumber?: number) {
+  async popularAsync(providerName: app.IEnumeratorProvider, pageNumber?: number) {
     const query = new app.HttpQuery().add('providerName', providerName).add('pageNumber', pageNumber);
     const request = this._http.get('/api/remote/popular' + query);
     const response = await request<app.IRemotePopularResponse>();
     return response;
   }
 
-  async searchAsync(providerName: string, title: string, pageNumber?: number) {
+  async searchAsync(providerName: app.IEnumeratorProvider, title: string, pageNumber?: number) {
     const query = new app.HttpQuery().add('providerName', providerName).add('title', title).add('pageNumber', pageNumber);
     const request = this._http.get('/api/remote/search' + query);
     const response = await request<app.IRemoteSearchResponse>();
