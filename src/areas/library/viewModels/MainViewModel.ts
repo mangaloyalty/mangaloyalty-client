@@ -1,5 +1,8 @@
 import * as app from '../../..';
 import * as mobx from 'mobx';
+const storageFilterReadStatus = 'LibraryFilterReadStatusKey';
+const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
+const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
   private readonly _context: app.ContextApi;
@@ -12,13 +15,15 @@ export class MainViewModel {
   @mobx.action
   changeFilterReadStatus(filterReadStatus: app.IEnumeratorReadStatus) {
     if (filterReadStatus === this.filterReadStatus) return;
+    app.core.storage.set(storageFilterReadStatus, filterReadStatus);
     this.filterReadStatus = filterReadStatus;
     this.refreshAsync();
   }
-
+  
   @mobx.action
   changeFilterSeriesStatus(filterSeriesStatus: app.IEnumeratorSeriesStatus) {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
+    app.core.storage.set(storageFilterSeriesStatus, filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
     this.refreshAsync();
   }
@@ -26,6 +31,7 @@ export class MainViewModel {
   @mobx.action
   changeFilterSortKey(filterSortKey: app.IEnumeratorSortKey) {
     if (filterSortKey === this.filterSortKey) return;
+    app.core.storage.set(storageFilterSortKey, filterSortKey);
     this.filterSortKey = filterSortKey;
     this.refreshAsync();
   }
@@ -42,7 +48,7 @@ export class MainViewModel {
     // TODO: Open the library series.
     alert(`${series.id}: ${series.title}`);
   }
-
+  
   @mobx.action
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
@@ -64,13 +70,13 @@ export class MainViewModel {
   }
 
   @mobx.observable
-  filterReadStatus: app.IEnumeratorReadStatus = 'all';
+  filterReadStatus = app.core.storage.get<app.IEnumeratorReadStatus>(storageFilterReadStatus, 'all');
 
   @mobx.observable
-  filterSeriesStatus: app.IEnumeratorSeriesStatus = 'all';
+  filterSeriesStatus = app.core.storage.get<app.IEnumeratorSeriesStatus>(storageFilterSeriesStatus, 'all');
 
   @mobx.observable
-  filterSortKey: app.IEnumeratorSortKey = 'addedAt';
+  filterSortKey = app.core.storage.get<app.IEnumeratorSortKey>(storageFilterSortKey, 'addedAt');
   
   @mobx.observable
   isLoading = false;
