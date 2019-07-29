@@ -1,10 +1,10 @@
 import * as app from '../../..';
 import * as mobx from 'mobx';
-const serverKey = 'Server';
+const storageServer = 'ConnectServer';
 
 export class MainViewModel {
   constructor() {
-    if (!app.core.storage.get(serverKey)) return;
+    if (!app.core.storage.get(storageServer, '')) return;
     this.isVisible = false;
     this.connectAsync().then(() => mobx.runInAction(() => this.isVisible = true));
   }
@@ -22,7 +22,7 @@ export class MainViewModel {
     const context = new app.ContextApi(this.server);
     const openapi = await context.connectAsync();
     if (openapi.value && checkVersion(openapi.value)) {
-      app.core.storage.set(serverKey, this.server);
+      app.core.storage.set(storageServer, this.server);
       app.core.service.set(app.settings.contextKey, context);
       app.core.screen.changeRoot(app.RootType.Library);
     } else if (openapi.value) {
@@ -54,7 +54,7 @@ export class MainViewModel {
   isVisible = true;
 
   @mobx.observable
-  server = app.core.storage.get(serverKey) || buildServer();
+  server = app.core.storage.get(storageServer, buildServer());
 }
 
 function buildServer() {
