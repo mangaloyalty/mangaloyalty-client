@@ -42,7 +42,7 @@ const styles = app.styles({
   },
   paper: {
     left: '50%',
-    padding: 24,
+    padding: 16,
     paddingTop: 48,
     position: 'fixed',
     top: '50%',

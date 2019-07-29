@@ -29,14 +29,14 @@ const styles = app.styles({
   container: {
     display: 'grid',
     gridGap: '8px',
-    gridTemplateColumns: 'repeat(auto-fill, 158px)',
+    gridTemplateColumns: 'repeat(auto-fill, 152px)',
     justifyContent: 'center',
-    margin: 16
+    margin: '16px 4px'
   },
   series: {
     cursor: 'pointer',
     position: 'relative',
-    width: 158,
+    width: 152,
   },
   unreadCount: {
     backgroundColor: app.theme.palette.primary.main,
@@ -51,7 +51,7 @@ const styles = app.styles({
   image: {
     objectFit: 'cover',
     height: 220,
-    width: 158
+    width: 152
   },
   title: {
     overflow: 'hidden',

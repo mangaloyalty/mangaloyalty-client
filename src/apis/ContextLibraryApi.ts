@@ -7,8 +7,8 @@ export class ContextLibraryApi {
     this._http = http;
   }
 
-  async listAsync(sortBy: app.IEnumeratorSortBy, title?: string, pageNumber?: number) {
-    const query = new app.HttpQuery().add('sortBy', sortBy).add('title', title).add('pageNumber', pageNumber);
+  async listAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string, pageNumber?: number) {
+    const query = new app.HttpQuery().add('readStatus', readStatus).add('seriesStatus', seriesStatus).add('sortKey', sortKey).add('title', title).add('pageNumber', pageNumber);
     const request = this._http.get('/api/library' + query);
     const response = await request<app.ILibraryListResponse>();
     return response;
@@ -33,8 +33,8 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, sync: boolean) {
-    const query = new app.HttpQuery().add('frequency', frequency).add('sync', sync);
+  async seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, syncAll: boolean) {
+    const query = new app.HttpQuery().add('frequency', frequency).add('syncAll', syncAll);
     const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}` + query);
     const response = await request();
     return response;

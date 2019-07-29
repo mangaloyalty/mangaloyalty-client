@@ -3,10 +3,10 @@ import * as areas from '../..';
 
 export class Navigator implements app.INavigator {
   private readonly _context: app.ContextApi;
-  private readonly _series: app.IRemoteDetail;
+  private readonly _series: app.IRemoteSeries;
   private _index: number;
 
-  constructor(context: app.ContextApi, index: number, series: app.IRemoteDetail) {
+  constructor(context: app.ContextApi, index: number, series: app.IRemoteSeries) {
     this._context = context;
     this._index = index;
     this._series = series;
@@ -57,7 +57,7 @@ export class Navigator implements app.INavigator {
     }
   }
 
-  private screen(chapter: app.IRemoteDetailChapter, session: app.ISessionListItem, shouldClose: boolean) {
+  private screen(chapter: app.IRemoteSeriesChapter, session: app.ISessionListItem, shouldClose: boolean) {
     if (shouldClose) app.core.screen.close();
     app.core.screen.open(areas.session.ChapterController, {
       navigator: this,
