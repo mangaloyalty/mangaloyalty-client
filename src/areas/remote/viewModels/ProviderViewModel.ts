@@ -4,15 +4,16 @@ import * as mobx from 'mobx';
 
 export class ProviderViewModel {
   private readonly _context: app.ContextApi;
-  private readonly _name: string;
+  private readonly _name: app.IEnumeratorProvider;
 
-  constructor(name: string) {
+  constructor(name: app.IEnumeratorProvider) {
     this._context = app.core.service.get(app.settings.contextKey);
     this._name = name;
   }
 
   @mobx.action
   changeSearch(search: string) {
+    if (search === this.search) return;
     this.search = search;
     this.refreshAsync();
   }
