@@ -9,8 +9,8 @@ export class StorageManager {
     }
   }
 
-  get(key: string) {
-    return localStorage.getItem(`${keyPrefix}.${key}`) || '';
+  get<T extends string>(key: string, defaultValue: T) {
+    return localStorage.getItem(`${keyPrefix}.${key}`) as T || defaultValue;
   }
 
   set(key: string, value?: string) {
