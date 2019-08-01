@@ -20,6 +20,7 @@ export * from './components/HeaderSearchBarComponent';
 export * from './components/HeaderTitleBarComponent';
 export * from './components/LazyComponent';
 export * from './components/LoadingComponent';
+export * from './components/MenuComponent';
 export * from './components/RefreshComponent';
 export * from './components/SeriesListComponent';
 export * from './enumerators/RootType';
