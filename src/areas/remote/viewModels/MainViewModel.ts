@@ -12,7 +12,7 @@ export class MainViewModel {
   changeProvider(name: app.IEnumeratorProvider) {
     if (name === this.provider.name) return;
     this.provider = new area.ProviderViewModel(name);
-    this.provider.changeSearch(this.search);
+    this.provider.refreshAsync();
   }
 
   @mobx.action

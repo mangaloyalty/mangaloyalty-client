@@ -5,7 +5,7 @@ export class ButtonComponent extends React.Component<{title: string, style?: Rea
   render() {
     return (
       <mui.Tooltip title={this.props.title}>
-        <mui.IconButton color="inherit" style={this.props.style} onClick={(ev) => Boolean(this.props.onClick()) || ev.currentTarget.blur()}>
+        <mui.IconButton color="inherit" style={this.props.style} onClick={() => this.props.onClick()}>
           {this.props.children}
         </mui.IconButton>
       </mui.Tooltip>
