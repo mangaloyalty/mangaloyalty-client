@@ -38,7 +38,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
         <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Select disableUnderline ref={this._selectReadStatusRef} value={this.props.vm.filterReadStatus} style={styles.select}
             IconComponent={() => <span />}
-            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'bottom'}, getContentAnchorEl: null}}
+            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
             onChange={(ev) => this.props.vm.changeFilterReadStatus(ev.target.value as any)}>
             <mui.MenuItem value="all">{app.language.libraryListReadStatusAll}</mui.MenuItem>
             <mui.MenuItem value="unread">{app.language.libraryListReadStatusUnread}</mui.MenuItem>
@@ -46,15 +46,15 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
           </mui.Select>
           <mui.Select disableUnderline ref={this._selectSeriesStatusRef} value={this.props.vm.filterSeriesStatus} style={styles.select}
             IconComponent={() => <span />}
-            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'bottom'}, getContentAnchorEl: null}}
+            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
             onChange={(ev) => this.props.vm.changeFilterSeriesStatus(ev.target.value as any)}>
             <mui.MenuItem value="all">{app.language.libraryListSeriesStatusAll}</mui.MenuItem>
             <mui.MenuItem value="ongoing">{app.language.libraryListSeriesStatusOngoing}</mui.MenuItem>
             <mui.MenuItem value="completed">{app.language.libraryListSeriesStatusCompleted}</mui.MenuItem>
           </mui.Select>
-          <mui.Select disableUnderline ref={this._selectSortKeyRef} value={this.props.vm.filterSortKey} style={styles.select} 
+          <mui.Select disableUnderline ref={this._selectSortKeyRef} value={this.props.vm.filterSortKey} style={styles.selectResizable}
             IconComponent={() => <span />}
-            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'bottom'}, getContentAnchorEl: null}}
+            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
             onChange={(ev) => this.props.vm.changeFilterSortKey(ev.target.value as any)}>
             <mui.MenuItem value="addedAt">{app.language.libraryListSortKeyAddedAt}</mui.MenuItem>
             <mui.MenuItem value="lastChapterAddedAt">{app.language.libraryListSortKeyLastChapterAddedAt}</mui.MenuItem>
@@ -102,7 +102,11 @@ const styles = app.styles({
   },
   select: {
     fontSize: 13,
-    paddingRight: 8,
+    opacity: 0.7,
+    paddingRight: 4
+  },
+  selectResizable: {
+    fontSize: 13,
     opacity: 0.7
   }
 });

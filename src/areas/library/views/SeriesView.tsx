@@ -4,6 +4,13 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
+// TODO: Merge displays as much as possible...
+// TODO: Source? Which provider?
+// TODO: Status? Completed/Ongoing. Not in listing to keep library+remote consistent?
+// TODO: unreadcount shown on image?
+// TODO: Per chapter, read/unread?
+// TODO: instead of chevrons, use italic to show text is clickable?
+// TODO: Quick overview to continue reading (e.g. show 5 chapters of upcoming stuff that is unread)
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
   render() {
@@ -13,15 +20,15 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
-            <mui.Tab label={app.language.remoteSeriesAbout} value={0} />
-            <mui.Tab label={`${app.language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
+            <mui.Tab label={app.language.librarySeriesAbout} value={0} />
+            <mui.Tab label={`${app.language.librarySeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
           </mui.Tabs>
         </mui.Paper>}
         {this.props.vm.chapters && <mui.Grid style={styles.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
             <mui.Paper style={styles.seriesContent}>
               <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
-              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || app.language.remoteSeriesSummary}</mui.Typography>
+              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || app.language.librarySeriesSummary}</mui.Typography>
               <mui.Grid style={styles.seriesClear} />
             </mui.Paper>
           </mui.Grid>}

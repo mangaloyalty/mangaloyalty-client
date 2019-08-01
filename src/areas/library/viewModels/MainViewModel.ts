@@ -1,4 +1,5 @@
 import * as app from '../../..';
+import * as area from '..';
 import * as mobx from 'mobx';
 const storageFilterReadStatus = 'LibraryFilterReadStatusKey';
 const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
@@ -45,8 +46,10 @@ export class MainViewModel {
 
   @mobx.action
   open(series: app.ILibraryListItem) {
-    // TODO: Open the library series.
-    alert(`${series.id}: ${series.title}`);
+    app.core.screen.open(area.SeriesController, {
+      id: series.id,
+      title: series.title
+    });
   }
   
   @mobx.action

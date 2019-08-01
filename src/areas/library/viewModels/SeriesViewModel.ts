@@ -4,13 +4,13 @@ import * as mobx from 'mobx';
 
 export class SeriesViewModel {
   private readonly _context: app.ContextApi;
+  private readonly _id: string;
   private readonly _title: string;
-  private readonly _url: string;
 
-  constructor(title: string, url: string) {
+  constructor(id: string, title: string) {
     this._context = app.core.service.get(app.settings.contextKey);
+    this._id = id;
     this._title = title;
-    this._url = url;
     this.refreshAsync();
   }
   
@@ -20,11 +20,11 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async openAsync(chapter: app.IRemoteSeriesChapter) {
+  async openAsync(chapter: app.ILibrarySeriesChapter) {
     try {
-      if (!this.source) return;
+      if (!this.response) return;
       this.isLoading = true;
-      await new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source).openCurrentAsync();
+      await new area.Navigator(this._context, this.response.chapters.indexOf(chapter), this.response).openCurrentAsync();
     } finally {
       mobx.runInAction(() => this.isLoading = false);
     }
@@ -32,19 +32,19 @@ export class SeriesViewModel {
 
   @mobx.action
   async readAsync() {
-    if (!this.source) return;
-    return await this.openAsync(this.source.chapters[this.source.chapters.length - 1]);
+    if (!this.response) return;
+    return await this.openAsync(this.response.chapters[this.response.chapters.length - 1]);
   }
 
   @mobx.action
   async refreshAsync(forceRefresh?: boolean) {
     if (!forceRefresh && this.isLoading) return;
     this.isLoading = true;
-    const series = await this._context.remote.seriesAsync(this._url);
+    const series = await this._context.library.seriesReadAsync(this._id);
     if (series.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = series.value;
+        this.response = series.value;
       });
     } else if (await app.core.dialog.errorAsync(series.error)) {
       await this.refreshAsync(true);
@@ -53,22 +53,22 @@ export class SeriesViewModel {
 
   @mobx.computed
   get chapters() {
-    return this.source && this.source.chapters;
+    return this.response && this.response.chapters;
   }
 
   @mobx.computed
   get image() {
-    return this.source && this.source.image;
+    return this.response && this.response.source.image;
   }
 
   @mobx.computed
   get summary() {
-    return this.source && this.source.summary; 
+    return this.response && this.response.source.summary; 
   }
 
   @mobx.computed
   get title() {
-    return this.source && this.source.title || this._title;
+    return this.response && this.response.source.title || this._title;
   }
 
   @mobx.observable
@@ -78,5 +78,5 @@ export class SeriesViewModel {
   showChapters = false;
 
   @mobx.observable
-  private source?: app.IRemoteSeries;
+  private response?: app.ILibrarySeries;
 }

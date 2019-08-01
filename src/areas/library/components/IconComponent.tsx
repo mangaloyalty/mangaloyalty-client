@@ -2,13 +2,21 @@ import * as app from '../../..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class IconComponent extends React.Component<{onRefresh: () => void}> {
+export class IconComponent extends React.Component<{onRead?: () => void, onRefresh: () => void}> {
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <app.ButtonComponent title={app.language.remoteIconRefresh} onClick={() => this.props.onRefresh()}>
-          <app.icons.Refresh />
-        </app.ButtonComponent>
+        {this.props.onRead && <app.ButtonComponent title={app.language.libraryIconRead} onClick={() => this.props.onRead!()}>
+          <app.icons.PlayCircleOutline />
+        </app.ButtonComponent>}
+        <app.MenuComponent title={app.language.libraryIconMenu}>
+          <mui.MenuItem onClick={() => this.props.onRefresh()}>
+            <mui.ListItemIcon>
+              <app.icons.Refresh />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={app.language.libraryIconMenuRefresh} />
+          </mui.MenuItem>
+        </app.MenuComponent>
       </mui.Grid>
     );
   }
