@@ -20,20 +20,14 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async openAsync(chapter: app.ILibrarySeriesChapter) {
-    try {
-      if (!this.response) return;
-      this.isLoading = true;
-      await new area.Navigator(this._context, this.response.chapters.indexOf(chapter), this.response).openCurrentAsync();
-    } finally {
-      mobx.runInAction(() => this.isLoading = false);
-    }
-  }
-
-  @mobx.action
   async readAsync() {
-    if (!this.response) return;
-    return await this.openAsync(this.response.chapters[this.response.chapters.length - 1]);
+    if (!this.chapters) return;
+    for (let i = this.chapters.length - 1; i >= 0; i--) {
+      const chapter = this.chapters[i];
+      if (!chapter.isUnread) continue;
+      await chapter.openAsync();
+      return;
+    }
   }
 
   @mobx.action
@@ -53,7 +47,12 @@ export class SeriesViewModel {
 
   @mobx.computed
   get chapters() {
-    return this.response && this.response.chapters;
+    return this.response && this.response.chapters.map((chapter) => new area.ChapterViewModel(this._context, this, chapter));
+  }
+
+  @mobx.computed
+  get id() {
+    return this.response && this.response.id;
   }
 
   @mobx.computed

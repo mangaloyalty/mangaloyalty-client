@@ -32,16 +32,18 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
               <mui.Grid style={styles.seriesClear} />
             </mui.Paper>
           </mui.Grid>}
-          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContent}>
+          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.Grid style={{height: 44 * this.props.vm.chapters.length}}>
               <app.LazyComponent query={new app.LazyQuery(this.props.vm.chapters)} y={1680}>
                 {(chapter) => (
-                  <mui.Typography variant="subtitle1" style={styles.chapterItem} onClick={() => this.props.vm.openAsync(chapter)}>
-                    {chapter.title}
+                  <mui.Grid style={styles.chapterContent} onClick={() => chapter.openAsync()}>
+                    <mui.Typography variant="subtitle1" style={chapter.isUnread ? styles.chapterUnread : styles.chapterRead}>
+                      {chapter.title}
+                    </mui.Typography>
                     <mui.Icon style={styles.chapterIcon}>
                       <app.icons.ChevronRight />
                     </mui.Icon>
-                  </mui.Typography>
+                  </mui.Grid>
                 )}
               </app.LazyComponent>
             </mui.Grid>
@@ -75,21 +77,29 @@ const styles = app.styles({
   seriesClear: {
     clear: 'both'
   },
-  chapterContent: {
+  chapterContainer: {
     padding: 8
   },
-  chapterItem: {
+  chapterContent: {
     cursor: 'pointer',
-    overflow: 'hidden',
     padding: 8,
     paddingRight: 24,
     position: 'relative',
+  },
+  chapterRead: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
+  chapterUnread: {
+    color: app.theme.palette.secondary.main,
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
   },
   chapterIcon: {
     position: 'absolute',
     right: 0,
-    top: 4
+    top: 8
   }
 });

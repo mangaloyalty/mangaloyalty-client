@@ -1,15 +1,18 @@
 import * as app from '../../..';
+import * as area from '..';
 import * as areas from '../..';
 
 export class Navigator implements app.INavigator {
+  private readonly _chapters: area.ChapterViewModel[];
   private readonly _context: app.ContextApi;
-  private readonly _series: app.ILibrarySeries;
+  private readonly _seriesId: string;
   private _index: number;
 
-  constructor(context: app.ContextApi, index: number, series: app.ILibrarySeries) {
+  constructor(context: app.ContextApi, seriesId: string, chapters: area.ChapterViewModel[], index: number) {
+    this._chapters = chapters;
     this._context = context;
+    this._seriesId = seriesId;
     this._index = index;
-    this._series = series;
   }
 
   get hasNext() {
@@ -17,7 +20,7 @@ export class Navigator implements app.INavigator {
   }
 
   get hasPrevious() {
-    return this._index + 1 < this._series.chapters.length;
+    return this._index + 1 < this._chapters.length;
   }
 
   async openCurrentAsync() {
@@ -35,13 +38,17 @@ export class Navigator implements app.INavigator {
     this._index++;
     await this._openAsync(true);
   }
+  
+  async updateStatusAsync(pageCount: number, pageReadNumber: number) {
+    await this._chapters[this._index].updateStatusAsync(pageCount, pageReadNumber);
+  }
 
   private async _openAsync(shouldClose: boolean) {
-    const chapter = this._series.chapters[this._index];
-    const session = await this._context.library.chapterReadAsync(this._series.id, chapter.id);
+    const chapter = this._chapters[this._index];
+    const session = await this._context.library.chapterReadAsync(this._seriesId, chapter.id);
     if (session.value) {
       if (shouldClose) app.core.screen.close();
-      app.core.screen.open(areas.session.ChapterController, {navigator: this, session: session.value, title: chapter.title});
+      app.core.screen.open(areas.session.ChapterController, {navigator: this, pageNumber: chapter.pageReadNumber, session: session.value, title: chapter.title});
     } else if (await app.core.dialog.errorAsync(session.error)) {
       await this._openAsync(shouldClose);
     }
