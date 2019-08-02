@@ -14,7 +14,7 @@ export class ChapterController extends React.Component<{navigator?: app.INavigat
     return (
       <mui.Grid>
         {this.state.vm.showControls && <app.HeaderComponent title={this.props.title}
-          icon={this.props.navigator && <area.NavigatorIconComponent vm={this.state.vm} />}
+          icon={this.props.navigator && <area.ChapterIconComponent vm={this.state.vm} />}
           onBack={() => app.core.screen.close()} />}
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <area.ChapterView vm={this.state.vm} />

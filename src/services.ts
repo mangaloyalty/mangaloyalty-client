@@ -47,6 +47,8 @@ export const language = {
   sessionIconNextChapter: 'Next Chapter',
   sessionIconPreviousChapter: 'Previous Chapter',
   sessionIconRefresh: 'Refresh',
+  sessionLocalFalse: 'Source: Remote',
+  sessionLocalTrue: 'Source: Local',
   sessionToastNextActive: 'Going to the next chapter!',
   sessionToastNextRepeat: 'Open the next chapter?',
   sessionToastNextUnavailable: 'No next chapter available.',

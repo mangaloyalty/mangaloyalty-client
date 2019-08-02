@@ -1,4 +1,5 @@
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
+// UX: Reader: Option to disable image processing (e.g. old series are parsed too aggressively).
 // UX: Reader: Direction (LTR, RTL).
 // UX: Reader: Mode (Page-By-Page, Webtoon/Scroll).
 // UX: Reader: Quick jump to page.

@@ -14,7 +14,7 @@ export class MainController extends React.Component {
       <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={app.language.session} 
-          icon={<area.RefreshIconComponent onRefresh={() => this.state.vm.refreshAsync()} />}
+          icon={<area.MainIconComponent vm={this.state.vm} />}
           onBack={() => app.core.dialog.disconnectAsync()}>
           <app.FooterComponent>
             <area.MainView vm={this.state.vm} />
