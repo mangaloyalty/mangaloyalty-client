@@ -19,28 +19,22 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async refreshAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async refreshAsync() {
     this.isLoading = true;
     const sessionList = await this._context.session.listAsync();
     if (sessionList.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = sessionList.value;
+        this.sessions = sessionList.value;
       });
-    } else if (await app.core.dialog.errorAsync(sessionList.error)) {
-      await this.refreshAsync(true);
+    } else if (await app.core.dialog.errorAsync(true, sessionList.error)) {
+      await this.refreshAsync();
     }
-  }
-
-  @mobx.computed
-  get sessions() {
-    return this.source;
   }
 
   @mobx.observable
   isLoading = false;
 
   @mobx.observable
-  private source?: app.ISessionListItem[];
+  sessions?: app.ISessionListItem[];
 }

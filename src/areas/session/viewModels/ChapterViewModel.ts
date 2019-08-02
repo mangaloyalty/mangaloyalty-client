@@ -6,7 +6,7 @@ export class ChapterViewModel {
   private readonly _context: app.ContextApi;
   private readonly _loader: area.Loader;
   private readonly _navigator?: app.INavigator;
-  private readonly _session: app.ISessionListItem;
+  private readonly _pageCount: number;
   private _imageNextTime?: number;
   private _imagePreviousTime?: number;
   private _pageNumber: number;
@@ -15,8 +15,8 @@ export class ChapterViewModel {
     this._context = app.core.service.get(app.settings.contextKey);
     this._loader = new area.Loader(this._context, session);
     this._navigator = navigator;
+    this._pageCount = session.pageCount;
     this._pageNumber = pageNumber || 1;
-    this._session = session;
     this.updateAsync();
   }
 
@@ -46,7 +46,7 @@ export class ChapterViewModel {
   async pressNextAsync() {
     if (this.showControls) {
       this.showControls = false;
-    } else if (this._pageNumber < this._session.pageCount) {
+    } else if (this._pageNumber < this._pageCount) {
       this._pageNumber++;
       await this.updateAsync();
     } else if (!this._navigator || !this._navigator.hasNext) {
@@ -82,9 +82,8 @@ export class ChapterViewModel {
   }
 
   @mobx.action
-  async updateAsync(forceRefresh?: boolean) {
+  async updateAsync() {
     try {
-      if (!forceRefresh && this.isLoading) return;
       this.isLoading = true;
       const imagePromise = this._updateImageAsync();
       const statusPromise = this._updateStatusAsync();
@@ -92,8 +91,8 @@ export class ChapterViewModel {
       mobx.runInAction(() => this.isLoading = false);
       await statusPromise;
     } catch (error) {
-      if (await app.core.dialog.errorAsync(error)) {
-        await this.updateAsync(true);
+      if (await app.core.dialog.errorAsync(true, error)) {
+        await this.updateAsync();
       }
     }
   }
@@ -113,7 +112,7 @@ export class ChapterViewModel {
   }
 
   private async _updateStatusAsync() {
-    if (!this._navigator) return;
-    await this._navigator.updateStatusAsync(this._session.pageCount, this._pageNumber);
+    if (!this._navigator || !this._navigator.statusAsync) return;
+    await this._navigator.statusAsync(this._pageCount, this._pageNumber);
   }
 }

@@ -2,16 +2,14 @@ import * as app from '../../..';
 import * as area from '..';
 import * as mobx from 'mobx';
 
+// TODO: Completing a chapter should update the list and change the unreadCount.
+// TODO: Use tslib helper for more efficient resource usage.
 export class SeriesViewModel {
   private readonly _context: app.ContextApi;
-  private readonly _id: string;
-  private readonly _title: string;
 
-  constructor(id: string, title: string) {
+  constructor(series: app.ILibrarySeries) {
     this._context = app.core.service.get(app.settings.contextKey);
-    this._id = id;
-    this._title = title;
-    this.refreshAsync();
+    this._updateWith(series);
   }
   
   @mobx.action
@@ -21,54 +19,32 @@ export class SeriesViewModel {
 
   @mobx.action
   async readAsync() {
-    if (!this.chapters) return;
-    for (let i = this.chapters.length - 1; i >= 0; i--) {
-      const chapter = this.chapters[i];
-      if (!chapter.isUnread) continue;
-      await chapter.openAsync();
-      return;
-    }
+    for (let i = this.chapters.length - 1; i >= 0; i--) if (this.chapters[i].isUnread) return await this.chapters[i].openAsync();
+    app.core.toast.add(app.language.librarySeriesToastQuickRead);
   }
 
   @mobx.action
-  async refreshAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async refreshAsync() {
     this.isLoading = true;
-    const series = await this._context.library.seriesReadAsync(this._id);
+    const series = await this._context.library.seriesReadAsync(this.id);
     if (series.value) {
       mobx.runInAction(() => {
+        this._updateWith(series.value!);
         this.isLoading = false;
-        this.response = series.value;
       });
-    } else if (await app.core.dialog.errorAsync(series.error)) {
-      await this.refreshAsync(true);
+    } else if (await app.core.dialog.errorAsync(true, series.error)) {
+      await this.refreshAsync();
     }
   }
 
-  @mobx.computed
-  get chapters() {
-    return this.response && this.response.chapters.map((chapter) => new area.ChapterViewModel(this._context, this, chapter));
-  }
+  @mobx.observable
+  chapters!: area.ChapterViewModel[];
 
-  @mobx.computed
-  get id() {
-    return this.response && this.response.id;
-  }
+  @mobx.observable
+  id!: string;
 
-  @mobx.computed
-  get image() {
-    return this.response && this.response.source.image;
-  }
-
-  @mobx.computed
-  get summary() {
-    return this.response && this.response.source.summary; 
-  }
-
-  @mobx.computed
-  get title() {
-    return this.response && this.response.source.title || this._title;
-  }
+  @mobx.observable
+  image!: string;
 
   @mobx.observable
   isLoading = false;
@@ -77,5 +53,17 @@ export class SeriesViewModel {
   showChapters = false;
 
   @mobx.observable
-  private response?: app.ILibrarySeries;
+  summary?: string;
+
+  @mobx.observable
+  title!: string;
+
+  // TODO: Update existing ViewModels to prevent a re-render?
+  private _updateWith(series: app.ILibrarySeries) {
+    this.chapters = series.chapters.map((chapter) => new area.ChapterViewModel(this._context, this, chapter));
+    this.id = series.id;
+    this.image = series.source.image;
+    this.summary = series.source.summary;
+    this.title = series.source.title;
+  }
 }

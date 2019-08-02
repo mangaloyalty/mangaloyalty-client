@@ -15,8 +15,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async connectAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async connectAsync() {
     this.isLoading = true;
     this.hasServerError = false;
     const context = new app.ContextApi(this.server);
@@ -28,8 +27,8 @@ export class MainViewModel {
     } else if (openapi.value) {
       await app.core.dialog.connectAsync();
       mobx.runInAction(() => this.isLoading = false);
-    } else if (await app.core.dialog.errorAsync(openapi.error)) {
-      await this.connectAsync(true);
+    } else if (await app.core.dialog.errorAsync(false, openapi.error)) {
+      await this.connectAsync();
     } else {
       mobx.runInAction(() => this.isLoading = false);
     }

@@ -2,10 +2,11 @@
 // UX: Reader: Direction (LTR, RTL).
 // UX: Reader: Mode (Page-By-Page, Webtoon/Scroll).
 // UX: Reader: Quick jump to page.
+// UX: Reader: Show the page number and page count (20 / 51).
 // UX: Remote/Main: Support infinite scroll while pages are available.
-// UX: Remote/Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
-// UX: Remote/Series: When no chapter is available, the read icon does not work and no empty message is shown in the chapter tab.
 // UX: Screen: Back button support (via history).
+// UX: Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
+// UX: Series: When no chapter is available, the chapter tab should have an empty message.
 // UX: Touch: Support mouse-drag and mouse-scroll (Desktop-mode).
 // UX: Touch: Support swipe gestures for page navigation.
 // UX: Touch: Double click/tap for quick zoom-in on designated point.

@@ -4,9 +4,9 @@ import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
 @mobxReact.observer
-export class SeriesController extends React.Component<{id: string, title: string}> {
+export class SeriesController extends React.Component<{series: app.ILibrarySeries}> {
   state = {
-    vm: new area.SeriesViewModel(this.props.id, this.props.title)
+    vm: new area.SeriesViewModel(this.props.series)
   };
 
   render() {

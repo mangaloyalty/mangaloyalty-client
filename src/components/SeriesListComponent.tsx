@@ -17,7 +17,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends React.Compon
           <mui.Grid key={index} style={styles.series} onClick={() => this.props.onClick(series)}>
             <img src={`data:;base64, ${series.image}`} style={styles.image} />
             <mui.Typography style={styles.title}>{series.title}</mui.Typography>
-            {series.unreadCount && <mui.Typography style={styles.unreadCount}>{series.unreadCount}</mui.Typography>}
+            {Boolean(series.unreadCount) && <mui.Typography style={styles.unreadCount}>{series.unreadCount}</mui.Typography>}
           </mui.Grid>
         ))}
       </mui.Grid>
