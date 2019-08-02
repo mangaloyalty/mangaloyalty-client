@@ -24,7 +24,7 @@ export class SeriesViewModel {
     try {
       if (!this.source) return;
       this.isLoading = true;
-      await new area.Navigator(this._context, this.source.chapters.indexOf(chapter), this.source).openCurrentAsync();
+      await new area.Navigator(this._context, this.source.chapters, this.source.chapters.indexOf(chapter)).openCurrentAsync();
     } finally {
       mobx.runInAction(() => this.isLoading = false);
     }

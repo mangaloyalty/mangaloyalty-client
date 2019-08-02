@@ -86,11 +86,11 @@ export class ChapterViewModel {
     try {
       if (!forceRefresh && this.isLoading) return;
       this.isLoading = true;
-      const imageUrl = await this._loader.getImageUrlAsync(this._pageNumber);
-      mobx.runInAction(() => {
-        this.isLoading = false;
-        this.imageUrl = imageUrl;
-      });
+      const imagePromise = this._updateImageAsync();
+      const statusPromise = this._updateStatusAsync();
+      await imagePromise;
+      mobx.runInAction(() => this.isLoading = false);
+      await statusPromise;
     } catch (error) {
       if (await app.core.dialog.errorAsync(error)) {
         await this.updateAsync(true);
@@ -106,4 +106,14 @@ export class ChapterViewModel {
   
   @mobx.observable
   showControls = false;
+
+  private async _updateImageAsync() {
+    const imageUrl = await this._loader.getImageUrlAsync(this._pageNumber);
+    mobx.runInAction(() => this.imageUrl = imageUrl);
+  }
+
+  private async _updateStatusAsync() {
+    if (!this._navigator) return;
+    await this._navigator.updateStatusAsync(this._session.pageCount, this._pageNumber);
+  }
 }

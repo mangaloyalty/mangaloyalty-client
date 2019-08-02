@@ -6,8 +6,7 @@ export class HttpQuery {
   }
 
   add(key: string, value?: boolean | number | string) {
-    if (typeof value === 'undefined') return this;
-    if (typeof value === 'string' && !value) return this;
+    if (typeof value === 'undefined' || (typeof value === 'string' && !value)) return this;
     this._params.push(`${key}=${encodeURIComponent(value)}`);
     return this;
   }
