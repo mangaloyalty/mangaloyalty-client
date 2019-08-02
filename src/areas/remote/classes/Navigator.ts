@@ -2,14 +2,14 @@ import * as app from '../../..';
 import * as areas from '../..';
 
 export class Navigator implements app.INavigator {
+  private readonly _chapters: app.IRemoteSeriesChapter[];
   private readonly _context: app.ContextApi;
-  private readonly _series: app.IRemoteSeries;
   private _index: number;
 
-  constructor(context: app.ContextApi, index: number, series: app.IRemoteSeries) {
+  constructor(context: app.ContextApi, chapters: app.IRemoteSeriesChapter[], index: number) {
+    this._chapters = chapters;
     this._context = context;
     this._index = index;
-    this._series = series;
   }
 
   get hasNext() {
@@ -17,7 +17,7 @@ export class Navigator implements app.INavigator {
   }
 
   get hasPrevious() {
-    return this._index + 1 < this._series.chapters.length;
+    return this._index + 1 < this._chapters.length;
   }
 
   async openCurrentAsync() {
@@ -36,8 +36,12 @@ export class Navigator implements app.INavigator {
     await this._openAsync(true);
   }
 
+  updateStatusAsync() {
+    return Promise.resolve();
+  }
+
   private async _openAsync(shouldClose: boolean) {
-    const chapter = this._series.chapters[this._index];
+    const chapter = this._chapters[this._index];
     const session = await this._context.remote.startAsync(chapter.url);
     if (session.value) {
       if (shouldClose) app.core.screen.close();
