@@ -3,7 +3,7 @@ import * as area from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class NavigatorIconComponent extends React.Component<{vm: area.ChapterViewModel}> {
+export class ChapterIconComponent extends React.Component<{vm: area.ChapterViewModel}> {
   render() {
     return (
       <mui.Grid>

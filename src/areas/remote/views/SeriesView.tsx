@@ -25,16 +25,18 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
               <mui.Grid style={styles.seriesClear} />
             </mui.Paper>
           </mui.Grid>}
-          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContent}>
+          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.Grid style={{height: 44 * this.props.vm.chapters.length}}>
               <app.LazyComponent query={new app.LazyQuery(this.props.vm.chapters)} y={1680}>
                 {(chapter) => (
-                  <mui.Typography variant="subtitle1" style={styles.chapterItem} onClick={() => this.props.vm.openAsync(chapter)}>
-                    {chapter.title}
+                  <mui.Grid style={styles.chapterContent}>
+                    <mui.Typography variant="subtitle1" style={styles.chapterText} onClick={() => this.props.vm.openAsync(chapter)}>
+                      {chapter.title}
+                    </mui.Typography>
                     <mui.Icon style={styles.chapterIcon}>
                       <app.icons.ChevronRight />
                     </mui.Icon>
-                  </mui.Typography>
+                  </mui.Grid>
                 )}
               </app.LazyComponent>
             </mui.Grid>
@@ -68,15 +70,17 @@ const styles = app.styles({
   seriesClear: {
     clear: 'both'
   },
-  chapterContent: {
+  chapterContainer: {
     padding: 8
   },
-  chapterItem: {
+  chapterContent: {
     cursor: 'pointer',
-    overflow: 'hidden',
     padding: 8,
     paddingRight: 24,
     position: 'relative',
+  },
+  chapterText: {
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
   },

@@ -14,7 +14,7 @@ export class SeriesController extends React.Component<{series: app.ILibrarySerie
       <app.RefreshComponent onRefresh={() => this.state.vm.refreshAsync()}>
         <app.LoadingComponent open={this.state.vm.isLoading} />
         <app.HeaderComponent title={this.state.vm.title}
-          icon={<area.IconComponent onRead={() => this.state.vm.readAsync()} onRefresh={() => this.state.vm.refreshAsync()} />}
+          icon={<area.SeriesIconComponent vm={this.state.vm} />}
           onBack={() => app.core.screen.close()}>
           <area.SeriesView vm={this.state.vm} />
         </app.HeaderComponent>
