@@ -1,15 +1,16 @@
 import * as app from '../../..';
+import * as area from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class IconComponent extends React.Component<{onRead?: () => void, onRefresh: () => void}> {
+export class SeriesIconComponent extends React.Component<{vm: area.SeriesViewModel}> {
   render() {
     return (
       <mui.Grid style={styles.container}>
-        {this.props.onRead && <app.ButtonComponent title={app.language.remoteIconRead} onClick={() => this.props.onRead!()}>
+        <app.ButtonComponent title={app.language.remoteIconRead} onClick={() => this.props.vm.readAsync()}>
           <app.icons.PlayCircleOutline />
-        </app.ButtonComponent>}
-        <app.ButtonComponent title={app.language.remoteIconRefresh} onClick={() => this.props.onRefresh()}>
+        </app.ButtonComponent>
+        <app.ButtonComponent title={app.language.remoteIconRefresh} onClick={() => this.props.vm.refreshAsync()}>
           <app.icons.Refresh />
         </app.ButtonComponent>
       </mui.Grid>

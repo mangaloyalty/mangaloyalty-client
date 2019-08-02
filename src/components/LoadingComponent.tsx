@@ -19,6 +19,11 @@ export class LoadingComponent extends React.Component<{open: boolean}> {
     }
   }
 
+  componentWillUnmount() {
+    if (!this.state.timeoutHandle) return;
+    clearTimeout(this.state.timeoutHandle);
+  }
+
   render() {
     return (
       <mui.Modal open={this.state.open}>
