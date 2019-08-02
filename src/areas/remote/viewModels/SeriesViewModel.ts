@@ -4,14 +4,10 @@ import * as mobx from 'mobx';
 
 export class SeriesViewModel {
   private readonly _context: app.ContextApi;
-  private readonly _title: string;
-  private readonly _url: string;
 
-  constructor(title: string, url: string) {
+  constructor(series: app.IRemoteSeries) {
     this._context = app.core.service.get(app.settings.contextKey);
-    this._title = title;
-    this._url = url;
-    this.refreshAsync();
+    this._updateWith(series);
   }
   
   @mobx.action
@@ -21,55 +17,36 @@ export class SeriesViewModel {
 
   @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
-    try {
-      if (!this.source) return;
-      this.isLoading = true;
-      await new area.Navigator(this._context, this.source.chapters, this.source.chapters.indexOf(chapter)).openCurrentAsync();
-    } finally {
-      mobx.runInAction(() => this.isLoading = false);
-    }
+    this.isLoading = true;
+    await new area.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter)).openCurrentAsync();
+    mobx.runInAction(() => this.isLoading = false);
   }
 
   @mobx.action
   async readAsync() {
-    if (!this.source) return;
-    return await this.openAsync(this.source.chapters[this.source.chapters.length - 1]);
+    if (!this.chapters.length) return app.core.toast.add(app.language.remoteSeriesToastQuickRead);
+    await this.openAsync(this.chapters[this.chapters.length - 1]);
   }
 
   @mobx.action
-  async refreshAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async refreshAsync() {
     this.isLoading = true;
-    const series = await this._context.remote.seriesAsync(this._url);
+    const series = await this._context.remote.seriesAsync(this.url);
     if (series.value) {
       mobx.runInAction(() => {
+        this._updateWith(series.value!);
         this.isLoading = false;
-        this.source = series.value;
       });
-    } else if (await app.core.dialog.errorAsync(series.error)) {
-      await this.refreshAsync(true);
+    } else if (await app.core.dialog.errorAsync(true, series.error)) {
+      await this.refreshAsync();
     }
   }
 
-  @mobx.computed
-  get chapters() {
-    return this.source && this.source.chapters;
-  }
-
-  @mobx.computed
-  get image() {
-    return this.source && this.source.image;
-  }
-
-  @mobx.computed
-  get summary() {
-    return this.source && this.source.summary; 
-  }
-
-  @mobx.computed
-  get title() {
-    return this.source && this.source.title || this._title;
-  }
+  @mobx.observable
+  chapters!: app.IRemoteSeriesChapter[];
+  
+  @mobx.observable
+  image!: string;
 
   @mobx.observable
   isLoading = false;
@@ -78,5 +55,19 @@ export class SeriesViewModel {
   showChapters = false;
 
   @mobx.observable
-  private source?: app.IRemoteSeries;
+  summary?: string;
+  
+  @mobx.observable
+  title!: string;
+
+  @mobx.observable
+  url!: string;
+
+  private _updateWith(series: app.IRemoteSeries) {
+    this.chapters = series.chapters;
+    this.image = series.image;
+    this.summary = series.summary;
+    this.title = series.title;
+    this.url = series.url;
+  }
 }

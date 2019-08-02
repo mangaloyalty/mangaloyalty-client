@@ -14,7 +14,7 @@ export class ProviderView extends React.Component<{vm: area.ProviderViewModel}> 
             emptyBody={app.language.remoteEmptyBody}
             emptyTitle={app.language.remoteEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.open(series)} />
+            onClick={(series) => this.props.vm.openAsync(series.url)} />
         </mui.Grid>}
       </mui.Grid>
     );

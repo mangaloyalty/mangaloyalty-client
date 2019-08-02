@@ -23,11 +23,11 @@ export class DialogManager {
   }
 
   @mobx.action
-  async errorAsync(error?: string) {
+  async errorAsync(shouldClose: boolean, error?: string) {
     return await this._openAsync(app.language.basicErrorBody, app.language.basicErrorButtons, error).then((index) => {
       if (index) return true;
-      if (app.core.screen.isChildVisible) app.core.screen.close();
-      else app.core.screen.changeRoot(app.RootType.Connect);
+      if (shouldClose && app.core.screen.isChildVisible) app.core.screen.close();
+      else if (shouldClose) app.core.screen.changeRoot(app.RootType.Connect);
       return false;
     });
   }

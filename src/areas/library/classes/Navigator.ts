@@ -39,8 +39,8 @@ export class Navigator implements app.INavigator {
     await this._openAsync(true);
   }
   
-  async updateStatusAsync(pageCount: number, pageReadNumber: number) {
-    await this._chapters[this._index].updateStatusAsync(pageCount, pageReadNumber);
+  async statusAsync(pageCount: number, pageReadNumber: number) {
+    await this._chapters[this._index].statusAsync(pageCount, pageReadNumber);
   }
 
   private async _openAsync(shouldClose: boolean) {
@@ -48,8 +48,9 @@ export class Navigator implements app.INavigator {
     const session = await this._context.library.chapterReadAsync(this._seriesId, chapter.id);
     if (session.value) {
       if (shouldClose) app.core.screen.close();
-      app.core.screen.open(areas.session.ChapterController, {navigator: this, pageNumber: chapter.pageReadNumber, session: session.value, title: chapter.title});
-    } else if (await app.core.dialog.errorAsync(session.error)) {
+      const pageNumber = chapter.pageReadNumber && chapter.pageReadNumber < session.value.pageCount ? chapter.pageReadNumber : undefined;
+      app.core.screen.open(areas.session.ChapterController, {navigator: this, pageNumber: pageNumber, session: session.value, title: chapter.title});
+    } else if (await app.core.dialog.errorAsync(false, session.error)) {
       await this._openAsync(shouldClose);
     }
   }
