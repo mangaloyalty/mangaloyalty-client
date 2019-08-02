@@ -67,7 +67,7 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
             emptyBody={app.language.libraryEmptyBody}
             emptyTitle={app.language.libraryEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.open(series)} />}
+            onClick={(series) => this.props.vm.openAsync(series.id)} />}
         </mui.Grid>
       </mui.Grid>
     );

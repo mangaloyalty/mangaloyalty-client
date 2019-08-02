@@ -45,31 +45,31 @@ export class MainViewModel {
   }
 
   @mobx.action
-  open(series: app.ILibraryListItem) {
-    app.core.screen.open(area.SeriesController, {
-      id: series.id,
-      title: series.title
-    });
+  async openAsync(id: string) {
+    this.isLoading = true;
+    const series = await this._context.library.seriesReadAsync(id);
+    if (series.value) {
+      app.core.screen.open(area.SeriesController, {series: series.value});
+      mobx.runInAction(() => this.isLoading = false);
+    } else if (await app.core.dialog.errorAsync(false, series.error)) {
+      await this.openAsync(id);
+    } else {
+      mobx.runInAction(() => this.isLoading = false);
+    }
   }
   
   @mobx.action
-  async refreshAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async refreshAsync() {
     this.isLoading = true;
     const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
     if (seriesList.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = seriesList.value;
+        this.series = seriesList.value;
       });
-    } else if (await app.core.dialog.errorAsync(seriesList.error)) {
-      await this.refreshAsync(true);
+    } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+      await this.refreshAsync();
     }
-  }
-
-  @mobx.computed
-  get series() {
-    return this.source;
   }
 
   @mobx.observable
@@ -88,5 +88,5 @@ export class MainViewModel {
   search = '';
 
   @mobx.observable
-  private source?: app.ILibraryList;
+  series?: app.ILibraryList;
 }

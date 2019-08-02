@@ -19,16 +19,21 @@ export class ProviderViewModel {
   }
 
   @mobx.action
-  open(series: app.IRemoteListItem) {
-    app.core.screen.open(area.SeriesController, {
-      title: series.title,
-      url: series.url
-    });
+  async openAsync(url: string) {
+    this.isLoading = true;
+    const series = await this._context.remote.seriesAsync(url);
+    if (series.value) {
+      app.core.screen.open(area.SeriesController, {series: series.value});
+      mobx.runInAction(() => this.isLoading = false);
+    } else if (await app.core.dialog.errorAsync(false, series.error)) {
+      await this.openAsync(url);
+    } else {
+      mobx.runInAction(() => this.isLoading = false);
+    }
   }
 
   @mobx.action
-  async refreshAsync(forceRefresh?: boolean) {
-    if (!forceRefresh && this.isLoading) return;
+  async refreshAsync() {
     this.isLoading = true;
     const seriesList = this.search
       ? await this._context.remote.searchAsync(this.name, this.search)
@@ -36,21 +41,16 @@ export class ProviderViewModel {
     if (seriesList.value) {
       mobx.runInAction(() => {
         this.isLoading = false;
-        this.source = seriesList.value;
+        this.series = seriesList.value;
       });
-    } else if (await app.core.dialog.errorAsync(seriesList.error)) {
-      await this.refreshAsync(true);
+    } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+      await this.refreshAsync();
     }
   }
 
   @mobx.computed
   get name() {
     return this._name;
-  }
-
-  @mobx.computed
-  get series() {
-    return this.source;
   }
 
   @mobx.observable
@@ -60,5 +60,5 @@ export class ProviderViewModel {
   search = '';
 
   @mobx.observable
-  private source?: app.IRemoteList;
+  series?: app.IRemoteList;
 }

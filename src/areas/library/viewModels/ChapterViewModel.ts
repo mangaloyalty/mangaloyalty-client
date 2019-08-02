@@ -2,34 +2,35 @@ import * as app from '../../..';
 import * as area from '..';
 import * as mobx from 'mobx';
 
-// TODO: Make the dependent SeriesViewModel be pre-loaded with data as well, and remove id/chapter checks here.
 export class ChapterViewModel {
-  constructor(private _context: app.ContextApi, private _series: area.SeriesViewModel, chapter: app.ILibrarySeriesChapter) {
-    this.id = chapter.id;
-    this.pageCount = chapter.pageCount;
-    this.pageReadNumber = chapter.pageReadNumber;
-    this.title = chapter.title;
+  private readonly _context: app.ContextApi;
+  private readonly _series: area.SeriesViewModel;
+
+  constructor(context: app.ContextApi, series: area.SeriesViewModel, chapter: app.ILibrarySeriesChapter) {
+    this._context = context;
+    this._series = series;
+    this._updateWith(chapter);
   }
 
   @mobx.action
   async openAsync() {
-    try {
-      if (!this._series.chapters || !this._series.id) return;
-      this._series.isLoading = true;
-      await new area.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
-    } finally {
-      mobx.runInAction(() => this._series.isLoading = false);
-    }
+    this._series.isLoading = true;
+    await new area.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
+    mobx.runInAction(() => this._series.isLoading = false);
   }
 
   @mobx.action
-  async updateStatusAsync(pageCount: number, pageReadNumber: number) {
-    if (!this._series.id || (this.pageReadNumber && pageReadNumber < this.pageReadNumber)) return;
-    await this._context.library.chapterPatchAsync(this._series.id, this.id, pageReadNumber);
-    mobx.runInAction(() => {
-      this.pageCount = pageCount;
-      this.pageReadNumber = pageReadNumber;
-    });
+  async statusAsync(pageCount: number, pageReadNumber: number) {
+    if (this.pageReadNumber && pageReadNumber < this.pageReadNumber) {
+      return;
+    } else if (await this._context.library.chapterPatchAsync(this._series.id, this.id, pageReadNumber)) {
+      mobx.runInAction(() => {
+        this.pageCount = pageCount;
+        this.pageReadNumber = pageReadNumber;
+      });
+    } else if (await app.core.dialog.errorAsync(true)) {
+      await this.statusAsync(pageCount, pageReadNumber);
+    }
   }
 
   @mobx.computed
@@ -38,7 +39,7 @@ export class ChapterViewModel {
   }
 
   @mobx.observable
-  id: string;
+  id!: string;
 
   @mobx.observable
   pageCount?: number;
@@ -47,5 +48,12 @@ export class ChapterViewModel {
   pageReadNumber?: number;
 
   @mobx.observable
-  title: string;
+  title!: string;
+
+  private _updateWith(chapter: app.ILibrarySeriesChapter) {
+    this.id = chapter.id;
+    this.pageCount = chapter.pageCount;
+    this.pageReadNumber = chapter.pageReadNumber;
+    this.title = chapter.title;
+  }
 }
