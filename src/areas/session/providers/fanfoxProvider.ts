@@ -32,7 +32,7 @@ export const fanfoxProvider = {
 async function convertAsync(image: string) {
   return await new Promise<HTMLImageElement>((resolve, reject) => {
     const element = new Image();
-    element.addEventListener('error', reject);
+    element.addEventListener('error', () => reject(new Error()));
     element.addEventListener('load', () => resolve(element));
     element.src = `data:;base64, ${image}`;
   });

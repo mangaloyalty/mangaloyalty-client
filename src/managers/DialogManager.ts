@@ -23,8 +23,8 @@ export class DialogManager {
   }
 
   @mobx.action
-  async errorAsync(shouldClose: boolean, error?: string) {
-    return await this._openAsync(app.language.basicErrorBody, app.language.basicErrorButtons, error).then((index) => {
+  async errorAsync(shouldClose: boolean, ...errors: any[]) {
+    return await this._openAsync(app.language.basicErrorBody, app.language.basicErrorButtons, errors).then((index) => {
       if (index) return true;
       if (shouldClose && app.core.screen.isChildVisible) app.core.screen.close();
       else if (shouldClose) app.core.screen.changeRoot(app.RootType.Connect);
@@ -41,18 +41,25 @@ export class DialogManager {
   items: {
     body: string;
     buttons: string[];
-    error?: string;
+    errorTexts: string[];
     id: number;
     send: (index: number) => void;
   }[];
 
-  private async _openAsync(body: string, buttons: string[], error?: string) {
+  private async _openAsync(body: string, buttons: string[], errors?: any[]) {
     return await new Promise<number>((resolve) => {
       const id = this.items.length + 1;
-      this.items.push({body, buttons, error, id, send: (index: number) => {
+      const errorTexts = errors ? errors.map(convertErrorText).filter(Boolean).map((errorText) => errorText!) : [];    
+      this.items.push({body, buttons, errorTexts, id, send: (index: number) => {
         mobx.runInAction(() => this.items.pop());
         resolve(index);
       }});
     });
   }
+}
+
+function convertErrorText(error?: any) {
+  if (error instanceof Error) return error.stack;
+  else if (error) return String(error) || undefined;
+  else return;
 }

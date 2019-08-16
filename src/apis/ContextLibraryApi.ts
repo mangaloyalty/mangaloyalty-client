@@ -58,8 +58,8 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async chapterPatchAsync(seriesId: string, chapterId: string, pageReadNumber: number) {
-    const query = new app.HttpQuery().add('pageReadNumber', pageReadNumber);
+  async chapterPatchAsync(seriesId: string, chapterId: string, isReadCompleted?: boolean, pageReadNumber?: number) {
+    const query = new app.HttpQuery().add('isReadCompleted', isReadCompleted).add('pageReadNumber', pageReadNumber);
     const request = this._http.patch(`/api/library/${encodeURIComponent(seriesId)}/${encodeURIComponent(chapterId)}` + query);
     const response = await request();
     return response;

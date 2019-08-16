@@ -33,9 +33,6 @@ export class SeriesView extends React.Component<{vm: area.SeriesViewModel}> {
                     <mui.Typography variant="subtitle1" style={styles.chapterText} onClick={() => this.props.vm.openAsync(chapter)}>
                       {chapter.title}
                     </mui.Typography>
-                    <mui.Icon style={styles.chapterIcon}>
-                      <app.icons.ChevronRight />
-                    </mui.Icon>
                   </mui.Grid>
                 )}
               </app.LazyComponent>
@@ -83,10 +80,5 @@ const styles = app.styles({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
-  },
-  chapterIcon: {
-    position: 'absolute',
-    right: 0,
-    top: 4
   }
 });

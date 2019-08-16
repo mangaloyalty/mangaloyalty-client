@@ -40,7 +40,8 @@ export class Navigator implements app.INavigator {
   }
   
   async statusAsync(pageCount: number, pageReadNumber: number) {
-    await this._chapters[this._index].statusAsync(pageCount, pageReadNumber);
+    const isReadCompleted = pageReadNumber >= pageCount ? true : undefined;
+    await this._chapters[this._index].statusAsync(isReadCompleted, pageReadNumber);
   }
 
   private async _openAsync(shouldClose: boolean) {
