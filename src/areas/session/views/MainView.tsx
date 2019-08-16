@@ -23,9 +23,6 @@ export class MainView extends React.Component<{vm: area.MainViewModel}> {
                   <mui.Typography variant="caption" style={styles.secondaryText}>
                     {session.isLocal ? app.language.sessionLocalTrue : app.language.sessionLocalFalse}
                   </mui.Typography>
-                  <mui.Icon style={styles.icon}>
-                    <app.icons.ChevronRight />
-                  </mui.Icon>
                 </mui.Grid>
               )}
             </app.LazyComponent>
@@ -53,10 +50,5 @@ const styles = app.styles({
   },
   secondaryText: {
     opacity: 0.7
-  },
-  icon: {
-    position: 'absolute',
-    right: 0,
-    top: 20
   }
 });

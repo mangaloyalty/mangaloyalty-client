@@ -20,4 +20,4 @@ export class StorageManager {
       localStorage.removeItem(`${keyPrefix}.${key}`);
     }
   }
-};
+}

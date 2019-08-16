@@ -81,6 +81,7 @@ export class ChapterViewModel {
     this.showControls = !this.showControls;
   }
 
+  // TODO: If the previous status promise is still resolving, DON'T run this update?!
   @mobx.action
   async updateAsync() {
     try {

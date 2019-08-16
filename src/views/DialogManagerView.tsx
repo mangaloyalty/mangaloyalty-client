@@ -7,13 +7,13 @@ import * as React from 'react';
 export class DialogManagerView extends React.Component {
   render() {
     return app.core.dialog.items.map((item, index) => (
-      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1} style={app.limiter}>
+      <mui.Dialog key={item.id} fullWidth maxWidth={false} open={index === app.core.dialog.items.length - 1} style={{...styles.container, ...app.limiter}}>
         <mui.DialogContent style={styles.content}>
           <mui.DialogContentText>
             {item.body}
           </mui.DialogContentText>
-          {item.error && <pre style={styles.error}>
-            {item.error}
+          {Boolean(item.errorTexts.length) && <pre style={styles.error}>
+            {item.errorTexts.map((errorText) => <text>{errorText}</text>)}
           </pre>}
         </mui.DialogContent>
         <mui.DialogActions>
@@ -29,6 +29,9 @@ export class DialogManagerView extends React.Component {
 }
 
 const styles = app.styles({
+  container: {
+    zIndex: 2000
+  },
   content: {
     paddingTop: 24
   },

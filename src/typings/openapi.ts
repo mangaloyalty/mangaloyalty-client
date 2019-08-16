@@ -47,6 +47,7 @@ export interface ILibrarySeriesChapter {
   addedAt: number;
   deletedAt?: number;
   syncAt?: number;
+  isReadCompleted?: boolean;
   pageCount?: number;
   pageReadNumber?: number;
   title: string;
@@ -87,8 +88,14 @@ export interface IRemoteSeriesChapter {
 export interface ISessionListItem {
   id: string;
   isLocal: boolean;
+  isSuccessful?: boolean;
   pageCount: number;
   url: string;
+  library?: {
+    seriesId: string;
+    chapterId: string;
+    sync: boolean;
+  };
 }
 export interface ISessionPage {
   image: string;
@@ -155,7 +162,8 @@ export interface ILibraryChapterPatchContext {
     chapterId: string;
   };
   query: {
-    pageReadNumber: number;
+    isReadCompleted?: boolean;
+    pageReadNumber?: number;
   };
 }
 export interface IRemotePopularContext {
@@ -179,6 +187,11 @@ export interface IRemoteSeriesContext {
 export interface IRemoteStartContext {
   query: {
     url: IProviderChapterUrl;
+  };
+}
+export interface ISessionListContext {
+  query: {
+    seriesId?: string;
   };
 }
 export interface ISessionPageContext {
