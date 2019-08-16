@@ -1,3 +1,4 @@
+// TODO: Split languages?
 export const language = {
   basicConnectBody: 'The server version is not supported. Please update!',
   basicConnectButtons: ['OK'],
@@ -30,6 +31,8 @@ export const language = {
   libraryListSortKeyTitle: 'BY TITLE',
   librarySeriesAbout: 'About',
   librarySeriesChapters: 'Chapters',
+  librarySeriesMarkRead: 'Mark as Read',
+  librarySeriesMarkUnread: 'Mark as Unread',
   librarySeriesSummary: 'No summary is available for this series.',
   librarySeriesToastQuickRead: 'No unread chapter available.',
   remote: 'Remote',

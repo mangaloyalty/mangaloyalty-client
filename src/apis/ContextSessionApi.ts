@@ -7,8 +7,9 @@ export class ContextSessionApi {
     this._http = http;
   }
 
-  async listAsync() {
-    const request = this._http.get('/api/session');
+  async listAsync(seriesId?: string) {
+    const query = new app.HttpQuery().add('seriesId', seriesId);
+    const request = this._http.get('/api/session' + query);
     const response = await request<app.ISessionListResponse>();
     return response;
   }

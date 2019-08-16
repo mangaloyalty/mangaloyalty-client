@@ -20,40 +20,51 @@ export class ChapterViewModel {
   }
 
   @mobx.action
-  async statusAsync(pageCount: number, pageReadNumber: number) {
-    if (this.pageReadNumber && pageReadNumber < this.pageReadNumber) {
-      return;
-    } else if (await this._context.library.chapterPatchAsync(this._series.id, this.id, pageReadNumber)) {
+  async statusAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
+    if (await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber)) {
       mobx.runInAction(() => {
-        this.pageCount = pageCount;
+        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
         this.pageReadNumber = pageReadNumber;
       });
     } else if (await app.core.dialog.errorAsync(true)) {
-      await this.statusAsync(pageCount, pageReadNumber);
+      await this.statusAsync(isReadCompleted, pageReadNumber);
+    }
+  }
+
+  @mobx.action
+  async toggleReadCompleted() {
+    if (await this._context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted)) {
+      mobx.runInAction(() => this.isReadCompleted = !this.isReadCompleted);
+    } else if (await app.core.dialog.errorAsync(true)) {
+      await this.toggleReadCompleted();
     }
   }
 
   @mobx.computed
-  get isUnread() {
-    return !this.pageCount || !this.pageReadNumber || this.pageReadNumber < this.pageCount;
+  get isSynchronized() {
+    return Boolean(this.syncAt);
   }
 
   @mobx.observable
   id!: string;
 
   @mobx.observable
-  pageCount?: number;
+  isReadCompleted?: boolean;
 
   @mobx.observable
   pageReadNumber?: number;
+
+  @mobx.observable
+  syncAt?: number;
 
   @mobx.observable
   title!: string;
 
   private _updateWith(chapter: app.ILibrarySeriesChapter) {
     this.id = chapter.id;
-    this.pageCount = chapter.pageCount;
+    this.isReadCompleted = chapter.isReadCompleted;
     this.pageReadNumber = chapter.pageReadNumber;
+    this.syncAt = chapter.syncAt;
     this.title = chapter.title;
   }
 }

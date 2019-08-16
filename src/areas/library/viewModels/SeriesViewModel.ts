@@ -19,7 +19,7 @@ export class SeriesViewModel {
 
   @mobx.action
   async readAsync() {
-    for (let i = this.chapters.length - 1; i >= 0; i--) if (this.chapters[i].isUnread) return await this.chapters[i].openAsync();
+    for (let i = this.chapters.length - 1; i >= 0; i--) if (!this.chapters[i].isReadCompleted) return await this.chapters[i].openAsync();
     app.core.toast.add(app.language.librarySeriesToastQuickRead);
   }
 
