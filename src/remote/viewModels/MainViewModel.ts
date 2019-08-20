@@ -1,16 +1,19 @@
 import * as app from '..';
 import * as mobx from 'mobx';
+const storageProvider = 'RemoteProvider';
 
 export class MainViewModel {
   constructor() {
-    this.provider = new app.ProviderViewModel(app.settings.providerDefaultName as app.IEnumeratorProvider);
+    const providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);
+    this.provider = new app.ProviderViewModel(providerName);
     this.provider.refreshAsync();
   }
   
   @mobx.action
-  changeProvider(name: app.IEnumeratorProvider) {
-    if (name === this.provider.name) return;
-    this.provider = new app.ProviderViewModel(name);
+  changeProvider(providerName: app.IEnumeratorProvider) {
+    if (providerName === this.provider.name) return;
+    app.core.storage.set(storageProvider, providerName);
+    this.provider = new app.ProviderViewModel(providerName);
     this.provider.refreshAsync();
   }
 
