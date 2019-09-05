@@ -81,7 +81,6 @@ export class ChapterViewModel {
     this.showControls = !this.showControls;
   }
 
-  // TODO: If the previous status promise is still resolving, DON'T run this update?!
   @mobx.action
   async updateAsync() {
     try {
@@ -89,8 +88,8 @@ export class ChapterViewModel {
       const imagePromise = this._updateImageAsync();
       const statusPromise = this._updateStatusAsync();
       await imagePromise;
-      mobx.runInAction(() => this.isLoading = false);
       await statusPromise;
+      this.isLoading = false;
     } catch (error) {
       if (await app.core.dialog.errorAsync(true, error)) {
         await this.updateAsync();
@@ -109,7 +108,7 @@ export class ChapterViewModel {
 
   private async _updateImageAsync() {
     const imageUrl = await this._loader.getImageUrlAsync(this._pageNumber);
-    mobx.runInAction(() => this.imageUrl = imageUrl);
+    this.imageUrl = imageUrl;
   }
 
   private async _updateStatusAsync() {

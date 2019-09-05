@@ -14,7 +14,6 @@
 // UX: Touch: Zoom with constraints of the image instead of the container.
 // UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as areas from './areas';
-import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as muiStyles from '@material-ui/styles';
@@ -53,6 +52,5 @@ class Root extends React.Component {
 
 (function() {
   areas.shared.core.screen.open(Root);
-  mobx.configure({enforceActions: 'observed'});
   ReactDOM.render(<App />, document.getElementById('container'));
 })();
