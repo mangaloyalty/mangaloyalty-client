@@ -19,6 +19,12 @@ export class ChapterViewModel {
   }
 
   @mobx.action
+  refreshWith(chapter: app.ILibrarySeriesChapter) {
+    this._updateWith(chapter);
+    return this;
+  }
+
+  @mobx.action
   async statusAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
     if (await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber)) {
       this.isReadCompleted = this.isReadCompleted || isReadCompleted;

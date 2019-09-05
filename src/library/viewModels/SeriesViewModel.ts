@@ -56,12 +56,17 @@ export class SeriesViewModel {
   @mobx.observable
   title!: string;
 
-  // TODO: Update existing ViewModels to prevent a re-render?
   private _updateWith(series: app.ILibrarySeries) {
-    this.chapters = series.chapters.map((chapter) => new app.ChapterViewModel(this._context, this, chapter));
+    this.chapters = series.chapters.map(this._viewModelFor.bind(this));
     this.id = series.id;
     this.image = series.source.image;
     this.summary = series.source.summary;
     this.title = series.source.title;
+  }
+
+  private _viewModelFor(chapter: app.ILibrarySeriesChapter) {
+    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id);
+    if (vm) return vm.refreshWith(chapter);
+    return new app.ChapterViewModel(this._context, this, chapter)
   }
 }

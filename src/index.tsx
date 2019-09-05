@@ -1,3 +1,4 @@
+// UX: Generic: Production-ready lazy loading library for performance-heavy lists.
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Reader: Option to disable image processing (e.g. old series are parsed too aggressively).
 // UX: Reader: Direction (LTR, RTL).

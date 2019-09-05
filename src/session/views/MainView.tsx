@@ -14,19 +14,17 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           title={language.sessionEmptyTitle} />}
         {this.props.vm.sessions && this.props.vm.sessions.length !== 0 && <mui.Paper style={styles.container}>
           <mui.Grid style={{height: 65 * this.props.vm.sessions.length}}>
-            <app.LazyComponent query={new app.LazyQuery(this.props.vm.sessions)} y={1680}>
-              {(session) => (
-                <mui.Grid style={styles.content}>
-                  <mui.Typography variant="subtitle1" style={styles.primaryText} onClick={() => this.props.vm.open(session)}>
-                    {session.url}
-                  </mui.Typography>
-                  <mui.Typography variant="caption" style={styles.secondaryText}>
-                    {session.isLocal ? language.sessionLocalTrue : language.sessionLocalFalse}
-                  </mui.Typography>
-                </mui.Grid>
-              )}
-            </app.LazyComponent>
-          </mui.Grid>         
+            {this.props.vm.sessions.map((session) => (
+              <mui.Grid key={session.id} style={styles.content}>
+                <mui.Typography variant="subtitle1" style={styles.primaryText} onClick={() => this.props.vm.open(session)}>
+                  {session.url}
+                </mui.Typography>
+                <mui.Typography variant="caption" style={styles.secondaryText}>
+                  {session.isLocal ? language.sessionLocalTrue : language.sessionLocalFalse}
+                </mui.Typography>
+              </mui.Grid>
+            ))}
+          </mui.Grid>     
         </mui.Paper>}
       </mui.Grid>
     );
