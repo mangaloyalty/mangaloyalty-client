@@ -6,7 +6,7 @@ export class MainViewModel {
   constructor() {
     if (!app.core.storage.get(storageServer, '')) return;
     this.isVisible = false;
-    this.connectAsync().then(() => mobx.runInAction(() => this.isVisible = true));
+    this.connectAsync().then(() => this.isVisible = true);
   }
 
   @mobx.action
@@ -26,11 +26,11 @@ export class MainViewModel {
       app.core.screen.changeRoot(app.RootType.Library);
     } else if (openapi.value) {
       await app.core.dialog.connectAsync();
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(false, openapi.error)) {
       await this.connectAsync();
     } else {
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     }
   }
 

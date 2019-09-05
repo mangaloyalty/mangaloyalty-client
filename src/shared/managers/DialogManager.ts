@@ -52,7 +52,7 @@ export class DialogManager {
       const id = this.items.length + 1;
       const errorTexts = errors.map(convertErrorText).filter(Boolean).map((errorText) => errorText!);
       this.items.push({body, buttons, errorTexts, id, send: (index: number) => {
-        mobx.runInAction(() => this.items.pop());
+        this.items.pop();
         resolve(index);
       }});
     });
