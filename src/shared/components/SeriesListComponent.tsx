@@ -3,10 +3,6 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 export class SeriesListComponent<T extends app.ISeriesItem> extends React.Component<{emptyBody: string, emptyTitle: string, series: T[], onClick: (series: T) => void}> {
-  componentWillReceiveProps() {
-    scrollTo(0, 0);
-  }
-
   render() {
     return (
       <mui.Grid style={styles.container}>
