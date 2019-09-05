@@ -49,11 +49,11 @@ export class MainViewModel {
     const series = await this._context.library.seriesReadAsync(id);
     if (series.value) {
       app.core.screen.open(app.SeriesController, {series: series.value});
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(false, series.error)) {
       await this.openAsync(id);
     } else {
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     }
   }
   
@@ -62,10 +62,8 @@ export class MainViewModel {
     this.isLoading = true;
     const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
     if (seriesList.value) {
-      mobx.runInAction(() => {
-        this.isLoading = false;
-        this.series = seriesList.value;
-      });
+      this.isLoading = false;
+      this.series = seriesList.value;
     } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
       await this.refreshAsync();
     }

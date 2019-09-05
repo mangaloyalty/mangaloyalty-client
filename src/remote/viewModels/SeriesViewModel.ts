@@ -19,7 +19,7 @@ export class SeriesViewModel {
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     this.isLoading = true;
     await new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter)).openCurrentAsync();
-    mobx.runInAction(() => this.isLoading = false);
+    this.isLoading = false;
   }
 
   @mobx.action
@@ -33,10 +33,8 @@ export class SeriesViewModel {
     this.isLoading = true;
     const series = await this._context.remote.seriesAsync(this.url);
     if (series.value) {
-      mobx.runInAction(() => {
-        this._updateWith(series.value!);
-        this.isLoading = false;
-      });
+      this._updateWith(series.value);
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, series.error)) {
       await this.refreshAsync();
     }

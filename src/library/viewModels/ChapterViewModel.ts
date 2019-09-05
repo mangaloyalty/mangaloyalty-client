@@ -15,16 +15,14 @@ export class ChapterViewModel {
   async openAsync() {
     this._series.isLoading = true;
     await new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
-    mobx.runInAction(() => this._series.isLoading = false);
+    this._series.isLoading = false;
   }
 
   @mobx.action
   async statusAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
     if (await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber)) {
-      mobx.runInAction(() => {
-        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
-        this.pageReadNumber = pageReadNumber;
-      });
+      this.isReadCompleted = this.isReadCompleted || isReadCompleted;
+      this.pageReadNumber = pageReadNumber;
     } else if (await app.core.dialog.errorAsync(true)) {
       await this.statusAsync(isReadCompleted, pageReadNumber);
     }
@@ -33,7 +31,7 @@ export class ChapterViewModel {
   @mobx.action
   async toggleReadCompleted() {
     if (await this._context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted)) {
-      mobx.runInAction(() => this.isReadCompleted = !this.isReadCompleted);
+      this.isReadCompleted = !this.isReadCompleted;
     } else if (await app.core.dialog.errorAsync(true)) {
       await this.toggleReadCompleted();
     }

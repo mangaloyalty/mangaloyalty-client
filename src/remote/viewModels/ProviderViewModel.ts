@@ -23,11 +23,11 @@ export class ProviderViewModel {
     const series = await this._context.remote.seriesAsync(url);
     if (series.value) {
       app.core.screen.open(app.SeriesController, {series: series.value});
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(false, series.error)) {
       await this.openAsync(url);
     } else {
-      mobx.runInAction(() => this.isLoading = false);
+      this.isLoading = false;
     }
   }
 
@@ -38,10 +38,8 @@ export class ProviderViewModel {
       ? await this._context.remote.searchAsync(this.name, this.search)
       : await this._context.remote.popularAsync(this.name);
     if (seriesList.value) {
-      mobx.runInAction(() => {
-        this.isLoading = false;
-        this.series = seriesList.value;
-      });
+      this.isLoading = false;
+      this.series = seriesList.value;
     } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
       await this.refreshAsync();
     }

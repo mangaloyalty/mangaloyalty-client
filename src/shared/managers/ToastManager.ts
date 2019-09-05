@@ -9,7 +9,7 @@ export class ToastManager {
   @mobx.action
   add(body: string)  {
     this.items.push(body);
-    setTimeout(() => mobx.runInAction(() => this.items.shift()), app.settings.toastTimeout);
+    setTimeout(() => this.items.shift(), app.settings.toastTimeout);
   }
 
   @mobx.observable

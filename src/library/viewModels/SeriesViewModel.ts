@@ -28,10 +28,8 @@ export class SeriesViewModel {
     this.isLoading = true;
     const series = await this._context.library.seriesReadAsync(this.id);
     if (series.value) {
-      mobx.runInAction(() => {
-        this._updateWith(series.value!);
-        this.isLoading = false;
-      });
+      this._updateWith(series.value);
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, series.error)) {
       await this.refreshAsync();
     }
