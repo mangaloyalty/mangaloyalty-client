@@ -33,7 +33,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
             </mui.Paper>
           </mui.Grid>}
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
-            <mui.List style={{height: 48 * this.props.vm.chapters.length}}>
+            <mui.List>
               {this.props.vm.chapters.map((chapter) => (
                 <app.ChapterView key={chapter.id} vm={chapter} />
               ))}

@@ -13,18 +13,13 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           body={language.sessionEmptyBody}
           title={language.sessionEmptyTitle} />}
         {this.props.vm.sessions && this.props.vm.sessions.length !== 0 && <mui.Paper style={styles.container}>
-          <mui.Grid style={{height: 65 * this.props.vm.sessions.length}}>
+          <mui.List>
             {this.props.vm.sessions.map((session) => (
-              <mui.Grid key={session.id} style={styles.content}>
-                <mui.Typography variant="subtitle1" style={styles.primaryText} onClick={() => this.props.vm.open(session)}>
-                  {session.url}
-                </mui.Typography>
-                <mui.Typography variant="caption" style={styles.secondaryText}>
-                  {session.isLocal ? language.sessionLocalTrue : language.sessionLocalFalse}
-                </mui.Typography>
-              </mui.Grid>
+              <mui.ListItem button key={session.id} onClick={() => this.props.vm.open(session)}>
+                <mui.ListItemText primary={session.url} secondary={session.isLocal ? language.sessionLocalTrue : language.sessionLocalFalse} style={styles.text} />
+              </mui.ListItem>
             ))}
-          </mui.Grid>     
+          </mui.List>     
         </mui.Paper>}
       </mui.Grid>
     );
@@ -35,18 +30,9 @@ const styles = app.styles({
   container: {
     padding: 8
   },
-  content: {
-    cursor: 'pointer',
-    padding: 8,
-    paddingRight: 24,
-    position: 'relative',
-  },
-  primaryText: {
+  text: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
-  },
-  secondaryText: {
-    opacity: 0.7
   }
 });

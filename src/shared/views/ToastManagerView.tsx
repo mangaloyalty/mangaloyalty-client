@@ -26,7 +26,7 @@ const styles = app.styles({
     pointerEvents: 'none',
     position: 'fixed',
     right: 0,
-    zIndex: 2000
+    zIndex: 2100
   },
   typography: {
     background: 'rgba(0, 0, 0, 0.75)',
