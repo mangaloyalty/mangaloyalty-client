@@ -46,11 +46,14 @@ export class MainViewModel {
   @mobx.action
   async openAsync(id: string) {
     this.isLoading = true;
-    const series = await this._context.library.seriesReadAsync(id);
-    if (series.value) {
-      app.core.screen.open(app.SeriesController, {series: series.value});
+    const seriesPromise = this._context.library.seriesReadAsync(id);
+    const sessionListPromise = this._context.session.listAsync(id);
+    const series = await seriesPromise;
+    const sessionList = await sessionListPromise;
+    if (series.value && sessionList.value) {
+      app.core.screen.open(app.SeriesController, {series: series.value, sessionList: sessionList.value});
       this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(false, series.error)) {
+    } else if (await app.core.dialog.errorAsync(false, series.error, sessionList.error)) {
       await this.openAsync(id);
     } else {
       this.isLoading = false;
@@ -62,8 +65,8 @@ export class MainViewModel {
     this.isLoading = true;
     const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
     if (seriesList.value) {
-      this.isLoading = false;
       this.series = seriesList.value;
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
       await this.refreshAsync();
     }

@@ -8,9 +8,9 @@ import {language} from '../language';
 // TODO: Source? Which provider?
 // TODO: Status? Completed/Ongoing. Not in listing to keep library+remote consistent?
 // TODO: unreadcount shown on image?
-// TODO: Per chapter, read/unread?
 // TODO: instead of chevrons, use italic to show text is clickable?
 // TODO: Quick overview to continue reading (e.g. show 5 chapters of upcoming stuff that is unread)
+// TODO: delete series itself
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {

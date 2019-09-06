@@ -38,8 +38,8 @@ export class ProviderViewModel {
       ? await this._context.remote.searchAsync(this.name, this.search)
       : await this._context.remote.popularAsync(this.name);
     if (seriesList.value) {
-      this.isLoading = false;
       this.series = seriesList.value;
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
       await this.refreshAsync();
     }
