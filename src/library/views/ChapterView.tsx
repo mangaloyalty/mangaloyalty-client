@@ -4,7 +4,6 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Use ListItems everywhere instead of custom components.
 @mobxReact.observer
 export class ChapterView extends React.Component<{vm: app.ChapterViewModel}> {
   render() {

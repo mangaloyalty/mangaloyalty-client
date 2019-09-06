@@ -26,15 +26,13 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
             </mui.Paper>
           </mui.Grid>}
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
-            <mui.Grid style={{height: 44 * this.props.vm.chapters.length}}>
+            <mui.List>
               {this.props.vm.chapters.map((chapter) => (
-                <mui.Grid key={chapter.url} style={styles.chapterContent}>
-                  <mui.Typography variant="subtitle1" style={styles.chapterText} onClick={() => this.props.vm.openAsync(chapter)}>
-                    {chapter.title}
-                  </mui.Typography>
-                </mui.Grid>
+                <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
+                  <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
+                </mui.ListItem>
               ))}
-            </mui.Grid>
+            </mui.List>
           </mui.Paper>}
         </mui.Grid>}
       </mui.Grid>
@@ -67,12 +65,6 @@ const styles = app.styles({
   },
   chapterContainer: {
     padding: 8
-  },
-  chapterContent: {
-    cursor: 'pointer',
-    padding: 8,
-    paddingRight: 24,
-    position: 'relative',
   },
   chapterText: {
     overflow: 'hidden',
