@@ -47,7 +47,7 @@ const styles = app.styles({
     right: 0,
     position: 'fixed',
     top: 0,
-    zIndex: 3000
+    zIndex: 2000
   },
   container: {
     outline: 0

@@ -30,7 +30,7 @@ export class DialogManagerView extends React.Component {
 
 const styles = app.styles({
   container: {
-    zIndex: 2000
+    zIndex: 2100
   },
   content: {
     paddingTop: 24
