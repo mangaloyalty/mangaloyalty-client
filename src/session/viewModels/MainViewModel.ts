@@ -22,8 +22,8 @@ export class MainViewModel {
     this.isLoading = true;
     const sessionList = await this._context.session.listAsync();
     if (sessionList.value) {
-      this.isLoading = false;
       this.sessions = sessionList.value;
+      this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, sessionList.error)) {
       await this.refreshAsync();
     }

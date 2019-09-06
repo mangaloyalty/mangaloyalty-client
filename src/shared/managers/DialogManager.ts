@@ -15,6 +15,13 @@ export class DialogManager {
   }
   
   @mobx.action
+  async deleteAsync() {
+    return await this._openAsync(language.deleteBody, language.deleteButtons).then((index) => {
+      return Boolean(index);
+    });
+  }
+
+  @mobx.action
   async disconnectAsync() {
     return await this._openAsync(language.disconnectBody, language.disconnectButtons).then((index) => {
       if (index) return true;

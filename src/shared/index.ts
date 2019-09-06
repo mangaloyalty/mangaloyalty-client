@@ -19,6 +19,7 @@ export * from './components/HeaderTitleBarComponent';
 export * from './components/LoadingComponent';
 export * from './components/MenuComponent';
 export * from './components/RefreshComponent';
+export * from './components/RepeatComponent';
 export * from './components/SeriesListComponent';
 export * from './enumerators/RootType';
 export * from './views/DialogManagerView';

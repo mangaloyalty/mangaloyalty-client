@@ -1,6 +1,8 @@
 export const settings = {
   contextKey: 'ContextApi',
   contextTimeout: 15000,
+  librarySeriesMinimumSynchronizingTimeout: 5000,
+  librarySeriesRepeatTimeout: 15000,
   loadingMinimumTimeout: 250,
   providerDefaultName: 'fanfox',
   providerNames: ['batoto', 'fanfox'],

@@ -36,10 +36,10 @@ export class Loader {
   }
   
   private async _pageAsync(pageNumber: number) {
-    const response = await this._context.session.pageAsync(this._session.id, pageNumber);
-    if (!response.value) throw response.error;
+    const sessionPage = await this._context.session.pageAsync(this._session.id, pageNumber);
+    if (!sessionPage.value) throw sessionPage.error;
     return app.fanfoxProvider.isSupported(this._session.url)
-      ? await app.fanfoxProvider.processAsync(response.value.image)
-      : `data:;base64, ${response.value.image}`;
+      ? await app.fanfoxProvider.processAsync(sessionPage.value.image)
+      : `data:;base64, ${sessionPage.value.image}`;
   }
 }
