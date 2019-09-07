@@ -2,6 +2,7 @@ import * as app from '..';
 import * as mobx from 'mobx';
 const storageProvider = 'RemoteProvider';
 
+// TODO: On refresh, scroll to top!
 export class MainViewModel {
   constructor() {
     const providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);
