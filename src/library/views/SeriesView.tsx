@@ -4,13 +4,15 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Merge displays as much as possible...
+// TODO: Automation configuration.
+// TODO: Add series from remote.
+// TODO: Soft delete? Just clean out the files to save space, patch automation to stop sync, but keep progress and listing?
+// TODO: Lazy load on series view (get next pages).
+
 // TODO: Source? Which provider?
 // TODO: Status? Completed/Ongoing. Not in listing to keep library+remote consistent?
 // TODO: unreadcount shown on image?
-// TODO: instead of chevrons, use italic to show text is clickable?
 // TODO: Quick overview to continue reading (e.g. show 5 chapters of upcoming stuff that is unread)
-// TODO: delete series itself
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {

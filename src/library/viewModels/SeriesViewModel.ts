@@ -3,7 +3,6 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 // TODO: Completing a chapter should update the list and change the unreadCount.
-// TODO: Use tslib helper for more efficient resource usage.
 export class SeriesViewModel {
   private readonly _context: app.ContextApi;
 
@@ -15,6 +14,12 @@ export class SeriesViewModel {
   @mobx.action
   changeShowChapters(showChapters: boolean) {
     this.showChapters = showChapters;
+  }
+
+  @mobx.action
+  async deleteAsync() {
+    if (await app.core.dialog.deleteAsync()) return;
+    // TODO: Delete series, close screen, refresh list.
   }
 
   @mobx.action

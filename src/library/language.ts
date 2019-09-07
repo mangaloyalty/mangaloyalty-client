@@ -4,6 +4,7 @@ export const language = {
   libraryEmptyTitle: '何もない',
   libraryIconRead: 'Read',
   libraryIconMenu: 'Menu',
+  libraryIconMenuDelete: 'Delete',
   libraryIconMenuRefresh: 'Refresh',
   libraryListReadStatusAll: 'ALL',
   libraryListReadStatusUnread: 'UNREAD',

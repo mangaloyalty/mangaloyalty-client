@@ -28,9 +28,9 @@ export class ChapterViewModel {
   
   @mobx.action
   async openAsync() {
-    this._series.isLoading = true;
+    this.isLoading = true;
     await new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
-    this._series.isLoading = false;
+    this.isLoading = false;
   }
 
   @mobx.action

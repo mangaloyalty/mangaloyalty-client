@@ -17,6 +17,13 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
             </mui.ListItemIcon>
             <mui.ListItemText primary={language.libraryIconMenuRefresh} />
           </mui.MenuItem>
+          <mui.Divider />
+          <mui.MenuItem onClick={() => this.props.vm.deleteAsync()}>
+            <mui.ListItemIcon>
+              <app.icons.DeleteForever />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={language.libraryIconMenuDelete} />
+          </mui.MenuItem>
         </app.MenuComponent>
       </mui.Grid>
     );
