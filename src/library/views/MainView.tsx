@@ -4,6 +4,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
+// TODO: On refresh, scrollToTop.
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   private readonly _eventHandler: () => void;
