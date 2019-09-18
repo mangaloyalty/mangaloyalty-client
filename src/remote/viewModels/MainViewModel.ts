@@ -11,23 +11,23 @@ export class MainViewModel {
   }
   
   @mobx.action
-  changeProvider(providerName: app.IEnumeratorProvider) {
+  async changeProviderAsync(providerName: app.IEnumeratorProvider) {
     if (providerName === this.provider.name) return;
     app.core.storage.set(storageProvider, providerName);
     this.provider = new app.ProviderViewModel(providerName);
-    this.provider.refreshAsync();
+    await this.provider.refreshAsync();
   }
 
   @mobx.action
-  changeSearch(search: string) {
+  async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    this.provider.changeSearch(search);
+    await this.provider.changeSearchAsync(search);
   }
 
   @mobx.action
-  refreshAsync() {
-    this.provider.refreshAsync();
+  async refreshAsync() {
+    await this.provider.refreshAsync();
   }
 
   @mobx.computed

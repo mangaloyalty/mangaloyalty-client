@@ -45,7 +45,7 @@ export class SeriesViewModel {
 
   @mobx.action
   async repeatAsync() {
-    this.refreshAsync(false);
+    await this.refreshAsync(false);
   }
 
   @mobx.observable

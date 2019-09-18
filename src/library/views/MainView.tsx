@@ -40,7 +40,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           <mui.Select disableUnderline ref={this._selectReadStatusRef} value={this.props.vm.filterReadStatus} style={styles.select}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
-            onChange={(ev) => this.props.vm.changeFilterReadStatus(ev.target.value as any)}>
+            onChange={(ev) => this.props.vm.changeFilterReadStatusAsync(ev.target.value as any)}>
             <mui.MenuItem value="all">{language.libraryListReadStatusAll}</mui.MenuItem>
             <mui.MenuItem value="unread">{language.libraryListReadStatusUnread}</mui.MenuItem>
             <mui.MenuItem value="read">{language.libraryListReadStatusRead}</mui.MenuItem>
@@ -48,7 +48,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           <mui.Select disableUnderline ref={this._selectSeriesStatusRef} value={this.props.vm.filterSeriesStatus} style={styles.select}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
-            onChange={(ev) => this.props.vm.changeFilterSeriesStatus(ev.target.value as any)}>
+            onChange={(ev) => this.props.vm.changeFilterSeriesStatusAsync(ev.target.value as any)}>
             <mui.MenuItem value="all">{language.libraryListSeriesStatusAll}</mui.MenuItem>
             <mui.MenuItem value="ongoing">{language.libraryListSeriesStatusOngoing}</mui.MenuItem>
             <mui.MenuItem value="completed">{language.libraryListSeriesStatusCompleted}</mui.MenuItem>
@@ -56,7 +56,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           <mui.Select disableUnderline ref={this._selectSortKeyRef} value={this.props.vm.filterSortKey} style={styles.selectResizable}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
-            onChange={(ev) => this.props.vm.changeFilterSortKey(ev.target.value as any)}>
+            onChange={(ev) => this.props.vm.changeFilterSortKeyAsync(ev.target.value as any)}>
             <mui.MenuItem value="addedAt">{language.libraryListSortKeyAddedAt}</mui.MenuItem>
             <mui.MenuItem value="lastChapterAddedAt">{language.libraryListSortKeyLastChapterAddedAt}</mui.MenuItem>
             <mui.MenuItem value="lastPageReadAt">{language.libraryListSortKeyLastPageReadAt}</mui.MenuItem>

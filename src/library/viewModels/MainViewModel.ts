@@ -13,34 +13,34 @@ export class MainViewModel {
   }
 
   @mobx.action
-  changeFilterReadStatus(filterReadStatus: app.IEnumeratorReadStatus) {
+  async changeFilterReadStatusAsync(filterReadStatus: app.IEnumeratorReadStatus) {
     if (filterReadStatus === this.filterReadStatus) return;
     app.core.storage.set(storageFilterReadStatus, filterReadStatus);
     this.filterReadStatus = filterReadStatus;
-    this.refreshAsync();
+    await this.refreshAsync();
   }
   
   @mobx.action
-  changeFilterSeriesStatus(filterSeriesStatus: app.IEnumeratorSeriesStatus) {
+  async changeFilterSeriesStatusAsync(filterSeriesStatus: app.IEnumeratorSeriesStatus) {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
     app.core.storage.set(storageFilterSeriesStatus, filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
-    this.refreshAsync();
+    await this.refreshAsync();
   }
   
   @mobx.action
-  changeFilterSortKey(filterSortKey: app.IEnumeratorSortKey) {
+  async changeFilterSortKeyAsync(filterSortKey: app.IEnumeratorSortKey) {
     if (filterSortKey === this.filterSortKey) return;
     app.core.storage.set(storageFilterSortKey, filterSortKey);
     this.filterSortKey = filterSortKey;
-    this.refreshAsync();
+    await this.refreshAsync();
   }
 
   @mobx.action
-  changeSearch(search: string) {
+  async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    this.refreshAsync();
+    await this.refreshAsync();
   }
 
   @mobx.action
