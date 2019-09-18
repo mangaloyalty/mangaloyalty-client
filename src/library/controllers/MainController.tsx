@@ -16,7 +16,7 @@ export class MainController extends React.Component {
         <app.HeaderComponent title={language.library}
           icon={<app.MainIconComponent vm={this.state.vm} />}
           onBack={() => app.core.dialog.disconnectAsync()}
-          onSearch={(value) => this.state.vm.changeSearch(value)}>
+          onSearch={(value) => this.state.vm.changeSearchAsync(value)}>
           <app.FooterComponent>
             <app.MainView vm={this.state.vm} />
           </app.FooterComponent>

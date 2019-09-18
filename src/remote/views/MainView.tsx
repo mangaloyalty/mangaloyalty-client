@@ -11,7 +11,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
         <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={this.props.vm.provider.name}
-            onChange={(_, providerName) => this.props.vm.changeProvider(providerName)}>
+            onChange={(_, providerName) => this.props.vm.changeProviderAsync(providerName)}>
             {app.settings.providerNames.map((providerName) => (
               <mui.Tab key={providerName} label={providerName} value={providerName} />
             ))}

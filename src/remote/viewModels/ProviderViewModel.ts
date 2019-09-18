@@ -11,10 +11,10 @@ export class ProviderViewModel {
   }
 
   @mobx.action
-  changeSearch(search: string) {
+  async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    this.refreshAsync();
+    await this.refreshAsync();
   }
 
   @mobx.action
