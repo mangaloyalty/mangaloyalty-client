@@ -41,9 +41,9 @@ export class ScreenManager {
   }
 
   @mobx.action
-  async replaceChildAsync(constructAsync: () => Promise<React.ReactElement>) {
+  async replaceChildAsync(constructAsync: () => Promise<React.ReactElement>, restoreState?: any) {
     this.views.pop();
-    await this._replaceAsync(constructAsync);
+    await this._replaceAsync(constructAsync, restoreState);
     this.views.push({constructAsync});
   }
 
@@ -69,12 +69,10 @@ export class ScreenManager {
     await this.loadAsync(async () => {
       const element = await constructAsync();
       const previous = this.views.length && this.views[this.views.length - 1];
+      if (previous) previous.restoreState = restoreState;
+      if (previous) previous.restoreX = scrollX;
+      if (previous) previous.restoreY = scrollY;
       this.presentView = {element, x: currentX, y: currentY};
-      if (previous) {
-        previous.restoreState = restoreState;
-        previous.restoreX = scrollX;
-        previous.restoreY = scrollY;
-      }
     });
   }
 }
