@@ -3,7 +3,6 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: Fix dual-loading indicators. Unsure what the underlying reason for this is.
 @mobxReact.observer
 export class ChapterController extends React.Component<{vm: app.ChapterViewModel}> {
   static createConstruct(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
@@ -20,7 +19,6 @@ export class ChapterController extends React.Component<{vm: app.ChapterViewModel
         {this.props.vm.showControls && <app.HeaderComponent title={this.props.vm.title}
           icon={this.props.vm.showNavigator ? <app.ChapterIconComponent vm={this.props.vm} /> : undefined}
           onBack={() => app.core.screen.leaveAsync()} />}
-        <app.LoadingComponent open={this.props.vm.isLoading} />
         <app.ChapterView vm={this.props.vm} />
       </mui.Grid>
     );

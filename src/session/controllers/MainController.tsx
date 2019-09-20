@@ -14,7 +14,6 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <app.RefreshComponent onRefresh={() => this.props.vm.refreshAsync()}>
-        <app.LoadingComponent open={this.props.vm.isLoading} />
         <app.HeaderComponent title={language.session} 
           icon={<app.MainIconComponent vm={this.props.vm} />}
           onBack={() => app.core.dialog.disconnectAsync()}>

@@ -10,47 +10,71 @@ export class ScreenManager {
   async leaveAsync() {
     this.views.pop();
     if (this.views.length) {
-      const topView = this.views.pop()!;
-      await this._openAsync(topView.constructAsync, topView.restoreX, topView.restoreY);
+      const topView = this.views[this.views.length - 1];
+      await this._replaceAsync(() => topView.constructAsync(topView.restoreState), undefined, topView.restoreX, topView.restoreY);
     } else {
       this.presentView = undefined;
     }
   }
 
   @mobx.action
-  async openAsync(constructAsync: () => Promise<React.ReactElement>) {
-    while (this.views.length > 0) this.views.pop();
-    await this._openAsync(constructAsync);
+  async loadAsync<T>(runAsync: () => Promise<T>) {
+    try {
+      this.loadCount++;
+      return await runAsync();
+    } finally {
+      this.loadCount--;
+    }
   }
 
   @mobx.action
-  async openChildAsync(constructAsync: () => Promise<React.ReactElement>) {
-    await this._openAsync(constructAsync);
+  async openAsync(constructAsync: () => Promise<React.ReactElement>) {
+    while (this.views.length > 0) this.views.pop();
+    await this._replaceAsync(constructAsync);
+    this.views.push({constructAsync});
+  }
+
+  @mobx.action
+  async openChildAsync(constructAsync: () => Promise<React.ReactElement>, restoreState?: any) {
+    await this._replaceAsync(constructAsync, restoreState);
+    this.views.push({constructAsync});
   }
 
   @mobx.action
   async replaceChildAsync(constructAsync: () => Promise<React.ReactElement>) {
     this.views.pop();
-    await this._openAsync(constructAsync);
+    await this._replaceAsync(constructAsync);
+    this.views.push({constructAsync});
   }
 
   @mobx.observable
-  presentView?: {element: React.ReactElement, x?: number, y?: number};
+  loadCount = 0;
+
+  @mobx.observable
+  presentView?: {
+    element: React.ReactElement,
+    x?: number,
+    y?: number
+  };
   
   @mobx.observable
-  views: {constructAsync(): Promise<React.ReactElement>, restoreX?: number, restoreY?: number}[];
+  views: {
+    constructAsync: (restoreState?: any) => Promise<React.ReactElement>,
+    restoreState?: any,
+    restoreX?: number,
+    restoreY?: number
+  }[];
 
-  @mobx.observable
-  isLoading = false;
-
-  private async _openAsync(constructAsync: () => Promise<React.ReactElement>, x?: number, y?: number) {
-    this.isLoading = true;
-    const element = await constructAsync();
-    const previous = this.views.length && this.views[this.views.length - 1];
-    if (previous) previous.restoreX = scrollX;
-    if (previous) previous.restoreY = scrollY;
-    this.presentView = {element, x, y};
-    this.views.push({constructAsync});
-    this.isLoading = false;
+  private async _replaceAsync(constructAsync: () => Promise<React.ReactElement>, restoreState?: any, currentX?: number, currentY?: number) {
+    await this.loadAsync(async () => {
+      const element = await constructAsync();
+      const previous = this.views.length && this.views[this.views.length - 1];
+      this.presentView = {element, x: currentX, y: currentY};
+      if (previous) {
+        previous.restoreState = restoreState;
+        previous.restoreX = scrollX;
+        previous.restoreY = scrollY;
+      }
+    });
   }
 }

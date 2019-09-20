@@ -49,14 +49,14 @@ export class MainViewModel {
   
   @mobx.action
   async refreshAsync() {
-    this.isLoading = true;
-    const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
-    if (seriesList.value) {
-      this.series = seriesList.value;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
-      await this.refreshAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
+      if (seriesList.value) {
+        this.series = seriesList.value;
+      } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+        await this.refreshAsync();
+      }
+    });
   }
 
   @mobx.observable
@@ -68,9 +68,6 @@ export class MainViewModel {
   @mobx.observable
   filterSortKey = app.core.storage.get<app.IEnumeratorSortKey>(storageFilterSortKey, 'addedAt');
   
-  @mobx.observable
-  isLoading = false;
-
   @mobx.observable
   search = '';
 
