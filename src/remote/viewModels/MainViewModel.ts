@@ -5,6 +5,10 @@ const storageProvider = 'RemoteProvider';
 export class MainViewModel {
   private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
 
+  constructor(restoreState?: app.MainRestoreState) {
+    this.search = restoreState ? restoreState.search : this.search;
+  }
+
   @mobx.action
   async changeProviderAsync(providerName: app.IEnumeratorProvider) {
     if (providerName === this.providerName) return;
@@ -22,7 +26,9 @@ export class MainViewModel {
 
   @mobx.action
   async openAsync(url: string) {
-    await app.core.screen.openChildAsync(app.SeriesController.createConstruct(url));
+    const constructAsync = app.SeriesController.createConstruct(url);
+    const restoreState = new app.MainRestoreState(this.search);
+    await app.core.screen.openChildAsync(constructAsync, restoreState);
   }
 
   @mobx.action

@@ -7,8 +7,8 @@ const storageFilterSortKey = 'LibraryFilterSortKey';
 export class MainViewModel {
   private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
 
-  constructor(search?: string) {
-    this.search = search || this.search;
+  constructor(restoreState?: app.MainRestoreState) {
+    this.search = restoreState ? restoreState.search : this.search;
   }
 
   @mobx.action
@@ -44,7 +44,9 @@ export class MainViewModel {
 
   @mobx.action
   async openAsync(id: string) {
-    await app.core.screen.openChildAsync(app.SeriesController.createConstruct(id));
+    const constructAsync = app.SeriesController.createConstruct(id);
+    const restoreState = new app.MainRestoreState(this.search);
+    await app.core.screen.openChildAsync(constructAsync, restoreState);
   }
   
   @mobx.action

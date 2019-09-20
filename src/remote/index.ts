@@ -4,6 +4,8 @@ export * from './components/MainIconComponent';
 export * from './components/SeriesIconComponent';
 export * from './controllers/MainController';
 export * from './controllers/SeriesController';
+export * from './restoreStates/MainRestoreState';
+export * from './restoreStates/SeriesRestoreState';
 export * from './viewModels/MainViewModel';
 export * from './viewModels/SeriesViewModel';
 export * from './views/MainView';

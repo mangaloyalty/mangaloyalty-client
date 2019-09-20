@@ -4,10 +4,10 @@ import {language} from '../language';
 
 export class SeriesViewModel {
   private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-  private readonly _id: string;
 
-  constructor(id: string) {
-    this._id = id;
+  constructor(id: string, restoreState?: app.SeriesRestoreState) {
+    this.id = id;
+    this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
   
   @mobx.action
@@ -39,13 +39,11 @@ export class SeriesViewModel {
     await this._refreshAsync(false);
   }
 
-  @mobx.computed
-  get id() {
-    return this._id;
-  }
-
   @mobx.observable
   chapters!: app.ChapterViewModel[];
+
+  @mobx.observable
+  id: string;
 
   @mobx.observable
   image!: string;
@@ -60,8 +58,8 @@ export class SeriesViewModel {
   title!: string;
 
   private async _refreshAsync(userInitiated: boolean) {
-    const seriesPromise = this._context.library.seriesReadAsync(this._id);
-    const sessionListPromise = this._context.session.listAsync(this._id);
+    const seriesPromise = this._context.library.seriesReadAsync(this.id);
+    const sessionListPromise = this._context.session.listAsync(this.id);
     const series = await seriesPromise;
     const sessionList = await sessionListPromise;
     if (series.value && sessionList.value) {
@@ -76,8 +74,8 @@ export class SeriesViewModel {
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
     const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id);
-    if (vm) return vm.refreshWith(chapter, checkIsSynchronizing(this._id, chapter, sessionList));
-    return new app.ChapterViewModel(this._context, this, chapter, checkIsSynchronizing(this._id, chapter, sessionList));
+    if (vm) return vm.refreshWith(chapter, checkIsSynchronizing(this.id, chapter, sessionList));
+    return new app.ChapterViewModel(this._context, this, chapter, checkIsSynchronizing(this.id, chapter, sessionList));
   }
 }
 
