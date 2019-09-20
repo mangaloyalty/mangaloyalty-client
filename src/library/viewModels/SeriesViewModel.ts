@@ -28,26 +28,15 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async refreshAsync(userInitiated = true) {
-    this.isLoading = userInitiated;
-    const seriesPromise = this._context.library.seriesReadAsync(this._id);
-    const sessionListPromise = this._context.session.listAsync(this._id);
-    const series = await seriesPromise;
-    const sessionList = await sessionListPromise;
-    if (series.value && sessionList.value) {
-      this.image = series.value.source.image;
-      this.summary = series.value.source.summary;
-      this.title = series.value.source.title;
-      this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
-      this.isLoading = false;
-    } else if (userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
-      await this.refreshAsync();
-    }
+  async refreshAsync() {
+    await app.core.screen.loadAsync(async () => {
+      await this._refreshAsync(true);
+    });
   }
 
   @mobx.action
   async repeatAsync() {
-    await this.refreshAsync(false);
+    await this._refreshAsync(false);
   }
 
   @mobx.computed
@@ -62,9 +51,6 @@ export class SeriesViewModel {
   image!: string;
 
   @mobx.observable
-  isLoading = false;
-
-  @mobx.observable
   showChapters = false;
 
   @mobx.observable
@@ -72,6 +58,21 @@ export class SeriesViewModel {
 
   @mobx.observable
   title!: string;
+
+  private async _refreshAsync(userInitiated: boolean) {
+    const seriesPromise = this._context.library.seriesReadAsync(this._id);
+    const sessionListPromise = this._context.session.listAsync(this._id);
+    const series = await seriesPromise;
+    const sessionList = await sessionListPromise;
+    if (series.value && sessionList.value) {
+      this.image = series.value.source.image;
+      this.summary = series.value.source.summary;
+      this.title = series.value.source.title;
+      this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
+    } else if (userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
+      await this.refreshAsync();
+    }
+  }
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
     const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id);

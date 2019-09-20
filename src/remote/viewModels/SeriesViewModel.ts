@@ -17,9 +17,9 @@ export class SeriesViewModel {
 
   @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
-    this.isLoading = true;
-    await new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter)).openCurrentAsync();
-    this.isLoading = false;
+    await app.core.screen.loadAsync(async () => {
+      await new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter)).openCurrentAsync();
+    });
   }
 
   @mobx.action
@@ -30,17 +30,17 @@ export class SeriesViewModel {
 
   @mobx.action
   async refreshAsync() {
-    this.isLoading = true;
-    const series = await this._context.remote.seriesAsync(this._url);
-    if (series.value) {
-      this.chapters = series.value.chapters;
-      this.image = series.value.image;
-      this.summary = series.value.summary;
-      this.title = series.value.title;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, series.error)) {
-      await this.refreshAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const series = await this._context.remote.seriesAsync(this._url);
+      if (series.value) {
+        this.chapters = series.value.chapters;
+        this.image = series.value.image;
+        this.summary = series.value.summary;
+        this.title = series.value.title;
+      } else if (await app.core.dialog.errorAsync(true, series.error)) {
+        await this.refreshAsync();
+      }
+    });
   }
 
   @mobx.observable
@@ -48,9 +48,6 @@ export class SeriesViewModel {
   
   @mobx.observable
   image!: string;
-
-  @mobx.observable
-  isLoading = false;
 
   @mobx.observable
   showChapters = false;

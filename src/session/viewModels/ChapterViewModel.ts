@@ -22,24 +22,26 @@ export class ChapterViewModel {
 
   @mobx.action
   async chapterNextAsync() {
-    if (!this._navigator || !this._navigator.hasNext) {
-      app.core.toast.add(language.sessionToastNextUnavailable);
-    } else {
-      this.isLoading = true;
-      app.core.toast.add(language.sessionToastNextActive);
-      await this._navigator.openNextAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      if (!this._navigator || !this._navigator.hasNext) {
+        app.core.toast.add(language.sessionToastNextUnavailable);
+      } else {
+        app.core.toast.add(language.sessionToastNextActive);
+        await this._navigator.openNextAsync();
+      }
+    });
   }
 
   @mobx.action
   async chapterPreviousAsync() {
-    if (!this._navigator || !this._navigator.hasPrevious) {
-      app.core.toast.add(language.sessionToastPreviousUnavailable);
-    } else {
-      this.isLoading = true;
-      app.core.toast.add(language.sessionToastPreviousActive);
-      await this._navigator.openPreviousAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      if (!this._navigator || !this._navigator.hasPrevious) {
+        app.core.toast.add(language.sessionToastPreviousUnavailable);
+      } else {
+        app.core.toast.add(language.sessionToastPreviousActive);
+        await this._navigator.openPreviousAsync();
+      }
+    });
   }
 
   @mobx.action
@@ -83,18 +85,18 @@ export class ChapterViewModel {
 
   @mobx.action
   async updateAsync() {
-    try {
-      this.isLoading = true;
-      const imagePromise = this._updateImageAsync();
-      const statusPromise = this._updateStatusAsync();
-      await imagePromise;
-      await statusPromise;
-      this.isLoading = false;
-    } catch (error) {
-      if (await app.core.dialog.errorAsync(true, error)) {
-        await this.updateAsync();
+    await app.core.screen.loadAsync(async () => {
+      try {
+        const imagePromise = this._updateImageAsync();
+        const statusPromise = this._updateStatusAsync();
+        await imagePromise;
+        await statusPromise;
+      } catch (error) {
+        if (await app.core.dialog.errorAsync(true, error)) {
+          await this.updateAsync();
+        }
       }
-    }
+    });
   }
 
   @mobx.computed
@@ -106,9 +108,6 @@ export class ChapterViewModel {
   get title() {
     return this._title;
   }
-
-  @mobx.observable
-  isLoading = false;
 
   @mobx.observable
   imageUrl!: string;
