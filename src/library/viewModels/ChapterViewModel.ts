@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as areas from '../../areas';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
@@ -29,7 +30,16 @@ export class ChapterViewModel {
   @mobx.action
   async openAsync() {
     await app.core.screen.loadAsync(async () => {
-      await new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
+      const session = await this._context.library.chapterReadAsync(this._series.id, this.id);
+      if (session.value) {
+        const restoreState = new app.SeriesRestoreState(this._series.showChapters);
+        const pageNumber = this.pageReadNumber && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
+        const navigator = new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
+        const constructAsync = areas.session.ChapterController.createConstruct(session.value, this.title, navigator, pageNumber);
+        await app.core.screen.openChildAsync(constructAsync, restoreState);
+      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        await this.openAsync();
+      }
     });
   }
 

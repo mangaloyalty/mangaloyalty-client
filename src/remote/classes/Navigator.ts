@@ -19,35 +19,29 @@ export class Navigator implements app.INavigator {
   get hasPrevious() {
     return this._index + 1 < this._chapters.length;
   }
-
-  async openCurrentAsync() {
-    await this._openAsync(false);
-  }
   
   async openNextAsync() {
     if (!this.hasNext) return;
     this._index--;
-    await this._openAsync(true);
+    await this._openAsync();
   }
 
   async openPreviousAsync() {
     if (!this.hasPrevious) return;
     this._index++;
-    await this._openAsync(true);
+    await this._openAsync();
   }
 
-  private async _openAsync(shouldClose: boolean) {
-    const chapter = this._chapters[this._index];
-    const session = await this._context.remote.startAsync(chapter.url);
-    if (session.value) {
-      const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this);
-      if (shouldClose) {
+  private async _openAsync() {
+    await app.core.screen.loadAsync(async () => {
+      const chapter = this._chapters[this._index];
+      const session = await this._context.remote.startAsync(chapter.url);
+      if (session.value) {
+        const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this);
         await app.core.screen.replaceChildAsync(constructAsync);
-      } else {
-        await app.core.screen.openChildAsync(constructAsync);
+      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        await this._openAsync();
       }
-    } else if (await app.core.dialog.errorAsync(true, session.error)) {
-      await this._openAsync(shouldClose);
-    }
+    });
   }
 }

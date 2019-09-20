@@ -1,13 +1,14 @@
 import * as app from '..';
+import * as areas from '../../areas'
 import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
   private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-  private readonly _url: string;
 
-  constructor(url: string) {
-    this._url = url;
+  constructor(url: string, restoreState?: app.SeriesRestoreState) {
+    this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
+    this.url = url;
   }
   
   @mobx.action
@@ -18,7 +19,15 @@ export class SeriesViewModel {
   @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     await app.core.screen.loadAsync(async () => {
-      await new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter)).openCurrentAsync();
+      const session = await this._context.remote.startAsync(chapter.url);
+      if (session.value) {
+        const restoreState = new app.SeriesRestoreState(this.showChapters);
+        const navigator = new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter));
+        const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, navigator);
+        await app.core.screen.openChildAsync(constructAsync, restoreState);
+      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        await this.openAsync(chapter);
+      }
     });
   }
 
@@ -31,12 +40,13 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const series = await this._context.remote.seriesAsync(this._url);
+      const series = await this._context.remote.seriesAsync(this.url);
       if (series.value) {
         this.chapters = series.value.chapters;
         this.image = series.value.image;
         this.summary = series.value.summary;
         this.title = series.value.title;
+        this.url = series.value.url;
       } else if (await app.core.dialog.errorAsync(true, series.error)) {
         await this.refreshAsync();
       }
@@ -57,4 +67,7 @@ export class SeriesViewModel {
   
   @mobx.observable
   title!: string;
+
+  @mobx.observable
+  url: string;
 }

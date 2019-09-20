@@ -6,7 +6,8 @@ export class MainViewModel {
 
   @mobx.action
   async openAsync(session: app.ISessionListItem) {
-    await app.core.screen.openChildAsync(app.ChapterController.createConstruct(session, session.url));
+    const constructAsync = app.ChapterController.createConstruct(session, session.url);
+    await app.core.screen.openChildAsync(constructAsync);
   }
 
   @mobx.action
