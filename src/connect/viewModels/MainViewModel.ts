@@ -2,11 +2,12 @@ import * as app from '..';
 import * as mobx from 'mobx';
 const storageServer = 'ConnectServer';
 
+// TODO: Fix dual-loading indicators. Connect and constructing the next view.
 export class MainViewModel {
   constructor() {
     if (!app.core.storage.get(storageServer, '')) return;
     this.isVisible = false;
-    this.connectAsync().then(() => this.isVisible = true);
+    this.connectAsync().then(() => this.isVisible = this.hasServerError);
   }
 
   @mobx.action
@@ -16,30 +17,26 @@ export class MainViewModel {
 
   @mobx.action
   async connectAsync() {
-    this.isLoading = true;
-    this.hasServerError = false;
-    const context = new app.ContextApi(this.server);
-    const openapi = await context.connectAsync();
-    if (openapi.value && checkVersion(openapi.value)) {
-      app.core.storage.set(storageServer, this.server);
-      app.core.service.set(app.settings.contextKey, context);
-      app.core.screen.changeRoot(app.RootType.Library);
-    } else if (openapi.value) {
-      await app.core.dialog.connectAsync();
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(false, openapi.error)) {
-      await this.connectAsync();
-    } else {
-      this.isLoading = false;
-    }
-  }
-
-  @mobx.action
-  async tryConnectAsync() {
     if (!this.server) {
       this.hasServerError = true;
     } else {
-      await this.connectAsync();
+      this.isLoading = true;
+      const context = new app.ContextApi(this.server);
+      const openapi = await context.connectAsync();
+      if (openapi.value && checkVersion(openapi.value)) {
+        app.core.storage.set(storageServer, this.server);
+        app.core.service.set(app.settings.contextKey, context);
+        app.core.route.changeRoot(app.RootType.Library);
+      } else if (openapi.value) {
+        await app.core.dialog.connectAsync();
+        this.isLoading = false;
+        this.hasServerError = true;
+      } else if (await app.core.dialog.errorAsync(false, openapi.error)) {
+        await this.connectAsync();
+      } else {
+        this.isLoading = false;
+        this.hasServerError = true;
+      }
     }
   }
 
@@ -51,7 +48,7 @@ export class MainViewModel {
 
   @mobx.observable
   isVisible = true;
-
+  
   @mobx.observable
   server = app.core.storage.get(storageServer, buildServer());
 }

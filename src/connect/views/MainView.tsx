@@ -17,12 +17,12 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             <mui.TextField label={language.connectServer} required variant="outlined" style={styles.input}
               error={this.props.vm.hasServerError} value={this.props.vm.server}
               onChange={(ev) => this.props.vm.changeServer(ev.currentTarget.value)}
-              onKeyDown={(ev) => ev.keyCode === 13 && this.props.vm.tryConnectAsync()} />
+              onKeyDown={(ev) => ev.keyCode === 13 && this.props.vm.connectAsync()} />
             <mui.TextField label={language.connectPassword} variant="outlined" style={styles.inputDisabled}
               disabled />
           </mui.FormGroup>
           <mui.Grid style={styles.control}>
-            <mui.Button color="primary" variant="contained" onClick={() => this.props.vm.tryConnectAsync()}>
+            <mui.Button color="primary" variant="contained" onClick={() => this.props.vm.connectAsync()}>
               {language.connect}
             </mui.Button>
           </mui.Grid>

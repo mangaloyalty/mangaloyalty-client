@@ -3,7 +3,7 @@ export const settings = {
   contextTimeout: 15000,
   librarySeriesMinimumSynchronizingTimeout: 5000,
   librarySeriesRepeatTimeout: 15000,
-  loadingMinimumTimeout: 250,
+  loadingMinimumTimeout: 300,
   providerDefaultName: 'fanfox',
   providerNames: ['batoto', 'fanfox'],
   sessionLoadRange: 3,

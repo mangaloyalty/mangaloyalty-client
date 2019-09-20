@@ -1,49 +1,56 @@
-import * as app from '..';
 import * as mobx from 'mobx';
 import * as React from 'react';
 
 export class ScreenManager {
   constructor() {
-    this.items = [];
-    this.rootType = 0;
+    this.views = [];
   }
 
   @mobx.action
-  changeRoot(rootType: app.RootType) {
-    if (rootType == app.RootType.Connect) {
-      app.core.storage.clear();
-      this.rootType = rootType;
+  async leaveAsync() {
+    this.views.pop();
+    if (this.views.length) {
+      const topView = this.views.pop()!;
+      await this._openAsync(topView.constructAsync, topView.restoreX, topView.restoreY);
     } else {
-      this.rootType = rootType;
+      this.presentView = undefined;
     }
   }
+
+  @mobx.action
+  async openAsync(constructAsync: () => Promise<React.ReactElement>) {
+    while (this.views.length > 0) this.views.pop();
+    await this._openAsync(constructAsync);
+  }
+
+  @mobx.action
+  async openChildAsync(constructAsync: () => Promise<React.ReactElement>) {
+    await this._openAsync(constructAsync);
+  }
+
+  @mobx.action
+  async replaceChildAsync(constructAsync: () => Promise<React.ReactElement>) {
+    this.views.pop();
+    await this._openAsync(constructAsync);
+  }
+
+  @mobx.observable
+  presentView?: {element: React.ReactElement, x?: number, y?: number};
   
-  @mobx.action
-  close() {
-    this.items.pop();
-  }
-
-  @mobx.action
-  open<P, T extends React.Component<P, React.ComponentState>, C extends React.ComponentClass<P>>(type: React.ClassType<P, T, C>, props?: React.ClassAttributes<T> & P | null) {
-    const element = React.createElement(type, props);
-    const previous = this.items.length && this.items[this.items.length - 1];
-    if (previous) previous.scrollX = scrollX;
-    if (previous) previous.scrollY = scrollY;
-    this.items.push({element, scrollX: 0, scrollY: 0});
-  }
-
-  @mobx.computed
-  get isChildVisible() {
-    return this.items.length > 1;
-  }
+  @mobx.observable
+  views: {constructAsync(): Promise<React.ReactElement>, restoreX?: number, restoreY?: number}[];
 
   @mobx.observable
-  items: {
-    element: React.ReactElement<any>,
-    scrollX: number,
-    scrollY: number
-  }[];
+  isLoading = false;
 
-  @mobx.observable
-  rootType: app.RootType;
+  private async _openAsync(constructAsync: () => Promise<React.ReactElement>, x?: number, y?: number) {
+    this.isLoading = true;
+    const element = await constructAsync();
+    const previous = this.views.length && this.views[this.views.length - 1];
+    if (previous) previous.restoreX = scrollX;
+    if (previous) previous.restoreY = scrollY;
+    this.presentView = {element, x, y};
+    this.views.push({constructAsync});
+    this.isLoading = false;
+  }
 }
