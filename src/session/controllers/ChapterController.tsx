@@ -3,20 +3,25 @@ import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
+// TODO: Fix dual-loading indicators. Unsure what the underlying reason for this is.
 @mobxReact.observer
-export class ChapterController extends React.Component<{navigator?: app.INavigator, pageNumber?: number, session: app.ISessionListItem, title: string}> {
-  state = {
-    vm: new app.ChapterViewModel(this.props.session, this.props.navigator, this.props.pageNumber)
-  };
+export class ChapterController extends React.Component<{vm: app.ChapterViewModel}> {
+  static createConstruct(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
+    return async () => {
+      const vm = new app.ChapterViewModel(session, title, navigator, pageNumber);
+      await vm.updateAsync();
+      return <ChapterController vm={vm} />;
+    };
+  }
 
   render() {
     return (
       <mui.Grid>
-        {this.state.vm.showControls && <app.HeaderComponent title={this.props.title}
-          icon={this.props.navigator && <app.ChapterIconComponent vm={this.state.vm} />}
-          onBack={() => app.core.screen.close()} />}
-        <app.LoadingComponent open={this.state.vm.isLoading} />
-        <app.ChapterView vm={this.state.vm} />
+        {this.props.vm.showControls && <app.HeaderComponent title={this.props.vm.title}
+          icon={this.props.vm.showNavigator ? <app.ChapterIconComponent vm={this.props.vm} /> : undefined}
+          onBack={() => app.core.screen.leaveAsync()} />}
+        <app.LoadingComponent open={this.props.vm.isLoading} />
+        <app.ChapterView vm={this.props.vm} />
       </mui.Grid>
     );
   }

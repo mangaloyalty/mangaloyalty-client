@@ -29,7 +29,7 @@ export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
   }
 
   private _onFocus() {  
-    if (!this._container.current || !this._container.current.offsetHeight) return;
-    if (!app.core.dialog.isChildVisible) this.props.onRefresh();
+    if (app.core.dialog.isChildVisible) return;
+    this.props.onRefresh();
   }
 }

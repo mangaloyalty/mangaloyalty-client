@@ -3,21 +3,21 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class ChapterViewModel {
-  private readonly _context: app.ContextApi;
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
   private readonly _loader: app.Loader;
   private readonly _navigator?: app.INavigator;
   private readonly _pageCount: number;
+  private readonly _title: string;
   private _imageNextTime?: number;
   private _imagePreviousTime?: number;
   private _pageNumber: number;
 
-  constructor(session: app.ISessionListItem, navigator?: app.INavigator, pageNumber?: number) {
-    this._context = app.core.service.get(app.settings.contextKey);
+  constructor(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
     this._loader = new app.Loader(this._context, session);
     this._navigator = navigator;
     this._pageCount = session.pageCount;
     this._pageNumber = pageNumber || 1;
-    this.updateAsync();
+    this._title = title;
   }
 
   @mobx.action
@@ -97,11 +97,21 @@ export class ChapterViewModel {
     }
   }
 
+  @mobx.computed
+  get showNavigator() {
+    return Boolean(this._navigator);
+  }
+
+  @mobx.computed
+  get title() {
+    return this._title;
+  }
+
   @mobx.observable
   isLoading = false;
 
   @mobx.observable
-  imageUrl?: string;
+  imageUrl!: string;
   
   @mobx.observable
   showControls = false;

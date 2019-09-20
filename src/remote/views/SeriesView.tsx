@@ -9,15 +9,15 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {
     return (
       <mui.Grid>
-        {this.props.vm.chapters && <mui.Paper style={{...styles.container, ...app.limiter}}>
+        <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
             <mui.Tab label={language.remoteSeriesAbout} value={0} />
             <mui.Tab label={`${language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
           </mui.Tabs>
-        </mui.Paper>}
-        {this.props.vm.chapters && <mui.Grid style={styles.containerBody}>
+        </mui.Paper>
+        <mui.Grid style={styles.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
             <mui.Paper style={styles.seriesContent}>
               <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
@@ -34,7 +34,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
               ))}
             </mui.List>
           </mui.Paper>}
-        </mui.Grid>}
+        </mui.Grid>
       </mui.Grid>
     );
   }

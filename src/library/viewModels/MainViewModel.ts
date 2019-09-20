@@ -5,11 +5,10 @@ const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
 const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
-  private readonly _context: app.ContextApi;
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
 
-  constructor() {
-    this._context = app.core.service.get(app.settings.contextKey);
-    this.refreshAsync();
+  constructor(search?: string) {
+    this.search = search || this.search;
   }
 
   @mobx.action
@@ -45,19 +44,7 @@ export class MainViewModel {
 
   @mobx.action
   async openAsync(id: string) {
-    this.isLoading = true;
-    const seriesPromise = this._context.library.seriesReadAsync(id);
-    const sessionListPromise = this._context.session.listAsync(id);
-    const series = await seriesPromise;
-    const sessionList = await sessionListPromise;
-    if (series.value && sessionList.value) {
-      app.core.screen.open(app.SeriesController, {series: series.value, sessionList: sessionList.value});
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(false, series.error, sessionList.error)) {
-      await this.openAsync(id);
-    } else {
-      this.isLoading = false;
-    }
+    await app.core.screen.openChildAsync(app.SeriesController.createConstruct(id));
   }
   
   @mobx.action
@@ -88,5 +75,5 @@ export class MainViewModel {
   search = '';
 
   @mobx.observable
-  series?: app.ILibraryList;
+  series!: app.ILibraryList;
 }

@@ -47,9 +47,13 @@ export class Navigator implements app.INavigator {
     const chapter = this._chapters[this._index];
     const session = await this._context.library.chapterReadAsync(this._seriesId, chapter.id);
     if (session.value) {
-      if (shouldClose) app.core.screen.close();
       const pageNumber = chapter.pageReadNumber && chapter.pageReadNumber < session.value.pageCount ? chapter.pageReadNumber : undefined;
-      app.core.screen.open(areas.session.ChapterController, {navigator: this, pageNumber: pageNumber, session: session.value, title: chapter.title});
+      const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this, pageNumber);
+      if (shouldClose) {
+        await app.core.screen.replaceChildAsync(constructAsync);
+      } else {
+        await app.core.screen.openChildAsync(constructAsync);
+      }
     } else if (await app.core.dialog.errorAsync(true, session.error)) {
       await this._openAsync(shouldClose);
     }

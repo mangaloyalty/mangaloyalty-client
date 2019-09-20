@@ -2,13 +2,12 @@ import * as app from '..';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-// TODO: Completing a chapter should update the list and change the unreadCount.
 export class SeriesViewModel {
-  private readonly _context: app.ContextApi;
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+  private readonly _id: string;
 
-  constructor(series: app.ILibrarySeries, sessionList: app.ISessionList) {
-    this._context = app.core.service.get(app.settings.contextKey);
-    this._updateWith(series, sessionList);
+  constructor(id: string) {
+    this._id = id;
   }
   
   @mobx.action
@@ -31,12 +30,15 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync(userInitiated = true) {
     this.isLoading = userInitiated;
-    const seriesPromise = this._context.library.seriesReadAsync(this.id);
-    const sessionListPromise = this._context.session.listAsync(this.id);
+    const seriesPromise = this._context.library.seriesReadAsync(this._id);
+    const sessionListPromise = this._context.session.listAsync(this._id);
     const series = await seriesPromise;
     const sessionList = await sessionListPromise;
     if (series.value && sessionList.value) {
-      this._updateWith(series.value, sessionList.value);
+      this.image = series.value.source.image;
+      this.summary = series.value.source.summary;
+      this.title = series.value.source.title;
+      this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
       this.isLoading = false;
     } else if (userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
       await this.refreshAsync();
@@ -48,11 +50,13 @@ export class SeriesViewModel {
     await this.refreshAsync(false);
   }
 
-  @mobx.observable
-  chapters!: app.ChapterViewModel[];
+  @mobx.computed
+  get id() {
+    return this._id;
+  }
 
   @mobx.observable
-  id!: string;
+  chapters!: app.ChapterViewModel[];
 
   @mobx.observable
   image!: string;
@@ -69,18 +73,10 @@ export class SeriesViewModel {
   @mobx.observable
   title!: string;
 
-  private _updateWith(series: app.ILibrarySeries, sessionList: app.ISessionList) {
-    this.id = series.id;
-    this.image = series.source.image;
-    this.summary = series.source.summary;
-    this.title = series.source.title;
-    this.chapters = series.chapters.map((chapter) => this._viewModelFor(chapter, sessionList));
-  }
-
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
     const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id);
-    if (vm) return vm.refreshWith(chapter, checkIsSynchronizing(this.id, chapter, sessionList));
-    return new app.ChapterViewModel(this._context, this, chapter, checkIsSynchronizing(this.id, chapter, sessionList));
+    if (vm) return vm.refreshWith(chapter, checkIsSynchronizing(this._id, chapter, sessionList));
+    return new app.ChapterViewModel(this._context, this, chapter, checkIsSynchronizing(this._id, chapter, sessionList));
   }
 }
 

@@ -3,11 +3,11 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  private readonly _context: app.ContextApi;
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+  private readonly _url: string;
 
-  constructor(series: app.IRemoteSeries) {
-    this._context = app.core.service.get(app.settings.contextKey);
-    this._updateWith(series);
+  constructor(url: string) {
+    this._url = url;
   }
   
   @mobx.action
@@ -31,9 +31,12 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     this.isLoading = true;
-    const series = await this._context.remote.seriesAsync(this.url);
+    const series = await this._context.remote.seriesAsync(this._url);
     if (series.value) {
-      this._updateWith(series.value);
+      this.chapters = series.value.chapters;
+      this.image = series.value.image;
+      this.summary = series.value.summary;
+      this.title = series.value.title;
       this.isLoading = false;
     } else if (await app.core.dialog.errorAsync(true, series.error)) {
       await this.refreshAsync();
@@ -57,15 +60,4 @@ export class SeriesViewModel {
   
   @mobx.observable
   title!: string;
-
-  @mobx.observable
-  url!: string;
-
-  private _updateWith(series: app.IRemoteSeries) {
-    this.chapters = series.chapters;
-    this.image = series.image;
-    this.summary = series.summary;
-    this.title = series.title;
-    this.url = series.url;
-  }
 }

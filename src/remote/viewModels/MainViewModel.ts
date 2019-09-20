@@ -2,42 +2,52 @@ import * as app from '..';
 import * as mobx from 'mobx';
 const storageProvider = 'RemoteProvider';
 
-// TODO: On refresh, scroll to top!
 export class MainViewModel {
-  constructor() {
-    const providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);
-    this.provider = new app.ProviderViewModel(providerName);
-    this.provider.refreshAsync();
-  }
-  
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+
   @mobx.action
   async changeProviderAsync(providerName: app.IEnumeratorProvider) {
-    if (providerName === this.provider.name) return;
+    if (providerName === this.providerName) return;
     app.core.storage.set(storageProvider, providerName);
-    this.provider = new app.ProviderViewModel(providerName);
-    await this.provider.refreshAsync();
+    this.providerName = providerName;
+    await this.refreshAsync();
   }
 
   @mobx.action
   async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    await this.provider.changeSearchAsync(search);
+    await this.refreshAsync();
+  }
+
+  @mobx.action
+  async openAsync(url: string) {
+    await app.core.screen.openChildAsync(app.SeriesController.createConstruct(url));
   }
 
   @mobx.action
   async refreshAsync() {
-    await this.provider.refreshAsync();
+    this.isLoading = true;
+    const seriesList = this.search
+      ? await this._context.remote.searchAsync(this.providerName, this.search)
+      : await this._context.remote.popularAsync(this.providerName);
+    if (seriesList.value) {
+      this.series = seriesList.value;
+      this.isLoading = false;
+    } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+      await this.refreshAsync();
+    }
   }
 
-  @mobx.computed
-  get isLoading() {
-    return this.provider.isLoading;
-  }
+  @mobx.observable
+  isLoading = false;
+
+  @mobx.observable
+  providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);
   
   @mobx.observable
-  provider: app.ProviderViewModel;
-
-  @mobx.observable
   search = '';
+  
+  @mobx.observable
+  series!: app.IRemoteList;
 }

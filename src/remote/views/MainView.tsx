@@ -2,6 +2,7 @@ import * as app from '..';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
+import {language} from '../language';
 
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
@@ -10,7 +11,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
       <mui.Grid>
         <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
-            value={this.props.vm.provider.name}
+            value={this.props.vm.providerName}
             onChange={(_, providerName) => this.props.vm.changeProviderAsync(providerName)}>
             {app.settings.providerNames.map((providerName) => (
               <mui.Tab key={providerName} label={providerName} value={providerName} />
@@ -18,7 +19,11 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid style={styles.content}>
-          <app.ProviderView vm={this.props.vm.provider} />
+          <app.SeriesListComponent
+            emptyBody={language.remoteEmptyBody}
+            emptyTitle={language.remoteEmptyTitle}
+            series={this.props.vm.series.items}
+            onClick={(series) => this.props.vm.openAsync(series.url)} />
         </mui.Grid>
       </mui.Grid>
     );
