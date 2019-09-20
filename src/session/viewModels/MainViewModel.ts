@@ -11,18 +11,15 @@ export class MainViewModel {
 
   @mobx.action
   async refreshAsync() {
-    this.isLoading = true;
-    const sessionList = await this._context.session.listAsync();
-    if (sessionList.value) {
-      this.sessions = sessionList.value;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, sessionList.error)) {
-      await this.refreshAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const sessionList = await this._context.session.listAsync();
+      if (sessionList.value) {
+        this.sessions = sessionList.value;
+      } else if (await app.core.dialog.errorAsync(true, sessionList.error)) {
+        await this.refreshAsync();
+      }
+    });
   }
-
-  @mobx.observable
-  isLoading = false;
 
   @mobx.observable
   sessions!: app.ISessionListItem[];

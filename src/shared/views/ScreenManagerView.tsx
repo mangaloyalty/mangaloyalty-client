@@ -25,7 +25,7 @@ export class ScreenManagerView extends React.Component {
   render() {
     return (
       <mui.Grid>
-        <app.LoadingComponent open={app.core.screen.isLoading} />
+        <app.LoadingComponent open={Boolean(app.core.screen.loadCount)} />
         {app.core.screen.presentView && app.core.screen.presentView.element}
       </mui.Grid>
     );

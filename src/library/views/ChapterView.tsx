@@ -9,7 +9,6 @@ export class ChapterView extends React.Component<{vm: app.ChapterViewModel}> {
   render() {
     return (
       <mui.ListItem button onClick={() => this.props.vm.openAsync()}>
-        <app.LoadingComponent open={this.props.vm.isLoading} />
         <mui.ListItemText primary={this.props.vm.title} style={styles.text} />
         <mui.ListItemSecondaryAction style={styles.secondaryAction}>
           <app.ButtonComponent title={this.props.vm.isReadCompleted ? language.librarySeriesMarkUnread : language.librarySeriesMarkRead}

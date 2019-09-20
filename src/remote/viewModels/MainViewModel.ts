@@ -27,20 +27,17 @@ export class MainViewModel {
 
   @mobx.action
   async refreshAsync() {
-    this.isLoading = true;
-    const seriesList = this.search
-      ? await this._context.remote.searchAsync(this.providerName, this.search)
-      : await this._context.remote.popularAsync(this.providerName);
-    if (seriesList.value) {
-      this.series = seriesList.value;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
-      await this.refreshAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const seriesList = this.search
+        ? await this._context.remote.searchAsync(this.providerName, this.search)
+        : await this._context.remote.popularAsync(this.providerName);
+      if (seriesList.value) {
+        this.series = seriesList.value;
+      } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+        await this.refreshAsync();
+      }
+    });
   }
-
-  @mobx.observable
-  isLoading = false;
 
   @mobx.observable
   providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);

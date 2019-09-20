@@ -28,9 +28,9 @@ export class ChapterViewModel {
   
   @mobx.action
   async openAsync() {
-    this.isLoading = true;
-    await new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
-    this.isLoading = false;
+    await app.core.screen.loadAsync(async () => {
+      await new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this)).openCurrentAsync();
+    });
   }
 
   @mobx.action
@@ -41,34 +41,31 @@ export class ChapterViewModel {
 
   @mobx.action
   async statusAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
-    this.isLoading = true;
-    const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber);
-    if (response.status === 200) {
-      this.isReadCompleted = this.isReadCompleted || isReadCompleted;
-      this.pageReadNumber = pageReadNumber;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, response.error)) {
-      await this.statusAsync(isReadCompleted, pageReadNumber);
-    }
+    await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber);
+      if (response.status === 200) {
+        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
+        this.pageReadNumber = pageReadNumber;
+      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+        await this.statusAsync(isReadCompleted, pageReadNumber);
+      }
+    });
   }
 
   @mobx.action
   async toggleReadCompleted() {
-    this.isLoading = true;
-    const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted);
-    if (response.status === 200) {
-      this.isReadCompleted = !this.isReadCompleted;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true)) {
-      await this.toggleReadCompleted();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted);
+      if (response.status === 200) {
+        this.isReadCompleted = !this.isReadCompleted;
+      } else if (await app.core.dialog.errorAsync(true)) {
+        await this.toggleReadCompleted();
+      }
+    });
   }
 
   @mobx.observable
   id!: string;
-
-  @mobx.observable
-  isLoading = false;
 
   @mobx.observable
   isReadCompleted?: boolean;
@@ -87,26 +84,26 @@ export class ChapterViewModel {
 
   // TODO: When the server deletes me because I don't exist any longer, hide from the UI, too!
   private async _deleteAsync() {
-    this.isLoading = true;
-    const response = await this._context.library.chapterDeleteAsync(this._series.id, this.id);
-    if (response.status === 200) {
-      this.syncAt = undefined;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, response.error)) {
-      await this._deleteAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.chapterDeleteAsync(this._series.id, this.id);
+      if (response.status === 200) {
+        this.syncAt = undefined;
+      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+        await this._deleteAsync();
+      }
+    });
   }
 
   private async _synchronizeAsync() {
-    this.isLoading = true;
-    const session = await this._context.library.chapterUpdateAsync(this._series.id, this.id);
-    if (session.value) {
-      this._ensureSynchronizeTo = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
-      this.isSynchronizing = true;
-      this.isLoading = false;
-    } else if (await app.core.dialog.errorAsync(true, session.error)) {
-      await this._synchronizeAsync();
-    }
+    await app.core.screen.loadAsync(async () => {
+      const session = await this._context.library.chapterUpdateAsync(this._series.id, this.id);
+      if (session.value) {
+        this._ensureSynchronizeTo = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
+        this.isSynchronizing = true;
+      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        await this._synchronizeAsync();
+      }
+    });
   }
 
   private _updateWith(chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
