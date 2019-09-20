@@ -2,19 +2,11 @@ import * as app from '..';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  private readonly _context: app.ContextApi;
-
-  constructor() {
-    this._context = app.core.service.get(app.settings.contextKey);
-    this.refreshAsync();
-  }
+  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
 
   @mobx.action
-  open(session: app.ISessionListItem) {
-    app.core.screen.open(app.ChapterController, {
-      session: session,
-      title: session.url
-    });
+  async openAsync(session: app.ISessionListItem) {
+    await app.core.screen.openChildAsync(app.ChapterController.createConstruct(session, session.url));
   }
 
   @mobx.action
@@ -33,5 +25,5 @@ export class MainViewModel {
   isLoading = false;
 
   @mobx.observable
-  sessions?: app.ISessionListItem[];
+  sessions!: app.ISessionListItem[];
 }

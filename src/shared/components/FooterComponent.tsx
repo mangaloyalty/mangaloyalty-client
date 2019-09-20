@@ -12,19 +12,19 @@ export class FooterComponent extends React.Component {
         </mui.Grid>
         <mui.Paper style={{...styles.navigation, ...app.limiter}}>
           <mui.Divider />
-          <mui.BottomNavigation showLabels value={app.core.screen.rootType - 1}>
+          <mui.BottomNavigation showLabels value={app.core.route.rootType - 1}>
             <mui.BottomNavigationAction
               icon={<app.icons.Home />}
               label={language.navigationLibrary}
-              onClick={() => app.core.screen.changeRoot(app.RootType.Library)} />
+              onClick={() => app.core.route.changeRoot(app.RootType.Library)} />
             <mui.BottomNavigationAction
               icon={<app.icons.Public />}
               label={language.navigationRemote}
-              onClick={() => app.core.screen.changeRoot(app.RootType.Remote)} />
+              onClick={() => app.core.route.changeRoot(app.RootType.Remote)} />
             <mui.BottomNavigationAction
               icon={<app.icons.Portrait />}
               label={language.navigationSession}
-              onClick={() => app.core.screen.changeRoot(app.RootType.Session)} />
+              onClick={() => app.core.route.changeRoot(app.RootType.Session)} />
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />

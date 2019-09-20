@@ -23,19 +23,19 @@ export class DialogManager {
 
   @mobx.action
   async disconnectAsync() {
-    return await this._openAsync(language.disconnectBody, language.disconnectButtons).then((index) => {
+    return await this._openAsync(language.disconnectBody, language.disconnectButtons).then(async (index) => {
       if (index) return true;
-      app.core.screen.changeRoot(app.RootType.Connect);
+      app.core.route.changeRoot(app.RootType.Connect);
       return false;
     });
   }
 
   @mobx.action
   async errorAsync(shouldClose: boolean, ...errors: any[]) {
-    return await this._openAsync(language.errorBody, language.errorButtons, ...errors).then((index) => {
+    return await this._openAsync(language.errorBody, language.errorButtons, ...errors).then(async (index) => {
       if (index) return true;
-      if (shouldClose && app.core.screen.isChildVisible) app.core.screen.close();
-      else if (shouldClose) app.core.screen.changeRoot(app.RootType.Connect);
+      if (shouldClose && app.core.screen.views.length >= 2) await app.core.screen.leaveAsync();
+      else if (shouldClose) app.core.route.changeRoot(app.RootType.Connect);
       return false;
     });
   }

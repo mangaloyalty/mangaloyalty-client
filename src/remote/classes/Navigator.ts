@@ -40,8 +40,12 @@ export class Navigator implements app.INavigator {
     const chapter = this._chapters[this._index];
     const session = await this._context.remote.startAsync(chapter.url);
     if (session.value) {
-      if (shouldClose) app.core.screen.close();
-      app.core.screen.open(areas.session.ChapterController, {navigator: this, session: session.value, title: chapter.title});
+      const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this);
+      if (shouldClose) {
+        await app.core.screen.replaceChildAsync(constructAsync);
+      } else {
+        await app.core.screen.openChildAsync(constructAsync);
+      }
     } else if (await app.core.dialog.errorAsync(true, session.error)) {
       await this._openAsync(shouldClose);
     }

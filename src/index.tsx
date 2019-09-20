@@ -1,3 +1,4 @@
+// TODO: Dialog error -> close is incorrect with the new preload-then-show order. Rethink.
 // UX: Generic: Use `tslib` helper for better built package sizes.
 // UX: Generic: Production-ready lazy loading library for performance-heavy lists (library/chapters). Optimize tooltips?
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
@@ -16,6 +17,7 @@
 // UX: Touch: Zoom with constraints of the image instead of the container.
 // UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as areas from './areas';
+import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as muiStyles from '@material-ui/styles';
@@ -36,23 +38,20 @@ class App extends React.Component {
   }
 }
 
-@mobxReact.observer
-class Root extends React.Component {
-  render() {
-    switch (areas.shared.core.screen.rootType) {
-      case areas.shared.RootType.Connect:
-        return <areas.connect.MainController />;
-      case areas.shared.RootType.Library:
-        return <areas.library.MainController />;
-      case areas.shared.RootType.Remote:
-        return <areas.remote.MainController />;
-      case areas.shared.RootType.Session:
-        return <areas.session.MainController />;
-    }
+async function RootAsync(rootType: areas.shared.RootType) {
+  switch (rootType) {
+    case areas.shared.RootType.Connect:
+      return await areas.shared.core.screen.openAsync(areas.connect.MainController.constructAsync);
+    case areas.shared.RootType.Library:
+      return await areas.shared.core.screen.openAsync(areas.library.MainController.constructAsync);
+    case areas.shared.RootType.Remote:
+      return await areas.shared.core.screen.openAsync(areas.remote.MainController.constructAsync);
+    case areas.shared.RootType.Session:
+      return await areas.shared.core.screen.openAsync(areas.session.MainController.constructAsync);
   }
 }
 
 (function() {
-  areas.shared.core.screen.open(Root);
+  mobx.reaction(() => areas.shared.core.route.rootType, RootAsync, {fireImmediately: true});
   ReactDOM.render(<App />, document.getElementById('container'));
 })();

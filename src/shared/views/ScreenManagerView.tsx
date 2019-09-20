@@ -1,20 +1,33 @@
 import * as app from '..';
+import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
 export class ScreenManagerView extends React.Component {
+  private _scrollTo?: {x: number, y: number};
+
+  componentDidMount() {
+    mobx.reaction(() => app.core.screen.presentView, (presentView) => {
+      this._scrollTo = presentView && typeof presentView.x === 'number' && typeof presentView.y === 'number'
+        ? {x: presentView.x, y: presentView.y}
+        : {x: 0, y: 0};
+    });
+  }
+
   componentDidUpdate() {
-    const previous = app.core.screen.items[app.core.screen.items.length - 1];
-    scrollTo(previous.scrollX, previous.scrollY);  
+    if (!this._scrollTo) return;
+    scrollTo(this._scrollTo.x, this._scrollTo.y);
+    delete this._scrollTo;
   }
 
   render() {
-    return app.core.screen.items.map((item, index) => (
-      <mui.Grid key={index} style={{display: index === app.core.screen.items.length - 1 ? 'inherit' : 'none'}}>
-        {item.element}
+    return (
+      <mui.Grid>
+        <app.LoadingComponent open={app.core.screen.isLoading} />
+        {app.core.screen.presentView && app.core.screen.presentView.element}
       </mui.Grid>
-    ));
+    );
   }
 }

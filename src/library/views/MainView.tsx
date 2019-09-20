@@ -4,7 +4,6 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: On refresh, scrollToTop.
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   private readonly _eventHandler: () => void;
@@ -64,11 +63,11 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
           </mui.Select>
         </mui.Paper>
         <mui.Grid style={styles.content}>
-          {this.props.vm.series && <app.SeriesListComponent
+          <app.SeriesListComponent
             emptyBody={language.libraryEmptyBody}
             emptyTitle={language.libraryEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.openAsync(series.id)} />}
+            onClick={(series) => this.props.vm.openAsync(series.id)} />
         </mui.Grid>
       </mui.Grid>
     );

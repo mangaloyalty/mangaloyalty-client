@@ -1,7 +1,6 @@
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-// TODO: Stop repeating when invisible.
 export class RepeatComponent extends React.Component<{timeout: number, onRepeatAsync: () => Promise<void>}> {
   private _timeoutHandle?: NodeJS.Timer;
 
