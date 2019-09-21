@@ -30,13 +30,29 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      await this._refreshAsync(true);
+      await this._refreshAsync({
+        providerUpdate: false,
+        userInitiated: true
+      });
     });
   }
 
   @mobx.action
   async repeatAsync() {
-    await this._refreshAsync(false);
+    await this._refreshAsync({
+      providerUpdate: false,
+      userInitiated: false
+    });
+  }
+
+  @mobx.action
+  async updateAsync() {
+    await app.core.screen.loadAsync(async () => {
+      await this._refreshAsync({
+        providerUpdate: true,
+        userInitiated: true
+      });
+    });
   }
 
   @mobx.observable
@@ -68,8 +84,8 @@ export class SeriesViewModel {
     });
   }
 
-  private async _refreshAsync(userInitiated: boolean) {
-    const seriesPromise = this._context.library.seriesReadAsync(this.id);
+  private async _refreshAsync(options: {providerUpdate: boolean, userInitiated: boolean}) {
+    const seriesPromise = options.providerUpdate ? this._context.library.seriesUpdateAsync(this.id) : this._context.library.seriesReadAsync(this.id);
     const sessionListPromise = this._context.session.listAsync(this.id);
     const series = await seriesPromise;
     const sessionList = await sessionListPromise;
@@ -78,7 +94,7 @@ export class SeriesViewModel {
       this.summary = series.value.source.summary;
       this.title = series.value.source.title;
       this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
-    } else if (userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
+    } else if (options.userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
       await this.refreshAsync();
     }
   }
