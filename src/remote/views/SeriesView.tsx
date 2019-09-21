@@ -22,6 +22,11 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
             <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
             <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
             <mui.Grid style={styles.seriesClear} />
+            <mui.Tooltip title={language.remoteIconMenuAdd}>
+              <mui.Fab color="primary" style={styles.seriesAction} onClick={() => this.props.vm.addAsync()}>
+                <app.icons.Add />
+              </mui.Fab>
+            </mui.Tooltip>
           </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.List>
@@ -32,9 +37,6 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
               ))}
             </mui.List>
           </mui.Paper>}
-          <mui.Fab color="primary" style={styles.seriesAction} onClick={() => this.props.vm.addAsync()}>
-            <app.icons.Add />
-          </mui.Fab>
         </mui.Grid>
       </mui.Grid>
     );
