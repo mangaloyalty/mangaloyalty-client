@@ -5,7 +5,6 @@ import * as React from 'react';
 import {language} from '../language';
 
 // TODO: Automation configuration.
-// TODO: Add series from remote.
 // TODO: Soft delete? Just clean out the files to save space, patch automation to stop sync, but keep progress and listing?
 // TODO: Lazy load on series view (get next pages).
 
@@ -27,13 +26,11 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid style={styles.containerBody}>
-          {!this.props.vm.showChapters && <mui.Grid>
-            <mui.Paper style={styles.seriesContent}>
-              <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
-              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
-              <mui.Grid style={styles.seriesClear} />
-            </mui.Paper>
-          </mui.Grid>}
+          {!this.props.vm.showChapters && <mui.Paper style={styles.seriesContent}>
+            <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
+            <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
+            <mui.Grid style={styles.seriesClear} />
+          </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.List>
               {this.props.vm.chapters.map((chapter) => (

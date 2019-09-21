@@ -1,3 +1,4 @@
+import Add from '@material-ui/icons/Add';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import ArrowForward from '@material-ui/icons/ArrowForward';
@@ -16,4 +17,4 @@ import Portrait from '@material-ui/icons/Portrait';
 import Public from '@material-ui/icons/Public';
 import Refresh from '@material-ui/icons/Refresh';
 import Search from '@material-ui/icons/Search';
-export const icons = {ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, Home, MoreVert, Person, PlayCircleOutline, Portrait, Public, Refresh, Search};
+export const icons = {Add, ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, Home, MoreVert, Person, PlayCircleOutline, Portrait, Public, Refresh, Search};
