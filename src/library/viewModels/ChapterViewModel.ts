@@ -92,12 +92,11 @@ export class ChapterViewModel {
   @mobx.observable
   title!: string;
 
-  // TODO: When the server deletes me because I don't exist any longer, hide from the UI, too!
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await this._context.library.chapterDeleteAsync(this._series.id, this.id);
       if (response.status === 200) {
-        this.syncAt = undefined;
+        await this._series.refreshAsync();
       } else if (await app.core.dialog.errorAsync(true, response.error)) {
         await this._deleteAsync();
       }

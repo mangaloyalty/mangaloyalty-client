@@ -5,9 +5,9 @@ import * as React from 'react';
 import {language} from '../language';
 
 // TODO: Automation configuration.
-// TODO: Soft delete? Just clean out the files to save space, patch automation to stop sync, but keep progress and listing?
 // TODO: Lazy load on series view (get next pages).
 
+// TODO: Soft delete? Just clean out the files to save space, patch automation to stop sync, but keep progress and listing?
 // TODO: Source? Which provider?
 // TODO: Status? Completed/Ongoing. Not in listing to keep library+remote consistent?
 // TODO: unreadcount shown on image?
