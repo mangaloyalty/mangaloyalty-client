@@ -6,6 +6,7 @@ export const language = {
   libraryIconMenu: 'Menu',
   libraryIconMenuDelete: 'Delete',
   libraryIconMenuRefresh: 'Refresh',
+  libraryIconMenuUpdate: 'Update',
   libraryListReadStatusAll: 'ALL',
   libraryListReadStatusUnread: 'UNREAD',
   libraryListReadStatusRead: 'READ',

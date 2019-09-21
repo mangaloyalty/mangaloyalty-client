@@ -6,12 +6,7 @@ import {language} from '../language';
 
 // TODO: Automation configuration.
 // TODO: Lazy load on series view (get next pages).
-
-// TODO: Soft delete? Just clean out the files to save space, patch automation to stop sync, but keep progress and listing?
-// TODO: Source? Which provider?
-// TODO: Status? Completed/Ongoing. Not in listing to keep library+remote consistent?
-// TODO: unreadcount shown on image?
-// TODO: Quick overview to continue reading (e.g. show 5 chapters of upcoming stuff that is unread)
+// TODO: Dialog error -> close is incorrect with the new preload-then-show order. Rethink.
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {
