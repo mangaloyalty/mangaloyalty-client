@@ -17,8 +17,8 @@ export class SeriesViewModel {
 
   @mobx.action
   async deleteAsync() {
-    if (await app.core.dialog.deleteAsync()) return;
-    // TODO: Delete series, close screen, refresh list.
+    if (await app.core.dialog.confirmDeleteAsync()) return;
+    await this._deleteAsync();
   }
 
   @mobx.action
@@ -56,6 +56,17 @@ export class SeriesViewModel {
 
   @mobx.observable
   title!: string;
+
+  private async _deleteAsync() {
+    await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.seriesDeleteAsync(this.id);
+      if (response.status === 200) {
+        await app.core.screen.leaveAsync();
+      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+        await this._deleteAsync();
+      }
+    });
+  }
 
   private async _refreshAsync(userInitiated: boolean) {
     const seriesPromise = this._context.library.seriesReadAsync(this.id);
