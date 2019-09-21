@@ -8,25 +8,25 @@ export class DialogManager {
   }
 
   @mobx.action
-  async connectAsync() {
-    return await this._openAsync(language.connectBody, language.connectButtons).then(() => {
-      return true;
-    });
-  }
-  
-  @mobx.action
-  async deleteAsync() {
-    return await this._openAsync(language.deleteBody, language.deleteButtons).then((index) => {
+  async confirmDeleteAsync() {
+    return await this._openAsync(language.confirmDeleteBody, language.confirmDeleteButtons).then((index) => {
       return Boolean(index);
     });
   }
 
   @mobx.action
-  async disconnectAsync() {
-    return await this._openAsync(language.disconnectBody, language.disconnectButtons).then(async (index) => {
+  async confirmDisconnectAsync() {
+    return await this._openAsync(language.confirmDisconnectBody, language.confirmDisconnectButtons).then(async (index) => {
       if (index) return true;
       app.core.route.changeRoot(app.RootType.Connect);
       return false;
+    });
+  }
+
+  @mobx.action
+  async connectAsync() {
+    return await this._openAsync(language.connectBody, language.connectButtons).then(() => {
+      return true;
     });
   }
 

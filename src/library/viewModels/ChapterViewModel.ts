@@ -20,7 +20,7 @@ export class ChapterViewModel {
     if (this.isSynchronizing) {
       app.core.toast.add(language.librarySeriesActionBusy);
     } else if (this.syncAt) {
-      if (await app.core.dialog.deleteAsync()) return;
+      if (await app.core.dialog.confirmDeleteAsync()) return;
       await this._deleteAsync();
     } else {
       await this._synchronizeAsync();
