@@ -1,4 +1,6 @@
 export const language = {
+  completeAddBody: 'The series has been added to the library.',
+  completeAddButtons: ['OK'],
   confirmDeleteBody: 'You are about to delete this from the server. Are you sure?',
   confirmDeleteButtons: ['Yes', 'No'],
   confirmDisconnectBody: 'You are about to disconnect from the server. Are you sure?',

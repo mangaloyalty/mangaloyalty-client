@@ -8,6 +8,13 @@ export class DialogManager {
   }
 
   @mobx.action
+  async completeAddAsync() {
+    return await this._openAsync(language.completeAddBody, language.completeAddButtons).then(() => {
+      return true;
+    });
+  }
+
+  @mobx.action
   async confirmDeleteAsync() {
     return await this._openAsync(language.confirmDeleteBody, language.confirmDeleteButtons).then((index) => {
       return Boolean(index);

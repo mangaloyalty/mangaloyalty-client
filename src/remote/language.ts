@@ -1,7 +1,9 @@
 export const language = {
   remote: 'Remote',
   remoteIconRead: 'Read',
-  remoteIconRefresh: 'Refresh',
+  remoteIconMenu: 'Menu',
+  remoteIconMenuAdd: 'Add',
+  remoteIconMenuRefresh: 'Refresh',
   remoteEmptyBody: 'No series have been found. When searching for a specific series, try using a different name or provider.',
   remoteEmptyTitle: '何もない',
   remoteSeriesAbout: 'About',

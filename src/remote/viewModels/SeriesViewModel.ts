@@ -12,6 +12,18 @@ export class SeriesViewModel {
   }
   
   @mobx.action
+  async addAsync() {
+    await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.seriesCreateAsync(this.url);
+      if (response.value) {
+        await app.core.dialog.completeAddAsync();
+      } else if (await app.core.dialog.errorAsync(false, response.error)) {
+        await this.addAsync();
+      }
+    });
+  }
+
+  @mobx.action
   changeShowChapters(showChapters: boolean) {
     this.showChapters = showChapters;
   }
