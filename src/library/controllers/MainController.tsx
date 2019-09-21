@@ -17,7 +17,7 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
       <app.RefreshComponent onRefresh={() => this.props.vm.refreshAsync()}>
         <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.library}
           icon={<app.MainIconComponent vm={this.props.vm} />}
-          onBack={() => app.core.dialog.disconnectAsync()}
+          onBack={() => app.core.dialog.confirmDisconnectAsync()}
           onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
           <app.FooterComponent>
             <app.MainView vm={this.props.vm} />
