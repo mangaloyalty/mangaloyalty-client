@@ -18,13 +18,11 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid style={styles.containerBody}>
-          {!this.props.vm.showChapters && <mui.Grid>
-            <mui.Paper style={styles.seriesContent}>
-              <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
-              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
-              <mui.Grid style={styles.seriesClear} />
-            </mui.Paper>
-          </mui.Grid>}
+          {!this.props.vm.showChapters && <mui.Paper style={styles.seriesContent}>
+            <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
+            <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
+            <mui.Grid style={styles.seriesClear} />
+          </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.List>
               {this.props.vm.chapters.map((chapter) => (
@@ -34,6 +32,9 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
               ))}
             </mui.List>
           </mui.Paper>}
+          <mui.Fab color="primary" style={styles.seriesAction} onClick={() => this.props.vm.addAsync()}>
+            <app.icons.Add />
+          </mui.Fab>
         </mui.Grid>
       </mui.Grid>
     );
@@ -62,6 +63,11 @@ const styles = app.styles({
   },
   seriesClear: {
     clear: 'both'
+  },
+  seriesAction: {
+    bottom: 24,
+    right: 24,
+    position: 'fixed'
   },
   chapterContainer: {
     padding: 8
