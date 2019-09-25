@@ -22,6 +22,14 @@ export class SeriesViewModel {
   }
 
   @mobx.action
+  async intervalAsync() {
+    await this._refreshAsync({
+      allowErrorDialog: false,
+      providerUpdate: false
+    });
+  }
+
+  @mobx.action
   async readAsync() {
     for (let i = this.chapters.length - 1; i >= 0; i--) if (!this.chapters[i].isReadCompleted) return await this.chapters[i].openAsync();
     app.core.toast.add(language.librarySeriesToastQuickRead);
@@ -31,17 +39,9 @@ export class SeriesViewModel {
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
       await this._refreshAsync({
-        providerUpdate: false,
-        userInitiated: true
+        allowErrorDialog: true,
+        providerUpdate: false
       });
-    });
-  }
-
-  @mobx.action
-  async repeatAsync() {
-    await this._refreshAsync({
-      providerUpdate: false,
-      userInitiated: false
     });
   }
 
@@ -49,11 +49,14 @@ export class SeriesViewModel {
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
       await this._refreshAsync({
-        providerUpdate: true,
-        userInitiated: true
+        allowErrorDialog: true,
+        providerUpdate: true
       });
     });
   }
+
+  @mobx.observable
+  automation!: app.AutomationViewModel;
 
   @mobx.observable
   chapters!: app.ChapterViewModel[];
@@ -84,7 +87,7 @@ export class SeriesViewModel {
     });
   }
 
-  private async _refreshAsync(options: {providerUpdate: boolean, userInitiated: boolean}) {
+  private async _refreshAsync(options: {allowErrorDialog: boolean, providerUpdate: boolean}) {
     const seriesPromise = options.providerUpdate ? this._context.library.seriesUpdateAsync(this.id) : this._context.library.seriesReadAsync(this.id);
     const sessionListPromise = this._context.session.listAsync(this.id);
     const series = await seriesPromise;
@@ -93,16 +96,17 @@ export class SeriesViewModel {
       this.image = series.value.source.image;
       this.summary = series.value.source.summary;
       this.title = series.value.source.title;
+      this.automation = (this.automation || (this.automation = new app.AutomationViewModel(this._context, this))).refreshWith(series.value);
       this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
-    } else if (options.userInitiated && await app.core.dialog.errorAsync(true, series.error, sessionList.error)) {
+    } else if (options.allowErrorDialog) {
+      if (!await app.core.dialog.errorAsync(true, series.error, sessionList.error)) return;
       await this.refreshAsync();
     }
   }
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
-    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id);
-    if (vm) return vm.refreshWith(chapter, checkIsSynchronizing(this.id, chapter, sessionList));
-    return new app.ChapterViewModel(this._context, this, chapter, checkIsSynchronizing(this.id, chapter, sessionList));
+    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.ChapterViewModel(this._context, this);
+    return vm.refreshWith(chapter, checkIsSynchronizing(this.id, chapter, sessionList));
   }
 }
 
