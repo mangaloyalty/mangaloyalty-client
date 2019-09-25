@@ -8,12 +8,18 @@ export class RouteManager {
 
   @mobx.action
   changeRoot(rootType: app.RootType) {
-    if (rootType == app.RootType.Connect) {
-      app.core.storage.clear();
-      this.rootType = rootType;
+    if (rootType === app.RootType.Connect) {
+      throw new Error('Use `disconnectAsync` instead!');
     } else {
       this.rootType = rootType;
     }
+  }
+
+  @mobx.action
+  async disconnectAsync() {
+    if (await app.core.dialog.confirmDisconnectAsync()) return;
+    app.core.storage.clear();
+    this.rootType = app.RootType.Connect;
   }
 
   @mobx.observable
