@@ -3,7 +3,6 @@ import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Scroll to top when changing provider/search (NOT during refresh).
 @mobxReact.observer
 export class MainController extends React.Component<{vm: app.MainViewModel}> {
   static async constructAsync(restoreState?: app.MainRestoreState) {
