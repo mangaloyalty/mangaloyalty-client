@@ -18,5 +18,6 @@ import Portrait from '@material-ui/icons/Portrait';
 import Public from '@material-ui/icons/Public';
 import Refresh from '@material-ui/icons/Refresh';
 import Search from '@material-ui/icons/Search';
+import Settings from '@material-ui/icons/Settings';
 import Sync from '@material-ui/icons/Sync';
-export const icons = {Add, ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, Home, MoreVert, Person, PlayArrow, PlayCircleOutline, Portrait, Public, Refresh, Search, Sync};
+export const icons = {Add, ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, Home, MoreVert, Person, PlayArrow, PlayCircleOutline, Portrait, Public, Refresh, Search, Settings, Sync};

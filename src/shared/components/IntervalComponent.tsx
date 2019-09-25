@@ -1,7 +1,7 @@
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class RepeatComponent extends React.Component<{timeout: number, onRepeatAsync: () => Promise<void>}> {
+export class IntervalComponent extends React.Component<{timeout: number, onIntervalAsync: () => Promise<void>}> {
   private _timeoutHandle?: NodeJS.Timer;
 
   componentDidMount() {
@@ -23,7 +23,7 @@ export class RepeatComponent extends React.Component<{timeout: number, onRepeatA
 
   private _scheduleTick() {
     this._timeoutHandle = setTimeout(async () => {
-      await this.props.onRepeatAsync();
+      await this.props.onIntervalAsync();
       this._scheduleTick();
     }, this.props.timeout);
   }

@@ -4,7 +4,6 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Automation configuration.
 // TODO: Lazy load on series view (get next pages).
 // TODO: Dialog error -> close is incorrect with the new preload-then-show order. Rethink.
 @mobxReact.observer
@@ -12,6 +11,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {
     return (
       <mui.Grid>
+        <app.AutomationView vm={this.props.vm.automation} />
         <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
