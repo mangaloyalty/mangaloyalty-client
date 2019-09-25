@@ -18,6 +18,12 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
             <mui.ListItemText primary={language.libraryIconMenuRefresh} />
           </mui.MenuItem>
           <mui.Divider />
+          <mui.MenuItem onClick={() => this.props.vm.automation.toggleOpen()}>
+            <mui.ListItemIcon>
+              <app.icons.Settings />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={language.libraryIconMenuAutomation} />
+          </mui.MenuItem>
           <mui.MenuItem onClick={() => this.props.vm.deleteAsync()}>
             <mui.ListItemIcon>
               <app.icons.DeleteForever />

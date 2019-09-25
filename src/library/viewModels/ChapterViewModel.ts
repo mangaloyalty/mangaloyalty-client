@@ -8,17 +8,16 @@ export class ChapterViewModel {
   private readonly _series: app.SeriesViewModel;
   private _ensureSynchronizeTo: number;
 
-  constructor(context: app.ContextApi, series: app.SeriesViewModel, chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
+  constructor(context: app.ContextApi, series: app.SeriesViewModel) {
     this._context = context;
     this._series = series;
     this._ensureSynchronizeTo = 0;
-    this._updateWith(chapter, isSynchronizing);
   }
 
   @mobx.action
   async actionAsync() {
     if (this.isSynchronizing) {
-      app.core.toast.add(language.librarySeriesActionBusy);
+      app.core.toast.add(language.libraryChapterActionBusy);
     } else if (this.syncAt) {
       if (await app.core.dialog.confirmDeleteAsync()) return;
       await this._deleteAsync();
@@ -45,7 +44,12 @@ export class ChapterViewModel {
 
   @mobx.action
   refreshWith(chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
-    this._updateWith(chapter, isSynchronizing);
+    this.id = chapter.id;
+    this.isReadCompleted = chapter.isReadCompleted;
+    this.isSynchronizing = isSynchronizing || (this._ensureSynchronizeTo >= Date.now());
+    this.pageReadNumber = chapter.pageReadNumber;
+    this.syncAt = chapter.syncAt;
+    this.title = chapter.title;
     return this;
   }
 
@@ -113,14 +117,5 @@ export class ChapterViewModel {
         await this._synchronizeAsync();
       }
     });
-  }
-
-  private _updateWith(chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
-    this.id = chapter.id;
-    this.isReadCompleted = chapter.isReadCompleted;
-    this.isSynchronizing = isSynchronizing || (this._ensureSynchronizeTo >= Date.now());
-    this.pageReadNumber = chapter.pageReadNumber;
-    this.syncAt = chapter.syncAt;
-    this.title = chapter.title;
   }
 }

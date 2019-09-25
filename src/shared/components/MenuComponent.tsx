@@ -15,7 +15,7 @@ export class MenuComponent extends React.Component<{title: string}> {
             <app.icons.MoreVert />
           </mui.IconButton>
         </mui.Tooltip>
-        <mui.Popper anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} disablePortal placement="left" transition>
+        <mui.Popper anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} disablePortal placement="left-start" transition>
           {({TransitionProps}) => (
            <mui.Grow {...TransitionProps} style={styles.grow}>
               <mui.Paper>

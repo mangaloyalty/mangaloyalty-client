@@ -15,7 +15,7 @@ export class SeriesController extends React.Component<{vm: app.SeriesViewModel}>
   render() {
     return (
       <app.RefreshComponent onRefresh={() => this.props.vm.refreshAsync()}>
-        <app.RepeatComponent timeout={app.settings.librarySeriesRepeatTimeout} onRepeatAsync={() => this.props.vm.repeatAsync()} />
+        <app.IntervalComponent timeout={app.settings.librarySeriesRepeatTimeout} onIntervalAsync={() => this.props.vm.intervalAsync()} />
         <app.HeaderComponent title={this.props.vm.title}
           icon={<app.SeriesIconComponent vm={this.props.vm} />}
           onBack={() => app.core.screen.leaveAsync()}>
