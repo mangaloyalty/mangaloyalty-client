@@ -14,14 +14,14 @@ export class MainViewModel {
     if (providerName === this.providerName) return;
     app.core.storage.set(storageProvider, providerName);
     this.providerName = providerName;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
 
   @mobx.action
   async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
 
   @mobx.action

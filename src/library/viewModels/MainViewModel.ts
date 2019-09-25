@@ -16,7 +16,7 @@ export class MainViewModel {
     if (filterReadStatus === this.filterReadStatus) return;
     app.core.storage.set(storageFilterReadStatus, filterReadStatus);
     this.filterReadStatus = filterReadStatus;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
   
   @mobx.action
@@ -24,7 +24,7 @@ export class MainViewModel {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
     app.core.storage.set(storageFilterSeriesStatus, filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
   
   @mobx.action
@@ -32,14 +32,14 @@ export class MainViewModel {
     if (filterSortKey === this.filterSortKey) return;
     app.core.storage.set(storageFilterSortKey, filterSortKey);
     this.filterSortKey = filterSortKey;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
 
   @mobx.action
   async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    await this.refreshAsync();
+    await this.refreshAsync().then(() => scrollTo(0, 0));
   }
 
   @mobx.action
