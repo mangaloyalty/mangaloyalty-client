@@ -4,7 +4,6 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Lazy load on series view (get next pages).
 // TODO: Dialog error -> close is incorrect with the new preload-then-show order. Rethink.
 @mobxReact.observer
 export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
