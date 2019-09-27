@@ -29,11 +29,8 @@ export class MainViewModel {
         } else if (openapi.value) {
           await app.core.dialog.connectAsync();
           this.hasServerError = true;
-        } else if (openapi.status === 0) {
-          this.hasServerError = true;
         } else {
-          await app.core.dialog.errorAsync(openapi.error);
-          await this.connectAsync();
+          this.hasServerError = true;
         }
       }
     });

@@ -35,13 +35,17 @@ export class Navigator implements app.INavigator {
   }
   
   async trackAsync(pageCount: number, pageReadNumber: number) {
-    const isReadCompleted = pageReadNumber >= pageCount ? true : undefined;
-    return await this._chapters[this._index].trackAsync(isReadCompleted, pageReadNumber);
+    return await app.core.screen.loadAsync(async () => {
+      const chapter = this._chapters[this._index];     
+      const isReadCompleted = pageReadNumber >= pageCount ? true : undefined;
+      const response = await this._context.library.chapterPatchAsync(this._seriesId, chapter.id, isReadCompleted, pageReadNumber);
+      return response.status === 200;
+    });
   }
 
   private async _openAsync() {
     await app.core.screen.loadAsync(async () => {
-      const chapter = this._chapters[this._index];
+      const chapter = this._chapters[this._index];     
       const session = await this._context.library.chapterReadAsync(this._seriesId, chapter.id);
       if (session.value) {
         const pageNumber = chapter.pageReadNumber && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);

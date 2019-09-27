@@ -3,7 +3,7 @@ export interface INavigator {
   hasPrevious: boolean;
   openNextAsync: () => Promise<void>;
   openPreviousAsync: () => Promise<void>;
-  trackAsync?: (pageCount: number, pageReadNumber: number) => Promise<{status: number}>;
+  trackAsync?: (pageCount: number, pageReadNumber: number) => Promise<boolean>;
 }
 
 export interface IOpenApi {
