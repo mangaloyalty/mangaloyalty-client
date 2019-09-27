@@ -34,9 +34,9 @@ export class Navigator implements app.INavigator {
     await this._openAsync();
   }
   
-  async statusAsync(pageCount: number, pageReadNumber: number) {
+  async trackAsync(pageCount: number, pageReadNumber: number) {
     const isReadCompleted = pageReadNumber >= pageCount ? true : undefined;
-    await this._chapters[this._index].statusAsync(isReadCompleted, pageReadNumber);
+    return await this._chapters[this._index].trackAsync(isReadCompleted, pageReadNumber);
   }
 
   private async _openAsync() {
@@ -47,7 +47,10 @@ export class Navigator implements app.INavigator {
         const pageNumber = chapter.pageReadNumber && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this, pageNumber);
         await app.core.screen.replaceChildAsync(constructAsync);
-      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+      } else if (session.status === 404) {
+        await app.core.screen.leaveAsync();
+      } else {
+        await app.core.dialog.errorAsync(session.error);
         await this._openAsync();
       }
     });

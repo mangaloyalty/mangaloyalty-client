@@ -7,7 +7,7 @@ export class MainViewModel {
   @mobx.action
   async openAsync(session: app.ISessionListItem) {
     const constructAsync = app.ChapterController.createConstruct(session, session.url);
-    await app.core.screen.openChildAsync(constructAsync);
+    if (await app.core.screen.openChildAsync(constructAsync)) await this.refreshAsync();
   }
 
   @mobx.action
@@ -16,7 +16,8 @@ export class MainViewModel {
       const sessionList = await this._context.session.listAsync();
       if (sessionList.value) {
         this.sessions = sessionList.value;
-      } else if (await app.core.dialog.errorAsync(true, sessionList.error)) {
+      } else {
+        await app.core.dialog.errorAsync(sessionList.error);
         await this.refreshAsync();
       }
     });

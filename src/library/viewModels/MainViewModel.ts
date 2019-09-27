@@ -46,7 +46,7 @@ export class MainViewModel {
   async openAsync(id: string) {
     const constructAsync = app.SeriesController.createConstruct(id);
     const restoreState = new app.MainRestoreState(this.search);
-    await app.core.screen.openChildAsync(constructAsync, restoreState);
+    if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
   }
   
   @mobx.action
@@ -55,7 +55,8 @@ export class MainViewModel {
       const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
       if (seriesList.value) {
         this.series = seriesList.value;
-      } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+      } else {
+        await app.core.dialog.errorAsync(seriesList.error);
         await this.refreshAsync();
       }
     });
