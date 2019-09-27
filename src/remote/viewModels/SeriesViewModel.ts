@@ -16,8 +16,9 @@ export class SeriesViewModel {
     await app.core.screen.loadAsync(async () => {
       const response = await this._context.library.seriesCreateAsync(this.url);
       if (response.value) {
-        await app.core.dialog.completeAddAsync();
-      } else if (await app.core.dialog.errorAsync(false, response.error)) {
+        await app.core.dialog.completeAsync();
+      } else {
+        await app.core.dialog.errorAsync(response.error);
         await this.addAsync();
       }
     });
@@ -36,8 +37,9 @@ export class SeriesViewModel {
         const restoreState = new app.SeriesRestoreState(this.showChapters);
         const navigator = new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter));
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, navigator);
-        await app.core.screen.openChildAsync(constructAsync, restoreState);
-      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
+      } else {
+        await app.core.dialog.errorAsync(session.error);
         await this.openAsync(chapter);
       }
     });
@@ -59,7 +61,8 @@ export class SeriesViewModel {
         this.summary = series.value.summary;
         this.title = series.value.title;
         this.url = series.value.url;
-      } else if (await app.core.dialog.errorAsync(true, series.error)) {
+      } else {
+        await app.core.dialog.errorAsync(series.error);
         await this.refreshAsync();
       }
     });

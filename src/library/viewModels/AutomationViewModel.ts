@@ -29,7 +29,10 @@ export class AutomationViewModel {
       const response = await this._context.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.isOpen = false;
-      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+      } else if (response.status === 404) {
+        await app.core.screen.leaveAsync();
+      } else {
+        await app.core.dialog.errorAsync(response.error);
         await this.saveAsync();
       }
     });

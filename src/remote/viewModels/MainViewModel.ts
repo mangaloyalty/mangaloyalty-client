@@ -28,7 +28,7 @@ export class MainViewModel {
   async openAsync(url: string) {
     const constructAsync = app.SeriesController.createConstruct(url);
     const restoreState = new app.MainRestoreState(this.search);
-    await app.core.screen.openChildAsync(constructAsync, restoreState);
+    if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
   }
 
   @mobx.action
@@ -39,7 +39,8 @@ export class MainViewModel {
         : await this._context.remote.popularAsync(this.providerName);
       if (seriesList.value) {
         this.series = seriesList.value;
-      } else if (await app.core.dialog.errorAsync(true, seriesList.error)) {
+      } else {
+        await app.core.dialog.errorAsync(seriesList.error);
         await this.refreshAsync();
       }
     });

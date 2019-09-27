@@ -81,7 +81,10 @@ export class SeriesViewModel {
       const response = await this._context.library.seriesDeleteAsync(this.id);
       if (response.status === 200) {
         await app.core.screen.leaveAsync();
-      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+      } else if (response.status === 404) {
+        await app.core.screen.leaveAsync();
+      } else {
+        await app.core.dialog.errorAsync(response.error);
         await this._deleteAsync();
       }
     });
@@ -98,8 +101,12 @@ export class SeriesViewModel {
       this.title = series.value.source.title;
       this.automation = (this.automation || (this.automation = new app.AutomationViewModel(this._context, this))).refreshWith(series.value);
       this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
-    } else if (options.allowErrorDialog) {
-      if (!await app.core.dialog.errorAsync(true, series.error, sessionList.error)) return;
+    } else if (!options.allowErrorDialog) {
+      return;
+    } else if (series.status === 404) {
+      await app.core.screen.leaveAsync();
+    } else {
+      await app.core.dialog.errorAsync(series.error, sessionList.error);
       await this.refreshAsync();
     }
   }
