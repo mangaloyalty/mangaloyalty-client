@@ -35,8 +35,11 @@ export class ChapterViewModel {
         const pageNumber = this.pageReadNumber && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
         const navigator = new app.Navigator(this._context, this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, this.title, navigator, pageNumber);
-        await app.core.screen.openChildAsync(constructAsync, restoreState);
-      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+        if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this._series.refreshAsync();
+      } else if (session.status === 404) {
+        await this._series.refreshAsync();
+      } else {
+        await app.core.dialog.errorAsync(session.error);
         await this.openAsync();
       }
     });
@@ -54,30 +57,34 @@ export class ChapterViewModel {
   }
 
   @mobx.action
-  async statusAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
-    await app.core.screen.loadAsync(async () => {
-      const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber);
-      if (response.status === 200) {
-        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
-        this.pageReadNumber = pageReadNumber;
-      } else if (await app.core.dialog.errorAsync(true, response.error)) {
-        await this.statusAsync(isReadCompleted, pageReadNumber);
-      }
-    });
-  }
-
-  @mobx.action
   async toggleReadCompleted() {
     await app.core.screen.loadAsync(async () => {
       const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted);
       if (response.status === 200) {
         this.isReadCompleted = !this.isReadCompleted;
-      } else if (await app.core.dialog.errorAsync(true)) {
+      } else if (response.status === 404) {
+        await this._series.refreshAsync();
+      } else {
+        await app.core.dialog.errorAsync(response.error);
         await this.toggleReadCompleted();
       }
     });
   }
 
+  @mobx.action
+  async trackAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
+    return await app.core.screen.loadAsync(async () => {
+      const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber);
+      if (response.status === 200) {
+        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
+        this.pageReadNumber = pageReadNumber;
+        return response;
+      } else {
+        return response;
+      }
+    });
+  }
+  
   @mobx.observable
   id!: string;
 
@@ -101,7 +108,10 @@ export class ChapterViewModel {
       const response = await this._context.library.chapterDeleteAsync(this._series.id, this.id);
       if (response.status === 200) {
         await this._series.refreshAsync();
-      } else if (await app.core.dialog.errorAsync(true, response.error)) {
+      } else if (response.status === 404) {
+        await this._series.refreshAsync();
+      } else {
+        await app.core.dialog.errorAsync(response.error);
         await this._deleteAsync();
       }
     });
@@ -113,7 +123,10 @@ export class ChapterViewModel {
       if (session.value) {
         this._ensureSynchronizeTo = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
         this.isSynchronizing = true;
-      } else if (await app.core.dialog.errorAsync(true, session.error)) {
+      } else if (session.status === 404) {
+        await this._series.refreshAsync();
+      } else {
+        await app.core.dialog.errorAsync(session.error);
         await this._synchronizeAsync();
       }
     });

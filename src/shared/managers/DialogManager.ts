@@ -1,4 +1,3 @@
-import * as app from '..';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
@@ -8,43 +7,28 @@ export class DialogManager {
   }
 
   @mobx.action
-  async completeAddAsync() {
-    return await this._openAsync(language.completeAddBody, language.completeAddButtons).then(() => {
-      return true;
-    });
+  async completeAsync() {
+    await this._openAsync(language.completeBody, language.completeButtons);
   }
 
   @mobx.action
   async confirmDeleteAsync() {
-    return await this._openAsync(language.confirmDeleteBody, language.confirmDeleteButtons).then((index) => {
-      return Boolean(index);
-    });
+    return await this._openAsync(language.confirmDeleteBody, language.confirmDeleteButtons).then(Boolean);
   }
 
   @mobx.action
   async confirmDisconnectAsync() {
-    return await this._openAsync(language.confirmDisconnectBody, language.confirmDisconnectButtons).then(async (index) => {
-      if (index) return true;
-      app.core.route.changeRoot(app.RootType.Connect);
-      return false;
-    });
+    return await this._openAsync(language.confirmDisconnectBody, language.confirmDisconnectButtons).then(Boolean);
   }
 
   @mobx.action
   async connectAsync() {
-    return await this._openAsync(language.connectBody, language.connectButtons).then(() => {
-      return true;
-    });
+    await this._openAsync(language.connectBody, language.connectButtons);
   }
 
   @mobx.action
-  async errorAsync(shouldClose: boolean, ...errors: any[]) {
-    return await this._openAsync(language.errorBody, language.errorButtons, ...errors).then(async (index) => {
-      if (index) return true;
-      if (shouldClose && app.core.screen.views.length >= 2) await app.core.screen.leaveAsync();
-      else if (shouldClose) app.core.route.changeRoot(app.RootType.Connect);
-      return false;
-    });
+  async errorAsync(...errors: any[]) {
+    await this._openAsync(language.errorBody, language.errorButtons, ...errors);
   }
 
   @mobx.computed

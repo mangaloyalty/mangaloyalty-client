@@ -86,15 +86,17 @@ export class ChapterViewModel {
   @mobx.action
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
-      try {
-        const imagePromise = this._updateImageAsync();
-        const statusPromise = this._updateStatusAsync();
-        await imagePromise;
-        await statusPromise;
-      } catch (error) {
-        if (await app.core.dialog.errorAsync(true, error)) {
-          await this.updateAsync();
-        }
+      const trackPromise = this._navigator && this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : undefined;
+      const sessionPagePromise = this._loader.getAsync(this._pageNumber);
+      const track = await trackPromise || {status: 200};
+      const sessionPage = await sessionPagePromise;
+      if (sessionPage.value && track.status === 200) {
+        this.imageUrl = sessionPage.value;
+      } else if (sessionPage.status === 404 || track.status === 404) {
+        await app.core.screen.leaveAsync();
+      } else {
+        await app.core.dialog.errorAsync(sessionPage.error);
+        await this.updateAsync();
       }
     });
   }
@@ -114,14 +116,4 @@ export class ChapterViewModel {
   
   @mobx.observable
   showControls = false;
-
-  private async _updateImageAsync() {
-    const imageUrl = await this._loader.getImageUrlAsync(this._pageNumber);
-    this.imageUrl = imageUrl;
-  }
-
-  private async _updateStatusAsync() {
-    if (!this._navigator || !this._navigator.statusAsync) return;
-    await this._navigator.statusAsync(this._pageCount, this._pageNumber);
-  }
 }
