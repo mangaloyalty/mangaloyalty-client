@@ -86,13 +86,13 @@ export class ChapterViewModel {
   @mobx.action
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
-      const trackPromise = this._navigator && this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : undefined;
       const sessionPagePromise = this._loader.getAsync(this._pageNumber);
-      const track = await trackPromise || {status: 200};
+      const trackPromise = this._navigator && this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : true;
       const sessionPage = await sessionPagePromise;
-      if (sessionPage.value && track.status === 200) {
+      const track = await trackPromise;
+      if (sessionPage.value && track) {
         this.imageUrl = sessionPage.value;
-      } else if (sessionPage.status === 404 || track.status === 404) {
+      } else if (sessionPage.status === 404 || (this._navigator && this._navigator.trackAsync && !track)) {
         await app.core.screen.leaveAsync();
       } else {
         await app.core.dialog.errorAsync(sessionPage.error);

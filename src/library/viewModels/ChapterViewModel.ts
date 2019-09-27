@@ -70,20 +70,6 @@ export class ChapterViewModel {
       }
     });
   }
-
-  @mobx.action
-  async trackAsync(isReadCompleted?: boolean, pageReadNumber?: number) {
-    return await app.core.screen.loadAsync(async () => {
-      const response = await this._context.library.chapterPatchAsync(this._series.id, this.id, isReadCompleted, pageReadNumber);
-      if (response.status === 200) {
-        this.isReadCompleted = this.isReadCompleted || isReadCompleted;
-        this.pageReadNumber = pageReadNumber;
-        return response;
-      } else {
-        return response;
-      }
-    });
-  }
   
   @mobx.observable
   id!: string;
