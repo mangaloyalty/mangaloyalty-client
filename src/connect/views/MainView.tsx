@@ -64,7 +64,7 @@ const styles = app.styles({
     marginBottom: 8
   },
   inputDisabled: {
-    backgroundColor: '#bdbdbd',
+    backgroundColor: '#BDBDBD',
     marginBottom: 8
   },
   control: {
