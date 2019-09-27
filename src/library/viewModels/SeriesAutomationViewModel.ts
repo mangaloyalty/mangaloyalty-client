@@ -1,12 +1,10 @@
 import * as app from '..';
 import * as mobx from 'mobx';
 
-export class AutomationViewModel {
-  private readonly _context: app.ContextApi;
+export class SeriesAutomationViewModel {
   private readonly _series: app.SeriesViewModel;
 
-  constructor(context: app.ContextApi, series: app.SeriesViewModel) {
-    this._context = context;
+  constructor(private _context: app.ContextApi, series: app.SeriesViewModel) {
     this._series = series;
   }
 
@@ -28,7 +26,7 @@ export class AutomationViewModel {
     await app.core.screen.loadAsync(async () => {
       const response = await this._context.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
-        this.isOpen = false;
+        this.showDialog = false;
       } else if (response.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
@@ -39,8 +37,8 @@ export class AutomationViewModel {
   }
 
   @mobx.action
-  toggleOpen() {
-    this.isOpen = !this.isOpen;
+  toggleDialog() {
+    this.showDialog = !this.showDialog;
   }
   
   @mobx.action
@@ -52,7 +50,7 @@ export class AutomationViewModel {
   frequency!: app.IEnumeratorFrequency;
 
   @mobx.observable
-  isOpen = false;
+  showDialog = false;
 
   @mobx.observable
   syncAll!: boolean;

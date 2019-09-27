@@ -3,12 +3,10 @@ import * as areas from '../../areas';
 
 export class Navigator implements app.INavigator {
   private readonly _chapters: app.IRemoteSeriesChapter[];
-  private readonly _context: app.ContextApi;
   private _index: number;
 
-  constructor(context: app.ContextApi, chapters: app.IRemoteSeriesChapter[], index: number) {
+  constructor(private _context: app.ContextApi, chapters: app.IRemoteSeriesChapter[], index: number) {
     this._chapters = chapters;
-    this._context = context;
     this._index = index;
   }
 

@@ -5,9 +5,7 @@ const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
 const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
-  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-
-  constructor(restoreState?: app.MainRestoreState) {
+  constructor(private _context: app.ContextApi, restoreState?: app.MainRestoreState) {
     this.search = restoreState ? restoreState.search : this.search;
   }
 

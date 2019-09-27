@@ -2,14 +2,12 @@ import * as app from '..';
 import * as areas from '../../areas';
 
 export class Navigator implements app.INavigator {
-  private readonly _chapters: app.ChapterViewModel[];
-  private readonly _context: app.ContextApi;
+  private readonly _chapters: app.SeriesChapterViewModel[];
   private readonly _seriesId: string;
   private _index: number;
 
-  constructor(context: app.ContextApi, seriesId: string, chapters: app.ChapterViewModel[], index: number) {
+  constructor(private _context: app.ContextApi, seriesId: string, chapters: app.SeriesChapterViewModel[], index: number) {
     this._chapters = chapters;
-    this._context = context;
     this._seriesId = seriesId;
     this._index = index;
   }
@@ -37,8 +35,7 @@ export class Navigator implements app.INavigator {
   async trackAsync(pageCount: number, pageReadNumber: number) {
     return await app.core.screen.loadAsync(async () => {
       const chapter = this._chapters[this._index];     
-      const isReadCompleted = pageReadNumber >= pageCount ? true : undefined;
-      const response = await this._context.library.chapterPatchAsync(this._seriesId, chapter.id, isReadCompleted, pageReadNumber);
+      const response = await this._context.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
       return response.status === 200;
     });
   }

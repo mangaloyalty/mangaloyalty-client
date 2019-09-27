@@ -2,6 +2,7 @@ export const language = {
   session: 'Session',
   sessionEmptyBody: 'No sessions have been found. When a chapter is being read or synchronized, a session is created and will be listed here.',
   sessionEmptyTitle: '何もない',
+  sessionIconMenu: 'Menu',
   sessionIconNextChapter: 'Next Chapter',
   sessionIconPreviousChapter: 'Previous Chapter',
   sessionIconRefresh: 'Refresh',

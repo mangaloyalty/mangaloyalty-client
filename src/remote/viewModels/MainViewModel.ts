@@ -3,9 +3,7 @@ import * as mobx from 'mobx';
 const storageProvider = 'RemoteProvider';
 
 export class MainViewModel {
-  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-
-  constructor(restoreState?: app.MainRestoreState) {
+  constructor(private _context: app.ContextApi, restoreState?: app.MainRestoreState) {
     this.search = restoreState ? restoreState.search : this.search;
   }
 
@@ -34,9 +32,8 @@ export class MainViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const seriesList = this.search
-        ? await this._context.remote.searchAsync(this.providerName, this.search)
-        : await this._context.remote.popularAsync(this.providerName);
+      const seriesListPromise = this.search ? this._context.remote.searchAsync(this.providerName, this.search) : this._context.remote.popularAsync(this.providerName);
+      const seriesList = await seriesListPromise;
       if (seriesList.value) {
         this.series = seriesList.value;
       } else {

@@ -6,14 +6,15 @@ import {language} from '../language';
 @mobxReact.observer
 export class MainController extends React.Component<{vm: app.MainViewModel}> {
   static async constructAsync() {
-    const vm = new app.MainViewModel();
+    const context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+    const vm = new app.MainViewModel(context);
     await vm.refreshAsync();
     return <MainController vm={vm} />;
   }
 
   render() {
     return (
-      <app.RefreshComponent onRefresh={() => this.props.vm.refreshAsync()}>
+      <app.FocusComponent onFocus={() => this.props.vm.refreshAsync()}>
         <app.HeaderComponent title={language.session} 
           icon={<app.MainIconComponent vm={this.props.vm} />}
           onBack={() => app.core.route.disconnectAsync()}>
@@ -21,7 +22,7 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
             <app.MainView vm={this.props.vm} />
           </app.FooterComponent>
         </app.HeaderComponent>
-      </app.RefreshComponent>
+      </app.FocusComponent>
     );
   }
 }
