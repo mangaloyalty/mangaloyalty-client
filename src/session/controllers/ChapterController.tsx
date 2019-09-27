@@ -7,7 +7,8 @@ import * as React from 'react';
 export class ChapterController extends React.Component<{vm: app.ChapterViewModel}> {
   static createConstruct(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
     return async () => {
-      const vm = new app.ChapterViewModel(session, title, navigator, pageNumber);
+      const context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+      const vm = new app.ChapterViewModel(context, session, title, navigator, pageNumber);
       await vm.updateAsync();
       return <ChapterController vm={vm} />;
     };

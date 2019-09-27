@@ -2,11 +2,11 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
+export class FocusComponent extends React.Component<{onFocus: () => void}> {
   private readonly _container: React.RefObject<HTMLDivElement>;
   private readonly _handler: () => void;
   
-  constructor(props: {onRefresh: () => void}) {
+  constructor(props: {onFocus: () => void}) {
     super(props);
     this._container = React.createRef();
     this._handler = this._onFocus.bind(this);
@@ -30,6 +30,6 @@ export class RefreshComponent extends React.Component<{onRefresh: () => void}> {
 
   private _onFocus() {  
     if (app.core.dialog.isChildVisible) return;
-    this.props.onRefresh();
+    this.props.onFocus();
   }
 }

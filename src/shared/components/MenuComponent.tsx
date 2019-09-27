@@ -38,7 +38,7 @@ const styles = app.styles({
     display: 'inline-block'
   },
   grow: {
-    transformOrigin: 'center bottom',
-    transform: 'translateX(48px)'
+    transform: 'translateX(48px)',
+    transformOrigin: 'center bottom'
   }
 });

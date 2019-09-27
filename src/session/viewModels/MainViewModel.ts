@@ -2,7 +2,9 @@ import * as app from '..';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+  constructor(private _context: app.ContextApi) {
+    return;
+  }
 
   @mobx.action
   async openAsync(session: app.ISessionListItem) {

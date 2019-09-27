@@ -4,9 +4,7 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-
-  constructor(url: string, restoreState?: app.SeriesRestoreState) {
+  constructor(private _context: app.ContextApi, url: string, restoreState?: app.SeriesRestoreState) {
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
     this.url = url;
   }
@@ -47,8 +45,8 @@ export class SeriesViewModel {
 
   @mobx.action
   async readAsync() {
-    if (!this.chapters.length) return app.core.toast.add(language.remoteSeriesToastQuickRead);
-    await this.openAsync(this.chapters[this.chapters.length - 1]);
+    for (let i = this.chapters.length - 1; i >= 0; i--) return await this.openAsync(this.chapters[i]);
+    app.core.toast.add(language.remoteSeriesToastQuickRead);
   }
 
   @mobx.action

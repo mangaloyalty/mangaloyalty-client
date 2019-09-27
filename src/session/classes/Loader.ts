@@ -2,12 +2,10 @@ import * as app from '..';
 
 export class Loader {
   private readonly _cache: {[pageNumber: number]: Promise<{error?: string, status: number, value?: string}>};
-  private readonly _context: app.ContextApi;
   private readonly _session: app.ISessionListItem;
 
-  constructor(context: app.ContextApi, session: app.ISessionListItem) {
+  constructor(private _context: app.ContextApi, session: app.ISessionListItem) {
     this._cache = {};
-    this._context = context;
     this._session = session;
   }
 
@@ -18,8 +16,8 @@ export class Loader {
       return await this._cache[pageNumber];
     } else {
       const sessionPagePromise = this._pageAsync(pageNumber);
-      this._cache[pageNumber] = sessionPagePromise;
       const sessionPage = await sessionPagePromise;
+      this._cache[pageNumber] = sessionPagePromise;
       this._expire(pageNumber);
       this._load(pageNumber);
       return sessionPage;
@@ -46,14 +44,14 @@ export class Loader {
   
   private async _pageAsync(pageNumber: number) {
     const sessionPage = await this._context.session.pageAsync(this._session.id, pageNumber);
-    if (!sessionPage.value) {
-      return {error: sessionPage.error, status: sessionPage.status};
-    } else if (!app.fanfoxProvider.isSupported(this._session.url)) {
+    if (sessionPage.value && app.fanfoxProvider.isSupported(this._session.url)) {
+      const value = await app.fanfoxProvider.processAsync(sessionPage.value.image);
+      return {error: sessionPage.error, status: sessionPage.status, value};
+    } else if (sessionPage.value) {
       const value = `data:;base64, ${sessionPage.value.image}`;
       return {error: sessionPage.error, status: sessionPage.status, value};
     } else {
-      const value = await app.fanfoxProvider.processAsync(sessionPage.value.image);
-      return {error: sessionPage.error, status: sessionPage.status, value};
+      return {error: sessionPage.error, status: sessionPage.status};
     }
   }
 }
