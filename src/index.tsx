@@ -1,4 +1,3 @@
-// UX: Generic: Use `tslib` helper for better built package sizes.
 // UX: Generic: Production-ready lazy loading library for performance-heavy lists (library/chapters). Optimize tooltips?
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Reader: Option to disable image processing (e.g. old series are parsed too aggressively).
