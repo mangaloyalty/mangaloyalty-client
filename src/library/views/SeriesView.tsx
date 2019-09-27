@@ -9,7 +9,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <app.AutomationView vm={this.props.vm.automation} />
+        <app.SeriesAutomationView vm={this.props.vm.automation} />
         <mui.Paper style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
@@ -32,7 +32,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
             <mui.List>
               {this.props.vm.chapters.map((chapter) => (
-                <app.ChapterView key={chapter.id} vm={chapter} />
+                <app.SeriesChapterView key={chapter.id} vm={chapter} />
               ))}
             </mui.List>
           </mui.Paper>}

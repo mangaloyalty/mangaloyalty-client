@@ -3,7 +3,6 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class ChapterViewModel {
-  private readonly _context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
   private readonly _loader: app.Loader;
   private readonly _navigator?: app.INavigator;
   private readonly _pageCount: number;
@@ -12,7 +11,7 @@ export class ChapterViewModel {
   private _imagePreviousTime?: number;
   private _pageNumber: number;
 
-  constructor(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
+  constructor(private _context: app.ContextApi, session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
     this._loader = new app.Loader(this._context, session);
     this._navigator = navigator;
     this._pageCount = session.pageCount;

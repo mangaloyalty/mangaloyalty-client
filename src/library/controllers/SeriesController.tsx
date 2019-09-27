@@ -6,7 +6,8 @@ import * as React from 'react';
 export class SeriesController extends React.Component<{vm: app.SeriesViewModel}> {
   static createConstruct(id: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
-      const vm = new app.SeriesViewModel(id, restoreState);
+      const context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
+      const vm = new app.SeriesViewModel(context, id, restoreState);
       await vm.refreshAsync();
       return <SeriesController vm={vm} />;
     };
@@ -14,14 +15,14 @@ export class SeriesController extends React.Component<{vm: app.SeriesViewModel}>
 
   render() {
     return (
-      <app.RefreshComponent onRefresh={() => this.props.vm.refreshAsync()}>
-        <app.IntervalComponent timeout={app.settings.librarySeriesRepeatTimeout} onIntervalAsync={() => this.props.vm.intervalAsync()} />
+      <app.FocusComponent onFocus={() => this.props.vm.refreshAsync()}>
+        <app.IntervalComponent timeout={app.settings.librarySeriesIntervalTimeout} onIntervalAsync={() => this.props.vm.intervalAsync()} />
         <app.HeaderComponent title={this.props.vm.title}
           icon={<app.SeriesIconComponent vm={this.props.vm} />}
           onBack={() => app.core.screen.leaveAsync()}>
           <app.SeriesView vm={this.props.vm} />
         </app.HeaderComponent>
-      </app.RefreshComponent>
+      </app.FocusComponent>
     );
   }
 }

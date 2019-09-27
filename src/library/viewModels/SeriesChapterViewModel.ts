@@ -3,15 +3,13 @@ import * as areas from '../../areas';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-export class ChapterViewModel {
-  private readonly _context: app.ContextApi;
+export class SeriesChapterViewModel {
   private readonly _series: app.SeriesViewModel;
-  private _ensureSynchronizeTo: number;
+  private _ensureSynchronizeTime: number;
 
-  constructor(context: app.ContextApi, series: app.SeriesViewModel) {
-    this._context = context;
+  constructor(private _context: app.ContextApi, series: app.SeriesViewModel) {
     this._series = series;
-    this._ensureSynchronizeTo = 0;
+    this._ensureSynchronizeTime = 0;
   }
 
   @mobx.action
@@ -49,7 +47,7 @@ export class ChapterViewModel {
   refreshWith(chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
     this.id = chapter.id;
     this.isReadCompleted = chapter.isReadCompleted;
-    this.isSynchronizing = isSynchronizing || (this._ensureSynchronizeTo >= Date.now());
+    this.isSynchronizing = this._ensureSynchronizeTime >= Date.now() || isSynchronizing;
     this.pageReadNumber = chapter.pageReadNumber;
     this.syncAt = chapter.syncAt;
     this.title = chapter.title;
@@ -107,7 +105,7 @@ export class ChapterViewModel {
     await app.core.screen.loadAsync(async () => {
       const session = await this._context.library.chapterUpdateAsync(this._series.id, this.id);
       if (session.value) {
-        this._ensureSynchronizeTo = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
+        this._ensureSynchronizeTime = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
         this.isSynchronizing = true;
       } else if (session.status === 404) {
         await this._series.refreshAsync();

@@ -32,8 +32,8 @@ const styles = app.styles({
     background: 'rgba(0, 0, 0, 0.75)',
     borderRadius: 8,
     color: app.theme.palette.primary.contrastText,
-    padding: 8,
     marginTop: 8,
-    maxWidth: 256
+    maxWidth: 256,
+    padding: 8
   }
 });

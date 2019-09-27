@@ -5,10 +5,10 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class AutomationView extends React.Component<{vm: app.AutomationViewModel}> {
+export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomationViewModel}> {
   render() {
     return (
-      <mui.Dialog fullWidth maxWidth={false} open={this.props.vm.isOpen} style={styles.container}>
+      <mui.Dialog fullWidth maxWidth={false} open={this.props.vm.showDialog} style={styles.container}>
         <mui.DialogTitle>
           {language.libraryAutomation}
         </mui.DialogTitle>
@@ -38,7 +38,7 @@ export class AutomationView extends React.Component<{vm: app.AutomationViewModel
           </mui.FormGroup>
         </mui.DialogContent>
         <mui.DialogActions>
-          <mui.Button onClick={() => this.props.vm.toggleOpen()}>
+          <mui.Button onClick={() => this.props.vm.toggleDialog()}>
             {language.libraryAutomationControlClose}
           </mui.Button>
           <mui.Button color="primary" onClick={() => this.props.vm.saveAsync()}>
@@ -54,7 +54,8 @@ const styles = app.styles({
   container: {
     margin: '0 auto',
     maxWidth: '100%',
-    width: 480
+    width: 480,
+    zIndex: 2100
   },
   formGroup: {
     marginBottom: 24

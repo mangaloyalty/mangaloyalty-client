@@ -18,7 +18,7 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
             <mui.ListItemText primary={language.libraryIconMenuRefresh} />
           </mui.MenuItem>
           <mui.Divider />
-          <mui.MenuItem onClick={() => this.props.vm.automation.toggleOpen()}>
+          <mui.MenuItem onClick={() => this.props.vm.automation.toggleDialog()}>
             <mui.ListItemIcon>
               <app.icons.Settings />
             </mui.ListItemIcon>

@@ -5,7 +5,7 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class ChapterView extends React.Component<{vm: app.ChapterViewModel}> {
+export class SeriesChapterView extends React.Component<{vm: app.SeriesChapterViewModel}> {
   render() {
     return (
       <mui.ListItem button onClick={() => this.props.vm.openAsync()}>
