@@ -33,7 +33,7 @@ export class SeriesViewModel {
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this.showChapters);
         const navigator = new app.Navigator(this.chapters, this.chapters.indexOf(chapter));
-        const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, navigator);
+        const constructAsync = areas.session.ChapterController.createConstruct(navigator, session.value, chapter.title);
         if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
       } else {
         await app.core.dialog.errorAsync(() => this.openAsync(chapter), session.error);

@@ -4,7 +4,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class FooterComponent extends React.Component<{rootType: app.RootType}> {
+export class FooterComponent extends React.Component<{isRemote: boolean}> {
   render() {
     return (
       <mui.Grid>
@@ -13,7 +13,7 @@ export class FooterComponent extends React.Component<{rootType: app.RootType}> {
         </mui.Grid>
         <mui.Paper style={{...styles.navigation, ...app.limiter}}>
           <mui.Divider />
-          <mui.BottomNavigation showLabels value={this.props.rootType}>
+          <mui.BottomNavigation showLabels value={Number(this.props.isRemote)}>
             <mui.BottomNavigationAction
               icon={<app.icons.Home />}
               label={language.navigationLibrary}
@@ -22,10 +22,6 @@ export class FooterComponent extends React.Component<{rootType: app.RootType}> {
               icon={<app.icons.Public />}
               label={language.navigationRemote}
               onClick={() => app.core.screen.openAsync(areas.remote.MainController.constructAsync)} />
-            <mui.BottomNavigationAction
-              icon={<app.icons.Portrait />}
-              label={language.navigationSession}
-              onClick={() => app.core.screen.openAsync(areas.session.MainController.constructAsync)} />
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />

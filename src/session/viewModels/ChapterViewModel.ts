@@ -4,14 +4,14 @@ import {language} from '../language';
 
 export class ChapterViewModel {
   private readonly _loader: app.Loader;
-  private readonly _navigator?: app.INavigator;
+  private readonly _navigator: app.INavigator;
   private readonly _pageCount: number;
   private readonly _title: string;
   private _imageNextTime?: number;
   private _imagePreviousTime?: number;
   private _pageNumber: number;
 
-  constructor(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
+  constructor(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
     this._loader = new app.Loader(session);
     this._navigator = navigator;
     this._pageCount = session.pageCount;
@@ -22,7 +22,7 @@ export class ChapterViewModel {
   @mobx.action
   async chapterNextAsync() {
     await app.core.screen.loadAsync(async () => {
-      if (!this._navigator || !this._navigator.hasNext) {
+      if (!this._navigator.hasNext) {
         app.core.toast.add(language.sessionToastNextUnavailable);
       } else {
         app.core.toast.add(language.sessionToastNextActive);
@@ -34,7 +34,7 @@ export class ChapterViewModel {
   @mobx.action
   async chapterPreviousAsync() {
     await app.core.screen.loadAsync(async () => {
-      if (!this._navigator || !this._navigator.hasPrevious) {
+      if (!this._navigator.hasPrevious) {
         app.core.toast.add(language.sessionToastPreviousUnavailable);
       } else {
         app.core.toast.add(language.sessionToastPreviousActive);
@@ -50,7 +50,7 @@ export class ChapterViewModel {
     } else if (this._pageNumber < this._pageCount) {
       this._pageNumber++;
       await this.updateAsync();
-    } else if (!this._navigator || !this._navigator.hasNext) {
+    } else if (!this._navigator.hasNext) {
       app.core.toast.add(language.sessionToastNextUnavailable);
     } else if (!this._imageNextTime || this._imageNextTime < Date.now()) {
       app.core.toast.add(language.sessionToastNextRepeat);
@@ -67,7 +67,7 @@ export class ChapterViewModel {
     } else if (this._pageNumber > 1) {
       this._pageNumber--;
       await this.updateAsync();
-    } else if (!this._navigator || !this._navigator.hasPrevious) {
+    } else if (!this._navigator.hasPrevious) {
       app.core.toast.add(language.sessionToastPreviousUnavailable);
     } else if (!this._imagePreviousTime || this._imagePreviousTime < Date.now()) {
       app.core.toast.add(language.sessionToastPreviousRepeat);
@@ -86,22 +86,17 @@ export class ChapterViewModel {
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
       const sessionPagePromise = this._loader.getAsync(this._pageNumber);
-      const trackPromise = this._navigator && this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : true;
+      const trackPromise = this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : true;
       const sessionPage = await sessionPagePromise;
       const track = await trackPromise;
       if (sessionPage.value && track) {
         this.imageUrl = sessionPage.value;
-      } else if (sessionPage.status === 404 || (this._navigator && this._navigator.trackAsync && !track)) {
+      } else if (sessionPage.status === 404 || (this._navigator.trackAsync && !track)) {
         await app.core.screen.leaveAsync();
       } else {
         await app.core.dialog.errorAsync(() => this.updateAsync(), sessionPage.error);
       }
     });
-  }
-
-  @mobx.computed
-  get showNavigator() {
-    return Boolean(this._navigator);
   }
 
   @mobx.computed
