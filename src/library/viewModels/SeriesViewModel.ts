@@ -3,7 +3,7 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(private _context: app.ContextApi, id: string, restoreState?: app.SeriesRestoreState) {
+  constructor(id: string, restoreState?: app.SeriesRestoreState) {
     this.id = id;
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
@@ -15,7 +15,7 @@ export class SeriesViewModel {
 
   @mobx.action
   async deleteAsync() {
-    if (await app.core.dialog.confirmDeleteAsync()) return;
+    if (await app.core.dialog.deleteAsync()) return;
     await app.core.screen.loadAsync(() => this._deleteAsync());
   }
 
@@ -62,7 +62,7 @@ export class SeriesViewModel {
   title!: string;
 
   private async _deleteAsync() {
-    const response = await this._context.library.seriesDeleteAsync(this.id);
+    const response = await app.api.library.seriesDeleteAsync(this.id);
     if (response.status === 200) {
       await app.core.screen.leaveAsync();
     } else if (response.status === 404) {
@@ -74,15 +74,15 @@ export class SeriesViewModel {
   }
 
   private async _refreshAsync(options: {providerUpdate: boolean, showDialog: boolean}) {
-    const seriesPromise = options.providerUpdate ? this._context.library.seriesUpdateAsync(this.id) : this._context.library.seriesReadAsync(this.id);
-    const sessionListPromise = this._context.session.listAsync(this.id);
+    const seriesPromise = options.providerUpdate ? app.api.library.seriesUpdateAsync(this.id) : app.api.library.seriesReadAsync(this.id);
+    const sessionListPromise = app.api.session.listAsync(this.id);
     const series = await seriesPromise;
     const sessionList = await sessionListPromise;
     if (series.value && sessionList.value) {
       this.image = series.value.source.image;
       this.summary = series.value.source.summary;
       this.title = series.value.source.title;
-      this.automation = (this.automation || new app.SeriesAutomationViewModel(this._context, this)).refreshWith(series.value);
+      this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
       this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
     } else if (!options.showDialog) {
       return;
@@ -96,7 +96,7 @@ export class SeriesViewModel {
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
     const isSynchronizing = checkIsSynchronizing(this.id, chapter, sessionList);
-    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.SeriesChapterViewModel(this._context, this);
+    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.SeriesChapterViewModel(this);
     return vm.refreshWith(chapter, isSynchronizing);
   }
 }

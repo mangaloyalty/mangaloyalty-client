@@ -11,8 +11,8 @@ export class ChapterViewModel {
   private _imagePreviousTime?: number;
   private _pageNumber: number;
 
-  constructor(private _context: app.ContextApi, session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
-    this._loader = new app.Loader(this._context, session);
+  constructor(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
+    this._loader = new app.Loader(session);
     this._navigator = navigator;
     this._pageCount = session.pageCount;
     this._pageNumber = pageNumber || 1;

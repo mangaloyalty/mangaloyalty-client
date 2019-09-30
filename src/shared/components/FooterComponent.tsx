@@ -1,9 +1,10 @@
 import * as app from '..';
+import * as areas from '../../areas';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class FooterComponent extends React.Component {
+export class FooterComponent extends React.Component<{rootType: app.RootType}> {
   render() {
     return (
       <mui.Grid>
@@ -12,19 +13,19 @@ export class FooterComponent extends React.Component {
         </mui.Grid>
         <mui.Paper style={{...styles.navigation, ...app.limiter}}>
           <mui.Divider />
-          <mui.BottomNavigation showLabels value={app.core.route.rootType - 1}>
+          <mui.BottomNavigation showLabels value={this.props.rootType}>
             <mui.BottomNavigationAction
               icon={<app.icons.Home />}
               label={language.navigationLibrary}
-              onClick={() => app.core.route.changeRoot(app.RootType.Library)} />
+              onClick={() => app.core.screen.openAsync(areas.library.MainController.constructAsync)} />
             <mui.BottomNavigationAction
               icon={<app.icons.Public />}
               label={language.navigationRemote}
-              onClick={() => app.core.route.changeRoot(app.RootType.Remote)} />
+              onClick={() => app.core.screen.openAsync(areas.remote.MainController.constructAsync)} />
             <mui.BottomNavigationAction
               icon={<app.icons.Portrait />}
               label={language.navigationSession}
-              onClick={() => app.core.route.changeRoot(app.RootType.Session)} />
+              onClick={() => app.core.screen.openAsync(areas.session.MainController.constructAsync)} />
           </mui.BottomNavigation>
           <mui.Grid className="ios-inset-bottom">
             <mui.Divider />

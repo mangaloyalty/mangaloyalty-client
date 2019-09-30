@@ -4,7 +4,7 @@ export class Loader {
   private readonly _cache: {[pageNumber: number]: Promise<{error?: string, status: number, value?: string}>};
   private readonly _session: app.ISessionListItem;
 
-  constructor(private _context: app.ContextApi, session: app.ISessionListItem) {
+  constructor(session: app.ISessionListItem) {
     this._cache = {};
     this._session = session;
   }
@@ -43,7 +43,7 @@ export class Loader {
   }
   
   private async _pageAsync(pageNumber: number) {
-    const sessionPage = await this._context.session.pageAsync(this._session.id, pageNumber);
+    const sessionPage = await app.api.session.pageAsync(this._session.id, pageNumber);
     if (sessionPage.value && app.fanfoxProvider.isSupported(this._session.url)) {
       const value = await app.fanfoxProvider.processAsync(sessionPage.value.image);
       return {error: sessionPage.error, status: sessionPage.status, value};

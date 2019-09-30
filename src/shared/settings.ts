@@ -1,5 +1,4 @@
 export const settings = {
-  contextKey: 'ContextApi',
   contextTimeout: 15000,
   librarySeriesIntervalTimeout: 10000,
   librarySeriesMinimumSynchronizingTimeout: 1000,

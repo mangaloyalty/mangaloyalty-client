@@ -26,8 +26,8 @@ export class HeaderTitleBarComponent extends React.Component<{icon?: React.React
 
 const styles = app.styles({
   back: {
-    marginLeft: -20,
-    marginRight: 8,
+    marginLeft: -16,
+    marginRight: 4,
     paddingLeft: 16,
     paddingRight: 6
   },

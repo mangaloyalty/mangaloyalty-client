@@ -5,7 +5,7 @@ export class Navigator implements app.INavigator {
   private readonly _chapters: app.IRemoteSeriesChapter[];
   private _index: number;
 
-  constructor(private _context: app.ContextApi, chapters: app.IRemoteSeriesChapter[], index: number) {
+  constructor(chapters: app.IRemoteSeriesChapter[], index: number) {
     this._chapters = chapters;
     this._index = index;
   }
@@ -33,7 +33,7 @@ export class Navigator implements app.INavigator {
   private async _openAsync() {
     await app.core.screen.loadAsync(async () => {
       const chapter = this._chapters[this._index];
-      const session = await this._context.remote.startAsync(chapter.url);
+      const session = await app.api.remote.startAsync(chapter.url);
       if (session.value) {
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this);
         await app.core.screen.replaceChildAsync(constructAsync);
