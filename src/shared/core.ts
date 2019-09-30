@@ -1,16 +1,31 @@
-import {DialogManager} from './managers/DialogManager';
-import {RouteManager} from './managers/RouteManager';
-import {ScreenManager} from './managers/ScreenManager';
-import {ServiceManager} from './managers/ServiceManager';
-import {StorageManager} from './managers/StorageManager';
-import {ToastManager} from './managers/ToastManager';
+import * as app from '.';
+let cacheDialog: app.DialogManager;
+let cacheScreen: app.ScreenManager;
+let cacheStorage: app.StorageManager;
+let cacheToast: app.ToastManager;
 
 export const core = {
-  data: require('../../package.json'),
-  dialog: new DialogManager(),
-  route: new RouteManager(),
-  screen: new ScreenManager(),
-  service: new ServiceManager(),
-  storage: new StorageManager(),
-  toast: new ToastManager()
+  get dialog() {
+    if (cacheDialog) return cacheDialog;
+    cacheDialog = new app.DialogManager();
+    return cacheDialog;
+  },
+
+  get screen() {
+    if (cacheScreen) return cacheScreen;
+    cacheScreen = new app.ScreenManager();
+    return cacheScreen;
+  },
+
+  get storage() {
+    if (cacheStorage) return cacheStorage;
+    cacheStorage = new app.StorageManager();
+    return cacheStorage;
+  },
+
+  get toast() {
+    if (cacheToast) return cacheToast;
+    cacheToast = new app.ToastManager();
+    return cacheToast;
+  }
 };

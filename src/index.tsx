@@ -23,7 +23,6 @@
 // UX: Touch: Zoom with constraints of the image instead of the container.
 // UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as areas from './areas';
-import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as muiStyles from '@material-ui/styles';
@@ -44,20 +43,7 @@ class App extends React.Component {
   }
 }
 
-async function RootAsync(rootType: areas.shared.RootType) {
-  switch (rootType) {
-    case areas.shared.RootType.Connect:
-      return await areas.shared.core.screen.openAsync(areas.connect.MainController.constructAsync);
-    case areas.shared.RootType.Library:
-      return await areas.shared.core.screen.openAsync(areas.library.MainController.constructAsync);
-    case areas.shared.RootType.Remote:
-      return await areas.shared.core.screen.openAsync(areas.remote.MainController.constructAsync);
-    case areas.shared.RootType.Session:
-      return await areas.shared.core.screen.openAsync(areas.session.MainController.constructAsync);
-  }
-}
-
 (function() {
-  mobx.reaction(() => areas.shared.core.route.rootType, RootAsync, {fireImmediately: true});
+  areas.shared.core.screen.openAsync(areas.library.MainController.constructAsync);
   ReactDOM.render(<App />, document.getElementById('container'));
 })();

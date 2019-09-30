@@ -6,8 +6,7 @@ import * as React from 'react';
 export class SeriesController extends React.Component<{vm: app.SeriesViewModel}> {
   static createConstruct(url: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
-      const context = app.core.service.get<app.ContextApi>(app.settings.contextKey);
-      const vm = new app.SeriesViewModel(context, url, restoreState);
+      const vm = new app.SeriesViewModel(url, restoreState);
       await vm.refreshAsync();
       return <SeriesController vm={vm} />;
     };

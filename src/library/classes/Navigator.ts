@@ -6,7 +6,7 @@ export class Navigator implements app.INavigator {
   private readonly _seriesId: string;
   private _index: number;
 
-  constructor(private _context: app.ContextApi, seriesId: string, chapters: app.SeriesChapterViewModel[], index: number) {
+  constructor(seriesId: string, chapters: app.SeriesChapterViewModel[], index: number) {
     this._chapters = chapters;
     this._seriesId = seriesId;
     this._index = index;
@@ -35,15 +35,15 @@ export class Navigator implements app.INavigator {
   async trackAsync(pageCount: number, pageReadNumber: number) {
     return await app.core.screen.loadAsync(async () => {
       const chapter = this._chapters[this._index];     
-      const response = await this._context.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
+      const response = await app.api.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
       return response.status === 200;
     });
   }
 
   private async _openAsync() {
     await app.core.screen.loadAsync(async () => {
-      const chapter = this._chapters[this._index];     
-      const session = await this._context.library.chapterReadAsync(this._seriesId, chapter.id);
+      const chapter = this._chapters[this._index];
+      const session = await app.api.library.chapterReadAsync(this._seriesId, chapter.id);
       if (session.value) {
         const pageNumber = chapter.pageReadNumber && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this, pageNumber);

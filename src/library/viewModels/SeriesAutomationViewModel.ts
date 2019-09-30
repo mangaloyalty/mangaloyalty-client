@@ -4,7 +4,7 @@ import * as mobx from 'mobx';
 export class SeriesAutomationViewModel {
   private readonly _series: app.SeriesViewModel;
 
-  constructor(private _context: app.ContextApi, series: app.SeriesViewModel) {
+  constructor(series: app.SeriesViewModel) {
     this._series = series;
   }
 
@@ -24,7 +24,7 @@ export class SeriesAutomationViewModel {
   @mobx.action
   async saveAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await this._context.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
+      const response = await app.api.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.showDialog = false;
       } else if (response.status === 404) {
