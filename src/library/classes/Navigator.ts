@@ -51,8 +51,7 @@ export class Navigator implements app.INavigator {
       } else if (session.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
-        await app.core.dialog.errorAsync(session.error);
-        await this._openAsync();
+        await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
       }
     });
   }

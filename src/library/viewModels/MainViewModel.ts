@@ -54,8 +54,7 @@ export class MainViewModel {
       if (seriesList.value) {
         this.series = seriesList.value;
       } else {
-        await app.core.dialog.errorAsync(seriesList.error);
-        await this.refreshAsync();
+        await app.core.dialog.errorAsync(() => this.refreshAsync(), seriesList.error);
       }
     });
   }
