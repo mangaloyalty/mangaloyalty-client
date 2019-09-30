@@ -38,8 +38,7 @@ export class Navigator implements app.INavigator {
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, this);
         await app.core.screen.replaceChildAsync(constructAsync);
       } else {
-        await app.core.dialog.errorAsync(session.error);
-        await this._openAsync();
+        await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
       }
     });
   }

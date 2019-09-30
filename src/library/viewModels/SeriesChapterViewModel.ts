@@ -37,8 +37,7 @@ export class SeriesChapterViewModel {
       } else if (session.status === 404) {
         await this._series.refreshAsync();
       } else {
-        await app.core.dialog.errorAsync(session.error);
-        await this.openAsync();
+        await app.core.dialog.errorAsync(() => this.openAsync(), session.error);
       }
     });
   }
@@ -63,8 +62,7 @@ export class SeriesChapterViewModel {
       } else if (response.status === 404) {
         await this._series.refreshAsync();
       } else {
-        await app.core.dialog.errorAsync(response.error);
-        await this.toggleReadCompleted();
+        await app.core.dialog.errorAsync(() => this.toggleReadCompleted(), response.error);
       }
     });
   }
@@ -95,8 +93,7 @@ export class SeriesChapterViewModel {
       } else if (response.status === 404) {
         await this._series.refreshAsync();
       } else {
-        await app.core.dialog.errorAsync(response.error);
-        await this._deleteAsync();
+        await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
       }
     });
   }
@@ -110,8 +107,7 @@ export class SeriesChapterViewModel {
       } else if (session.status === 404) {
         await this._series.refreshAsync();
       } else {
-        await app.core.dialog.errorAsync(session.error);
-        await this._synchronizeAsync();
+        await app.core.dialog.errorAsync(() => this._synchronizeAsync(), session.error);
       }
     });
   }

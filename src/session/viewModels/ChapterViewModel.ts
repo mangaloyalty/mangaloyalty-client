@@ -94,8 +94,7 @@ export class ChapterViewModel {
       } else if (sessionPage.status === 404 || (this._navigator && this._navigator.trackAsync && !track)) {
         await app.core.screen.leaveAsync();
       } else {
-        await app.core.dialog.errorAsync(sessionPage.error);
-        await this.updateAsync();
+        await app.core.dialog.errorAsync(() => this.updateAsync(), sessionPage.error);
       }
     });
   }
