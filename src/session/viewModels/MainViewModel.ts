@@ -15,8 +15,7 @@ export class MainViewModel {
       if (sessionList.value) {
         this.sessions = sessionList.value;
       } else {
-        await app.core.dialog.errorAsync(sessionList.error);
-        await this.refreshAsync();
+        await app.core.dialog.errorAsync(() => this.refreshAsync(), sessionList.error);
       }
     });
   }

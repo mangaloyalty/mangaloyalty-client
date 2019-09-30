@@ -30,8 +30,7 @@ export class SeriesAutomationViewModel {
       } else if (response.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
-        await app.core.dialog.errorAsync(response.error);
-        await this.saveAsync();
+        await app.core.dialog.errorAsync(() => this.saveAsync(), response.error);
       }
     });
   }

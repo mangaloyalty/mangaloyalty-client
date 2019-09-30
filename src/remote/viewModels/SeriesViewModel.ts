@@ -16,8 +16,7 @@ export class SeriesViewModel {
       if (response.value) {
         await app.core.dialog.addedAsync();
       } else {
-        await app.core.dialog.errorAsync(response.error);
-        await this.addAsync();
+        await app.core.dialog.errorAsync(() => this.addAsync(), response.error);
       }
     });
   }
@@ -37,8 +36,7 @@ export class SeriesViewModel {
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, navigator);
         if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
       } else {
-        await app.core.dialog.errorAsync(session.error);
-        await this.openAsync(chapter);
+        await app.core.dialog.errorAsync(() => this.openAsync(chapter), session.error);
       }
     });
   }
@@ -60,8 +58,7 @@ export class SeriesViewModel {
         this.title = series.value.title;
         this.url = series.value.url;
       } else {
-        await app.core.dialog.errorAsync(series.error);
-        await this.refreshAsync();
+        await app.core.dialog.errorAsync(() => this.refreshAsync(), series.error);
       }
     });
   }

@@ -68,8 +68,7 @@ export class SeriesViewModel {
     } else if (response.status === 404) {
       await app.core.screen.leaveAsync();
     } else {
-      await app.core.dialog.errorAsync(response.error);
-      await this._deleteAsync();
+      await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     }
   }
 
@@ -89,8 +88,7 @@ export class SeriesViewModel {
     } else if (series.status === 404) {
       await app.core.screen.leaveAsync();
     } else {
-      await app.core.dialog.errorAsync(series.error, sessionList.error);
-      await this.refreshAsync();
+      await app.core.dialog.errorAsync(() => this.refreshAsync(), series.error, sessionList.error);
     }
   }
 
