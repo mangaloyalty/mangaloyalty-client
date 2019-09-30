@@ -32,7 +32,7 @@ export class SeriesChapterViewModel {
         const restoreState = new app.SeriesRestoreState(this._series.showChapters);
         const pageNumber = this.pageReadNumber && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
         const navigator = new app.Navigator(this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
-        const constructAsync = areas.session.ChapterController.createConstruct(navigator, session.value, this.title, pageNumber);
+        const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber);
         if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this._series.refreshAsync();
       } else if (session.status === 404) {
         await this._series.refreshAsync();
