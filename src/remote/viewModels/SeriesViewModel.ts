@@ -4,7 +4,7 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(private _context: app.ContextApi, url: string, restoreState?: app.SeriesRestoreState) {
+  constructor(url: string, restoreState?: app.SeriesRestoreState) {
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
     this.url = url;
   }
@@ -12,9 +12,9 @@ export class SeriesViewModel {
   @mobx.action
   async addAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await this._context.library.seriesCreateAsync(this.url);
+      const response = await app.api.library.seriesCreateAsync(this.url);
       if (response.value) {
-        await app.core.dialog.completeAsync();
+        await app.core.dialog.addedAsync();
       } else {
         await app.core.dialog.errorAsync(response.error);
         await this.addAsync();
@@ -30,10 +30,10 @@ export class SeriesViewModel {
   @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     await app.core.screen.loadAsync(async () => {
-      const session = await this._context.remote.startAsync(chapter.url);
+      const session = await app.api.remote.startAsync(chapter.url);
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this.showChapters);
-        const navigator = new app.Navigator(this._context, this.chapters, this.chapters.indexOf(chapter));
+        const navigator = new app.Navigator(this.chapters, this.chapters.indexOf(chapter));
         const constructAsync = areas.session.ChapterController.createConstruct(session.value, chapter.title, navigator);
         if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
       } else {
@@ -52,7 +52,7 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const series = await this._context.remote.seriesAsync(this.url);
+      const series = await app.api.remote.seriesAsync(this.url);
       if (series.value) {
         this.chapters = series.value.chapters;
         this.image = series.value.image;

@@ -5,7 +5,7 @@ const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
 const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
-  constructor(private _context: app.ContextApi, restoreState?: app.MainRestoreState) {
+  constructor(restoreState?: app.MainRestoreState) {
     this.search = restoreState ? restoreState.search : this.search;
   }
 
@@ -50,7 +50,7 @@ export class MainViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const seriesList = await this._context.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
+      const seriesList = await app.api.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
       if (seriesList.value) {
         this.series = seriesList.value;
       } else {

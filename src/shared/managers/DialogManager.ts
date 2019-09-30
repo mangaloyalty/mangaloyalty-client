@@ -7,23 +7,13 @@ export class DialogManager {
   }
 
   @mobx.action
-  async completeAsync() {
-    await this._openAsync(language.completeBody, language.completeButtons);
+  async addedAsync() {
+    await this._openAsync(language.addedBody, language.addedButtons);
   }
 
   @mobx.action
-  async confirmDeleteAsync() {
-    return await this._openAsync(language.confirmDeleteBody, language.confirmDeleteButtons).then(Boolean);
-  }
-
-  @mobx.action
-  async confirmDisconnectAsync() {
-    return await this._openAsync(language.confirmDisconnectBody, language.confirmDisconnectButtons).then(Boolean);
-  }
-
-  @mobx.action
-  async connectAsync() {
-    await this._openAsync(language.connectBody, language.connectButtons);
+  async deleteAsync() {
+    return await this._openAsync(language.deleteBody, language.deleteButtons).then(Boolean);
   }
 
   @mobx.action

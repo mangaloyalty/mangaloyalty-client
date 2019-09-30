@@ -6,7 +6,7 @@ import {language} from '../language';
 export class ChapterIconComponent extends React.Component<{vm: app.ChapterViewModel}> {
   render() {
     return (
-      <mui.Grid>
+      <mui.Grid style={styles.container}>
         <app.ButtonComponent title={language.sessionIconNextChapter} onClick={() => this.props.vm.chapterNextAsync()}>
           <app.icons.ArrowBack />
         </app.ButtonComponent>
@@ -17,3 +17,9 @@ export class ChapterIconComponent extends React.Component<{vm: app.ChapterViewMo
     );
   }
 }
+
+const styles = app.styles({
+  container: {
+    display: 'inline-block'
+  }
+});

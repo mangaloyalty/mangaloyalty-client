@@ -2,10 +2,6 @@ import * as app from '..';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  constructor(private _context: app.ContextApi) {
-    return;
-  }
-
   @mobx.action
   async openAsync(session: app.ISessionListItem) {
     const constructAsync = app.ChapterController.createConstruct(session, session.url);
@@ -15,7 +11,7 @@ export class MainViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const sessionList = await this._context.session.listAsync();
+      const sessionList = await app.api.session.listAsync();
       if (sessionList.value) {
         this.sessions = sessionList.value;
       } else {
