@@ -21,7 +21,6 @@ export * from './components/IntervalComponent';
 export * from './components/LoadingComponent';
 export * from './components/MenuComponent';
 export * from './components/SeriesListComponent';
-export * from './enumerators/RootType';
 export * from './managers/DialogManager';
 export * from './managers/ScreenManager';
 export * from './managers/StorageManager';
