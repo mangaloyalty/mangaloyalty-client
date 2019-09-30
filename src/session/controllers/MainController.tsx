@@ -4,12 +4,12 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class ChapterController extends React.Component<{vm: app.ChapterViewModel}> {
+export class MainController extends React.Component<{vm: app.MainViewModel}> {
   static createConstruct(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
     return async () => {
-      const vm = new app.ChapterViewModel(navigator, session, title, pageNumber);
+      const vm = new app.MainViewModel(navigator, session, title, pageNumber);
       await vm.updateAsync();
-      return <ChapterController vm={vm} />;
+      return <MainController vm={vm} />;
     };
   }
 
@@ -17,9 +17,9 @@ export class ChapterController extends React.Component<{vm: app.ChapterViewModel
     return (
       <mui.Grid>
         {this.props.vm.showControls && <app.HeaderComponent title={this.props.vm.title}
-          icon={<app.ChapterIconComponent vm={this.props.vm} />}
+          icon={<app.MainIconComponent vm={this.props.vm} />}
           onBack={() => app.core.screen.leaveAsync()} />}
-        <app.ChapterView vm={this.props.vm} />
+        <app.MainView vm={this.props.vm} />
       </mui.Grid>
     );
   }

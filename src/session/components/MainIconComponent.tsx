@@ -3,7 +3,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class ChapterIconComponent extends React.Component<{vm: app.ChapterViewModel}> {
+export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid style={styles.container}>
