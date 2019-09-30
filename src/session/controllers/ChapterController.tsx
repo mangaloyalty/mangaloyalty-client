@@ -5,9 +5,9 @@ import * as React from 'react';
 
 @mobxReact.observer
 export class ChapterController extends React.Component<{vm: app.ChapterViewModel}> {
-  static createConstruct(session: app.ISessionListItem, title: string, navigator?: app.INavigator, pageNumber?: number) {
+  static createConstruct(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
     return async () => {
-      const vm = new app.ChapterViewModel(session, title, navigator, pageNumber);
+      const vm = new app.ChapterViewModel(navigator, session, title, pageNumber);
       await vm.updateAsync();
       return <ChapterController vm={vm} />;
     };
@@ -17,7 +17,7 @@ export class ChapterController extends React.Component<{vm: app.ChapterViewModel
     return (
       <mui.Grid>
         {this.props.vm.showControls && <app.HeaderComponent title={this.props.vm.title}
-          icon={this.props.vm.showNavigator ? <app.ChapterIconComponent vm={this.props.vm} /> : undefined}
+          icon={<app.ChapterIconComponent vm={this.props.vm} />}
           onBack={() => app.core.screen.leaveAsync()} />}
         <app.ChapterView vm={this.props.vm} />
       </mui.Grid>
