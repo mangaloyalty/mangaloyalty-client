@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-export class ChapterViewModel {
+export class MainViewModel {
   private readonly _loader: app.Loader;
   private readonly _navigator: app.INavigator;
   private readonly _pageCount: number;

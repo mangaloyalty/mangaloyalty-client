@@ -46,7 +46,7 @@ export class Navigator implements app.INavigator {
       const session = await app.api.library.chapterReadAsync(this._seriesId, chapter.id);
       if (session.value) {
         const pageNumber = chapter.pageReadNumber && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);
-        const constructAsync = areas.session.ChapterController.createConstruct(this, session.value, chapter.title, pageNumber);
+        const constructAsync = areas.session.MainController.createConstruct(this, session.value, chapter.title, pageNumber);
         await app.core.screen.replaceChildAsync(constructAsync);
       } else if (session.status === 404) {
         await app.core.screen.leaveAsync();

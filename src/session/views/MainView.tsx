@@ -4,11 +4,11 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class ChapterView extends React.Component<{vm: app.ChapterViewModel}> {
+export class MainView extends React.Component<{vm: app.MainViewModel}> {
   private readonly _container: React.RefObject<HTMLImageElement>;
   private readonly _touch: app.Touch;
 
-  constructor(props: {vm: app.ChapterViewModel}) {
+  constructor(props: {vm: app.MainViewModel}) {
     super(props);
     this._container = React.createRef();
     this._touch = new app.Touch(this._onTapEvent.bind(this));
