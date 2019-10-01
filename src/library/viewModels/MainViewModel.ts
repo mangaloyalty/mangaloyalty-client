@@ -44,7 +44,7 @@ export class MainViewModel {
   async openAsync(id: string) {
     const constructAsync = app.SeriesController.createConstruct(id);
     const restoreState = new app.MainRestoreState(this.search);
-    if (await app.core.screen.openChildAsync(constructAsync, restoreState)) await this.refreshAsync();
+    await app.core.screen.openChildAsync(constructAsync, restoreState);
   }
   
   @mobx.action
