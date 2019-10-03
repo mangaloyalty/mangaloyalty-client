@@ -11,6 +11,7 @@ export class SeriesViewModel {
   @mobx.action
   changeShowChapters(showChapters: boolean) {
     this.showChapters = showChapters;
+    scrollTo(0, 0);
   }
 
   @mobx.action

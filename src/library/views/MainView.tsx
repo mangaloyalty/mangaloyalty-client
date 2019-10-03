@@ -35,7 +35,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <mui.Paper style={{...styles.container, ...app.limiter}}>
+        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
           <mui.Select disableUnderline ref={this._selectReadStatusRef} value={this.props.vm.filterReadStatus} style={styles.select}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
@@ -67,7 +67,13 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             emptyBody={language.libraryEmptyBody}
             emptyTitle={language.libraryEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.openAsync(series.id)} />
+            onClick={(series) => this.props.vm.openSeriesAsync(series.id)} />
+          <app.SeriesPagerComponent
+            canPageNext={this.props.vm.canPageNext}
+            canPagePrevious={this.props.vm.canPagePrevious}
+            currentPage={this.props.vm.currentPage}
+            pageNext={() => this.props.vm.pageNextAsync()}
+            pagePrevious={() => this.props.vm.pagePreviousAsync()} />
         </mui.Grid>
       </mui.Grid>
     );
