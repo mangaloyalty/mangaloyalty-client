@@ -1,4 +1,4 @@
-// TODO: consider the read button in menus, remote might need two fabs?
+// TODO: Normalize the icon usage and possibly get rid of the FABs.
 // TODO: Check the padding usage (margins are fine).
 // UX: Generic: Production-ready lazy loading library for performance-heavy lists (library/chapters). Optimize tooltips?
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
