@@ -54,8 +54,7 @@ const styles = app.styles({
   container: {
     margin: '0 auto',
     maxWidth: '100%',
-    width: 480,
-    zIndex: 2100
+    width: 480
   },
   formGroup: {
     marginBottom: 16

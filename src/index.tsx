@@ -1,6 +1,5 @@
 // TODO: consider the read button in menus, remote might need two fabs?
 // TODO: Check the padding usage (margins are fine).
-// TODO: Checkbox automate persists oddly across close and reopen.
 // UX: Generic: Production-ready lazy loading library for performance-heavy lists (library/chapters). Optimize tooltips?
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Generic: PWA on iOS should be fullscreen like Android (no status bar), iPhone X should not have bottom insets.
