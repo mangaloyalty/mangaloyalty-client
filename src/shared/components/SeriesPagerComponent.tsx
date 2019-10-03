@@ -2,30 +2,40 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesPagerComponent extends React.Component<{canPageNext: boolean, canPagePrevious: boolean, currentPage: number, pageNext: () => void, pagePrevious: () => void}> {
+export class SeriesPagerComponent extends React.Component<{canPageNext: boolean, canPagePrevious: boolean, currentPage: number, pageNext: () => void, pagePrevious: () => void, style?: React.CSSProperties}> {
   render() {
     return (
-      <mui.Paper square={true} style={{...app.limiter, ...styles.container}}>
-        <mui.Button color="primary" variant="outlined" style={styles.buttonPrevious}
-          disabled={!this.props.canPagePrevious}
-          onClick={() => this.props.pagePrevious()}>
-          <app.icons.ArrowBack />
-        </mui.Button>
-        <mui.Button color="primary" variant="outlined" style={styles.buttonNext}
-          disabled={!this.props.canPageNext}
-          onClick={() => this.props.pageNext()}>
-          <app.icons.ArrowForward />
-        </mui.Button>
-        <mui.Typography style={styles.text}>
-          {(this.props.currentPage < 10 ? '0' : '') + this.props.currentPage}
-        </mui.Typography>
-      </mui.Paper>
+      <mui.Grid style={this.props.style}>
+        {!this.props.canPageNext && !this.props.canPagePrevious ? this.props.children : <mui.Grid style={styles.container}>
+          <mui.Grid>
+            {this.props.children}
+          </mui.Grid>
+          <mui.Paper square={true} style={{...app.limiter, ...styles.content}}>
+            <mui.Button color="primary" variant="outlined" style={styles.buttonPrevious}
+              disabled={!this.props.canPagePrevious}
+              onClick={() => this.props.pagePrevious()}>
+              <app.icons.ArrowBack />
+            </mui.Button>
+            <mui.Button color="primary" variant="outlined" style={styles.buttonNext}
+              disabled={!this.props.canPageNext}
+              onClick={() => this.props.pageNext()}>
+              <app.icons.ArrowForward />
+            </mui.Button>
+            <mui.Typography style={styles.text}>
+              {(this.props.currentPage < 10 ? '0' : '') + this.props.currentPage}
+            </mui.Typography>
+          </mui.Paper>
+        </mui.Grid>}
+      </mui.Grid>
     );
   }
 }
 
 const styles = app.styles({
   container: {
+    paddingBottom: 40
+  },
+  content: {
     bottom: 0,
     padding: 8,
     position: 'fixed',

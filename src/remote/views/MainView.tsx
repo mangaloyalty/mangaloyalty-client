@@ -18,19 +18,19 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             ))}
           </mui.Tabs>
         </mui.Paper>
-        <mui.Grid style={styles.content}>
+        <app.SeriesPagerComponent
+            canPageNext={this.props.vm.canPageNext}
+            canPagePrevious={this.props.vm.canPagePrevious}
+            currentPage={this.props.vm.currentPage}
+            pageNext={() => this.props.vm.pageNextAsync()}
+            pagePrevious={() => this.props.vm.pagePreviousAsync()}
+            style={styles.content}>
           <app.SeriesListComponent
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.openAsync(series.url)} />
-          <app.SeriesPagerComponent
-            canPageNext={this.props.vm.canPageNext}
-            canPagePrevious={this.props.vm.canPagePrevious}
-            currentPage={this.props.vm.currentPage}
-            pageNext={() => this.props.vm.pageNextAsync()}
-            pagePrevious={() => this.props.vm.pagePreviousAsync()} />
-        </mui.Grid>
+        </app.SeriesPagerComponent>
       </mui.Grid>
     );
   }
