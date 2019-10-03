@@ -14,6 +14,13 @@ export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> 
             </mui.ListItemIcon>
             <mui.ListItemText primary={language.libraryIconMenuRefresh} />
           </mui.MenuItem>
+          <mui.Divider />
+          <mui.MenuItem onClick={() => this.props.vm.openRemoteAsync()}>
+            <mui.ListItemIcon>
+              <app.icons.Public />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={language.libraryIconMenuRemote} />
+          </mui.MenuItem>
         </app.MenuComponent>
       </mui.Grid>
     );

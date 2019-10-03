@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as areas from '../../areas';
 import * as mobx from 'mobx';
 const storageFilterReadStatus = 'LibraryFilterReadStatusKey';
 const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
@@ -6,6 +7,7 @@ const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
   constructor(restoreState?: app.MainRestoreState) {
+    this.currentPage = restoreState ? restoreState.currentPage : this.currentPage;
     this.search = restoreState ? restoreState.search : this.search;
   }
 
@@ -14,7 +16,7 @@ export class MainViewModel {
     if (filterReadStatus === this.filterReadStatus) return;
     app.core.storage.set(storageFilterReadStatus, filterReadStatus);
     this.filterReadStatus = filterReadStatus;
-    await this.refreshAsync().then(() => scrollTo(0, 0));
+    await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
   
   @mobx.action
@@ -22,7 +24,7 @@ export class MainViewModel {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
     app.core.storage.set(storageFilterSeriesStatus, filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
-    await this.refreshAsync().then(() => scrollTo(0, 0));
+    await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
   
   @mobx.action
@@ -30,34 +32,69 @@ export class MainViewModel {
     if (filterSortKey === this.filterSortKey) return;
     app.core.storage.set(storageFilterSortKey, filterSortKey);
     this.filterSortKey = filterSortKey;
-    await this.refreshAsync().then(() => scrollTo(0, 0));
+    await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
 
   @mobx.action
   async changeSearchAsync(search: string) {
     if (search === this.search) return;
     this.search = search;
-    await this.refreshAsync().then(() => scrollTo(0, 0));
+    await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
 
   @mobx.action
-  async openAsync(id: string) {
-    const constructAsync = app.SeriesController.createConstruct(id);
-    const restoreState = new app.MainRestoreState(this.search);
-    await app.core.screen.openChildAsync(constructAsync, restoreState);
+  async openRemoteAsync() {
+    const restoreState = new app.MainRestoreState(this.currentPage, this.search);
+    await app.core.screen.openChildAsync(areas.remote.MainController.constructAsync, restoreState);
   }
   
   @mobx.action
-  async refreshAsync() {
+  async openSeriesAsync(id: string) {
+    const constructAsync = app.SeriesController.createConstruct(id);
+    const restoreState = new app.MainRestoreState(this.currentPage, this.search);
+    await app.core.screen.openChildAsync(constructAsync, restoreState);
+  }
+
+  @mobx.action
+  async pageNextAsync() {
+    if (!this.canPageNext) return;
+    await this.refreshAsync(this.currentPage + 1).then(() => scrollTo(0, 0));
+  }
+
+  @mobx.action
+  async pagePreviousAsync() {
+    if (!this.canPagePrevious) return;
+    await this.refreshAsync(this.currentPage - 1).then(() => scrollTo(0, 0));
+  }
+  
+  @mobx.action
+  async refreshAsync(nextPage?: number) {
     await app.core.screen.loadAsync(async () => {
-      const seriesList = await app.api.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
-      if (seriesList.value) {
+      const currentPage = nextPage || this.currentPage;
+      const seriesList = await app.api.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search, currentPage);
+      if (seriesList.value && !seriesList.value.items.length && currentPage > 1) {
+        await this.pagePreviousAsync();
+      } else if (seriesList.value) {
+        this.currentPage = currentPage;
         this.series = seriesList.value;
       } else {
-        await app.core.dialog.errorAsync(() => this.refreshAsync(), seriesList.error);
+        await app.core.dialog.errorAsync(() => this.refreshAsync(nextPage), seriesList.error);
       }
     });
   }
+
+  @mobx.computed
+  get canPageNext() {
+    return this.series.hasMorePages;
+  }
+
+  @mobx.computed
+  get canPagePrevious() {
+    return this.currentPage > 1;
+  }
+
+  @mobx.observable
+  currentPage = 1;
 
   @mobx.observable
   filterReadStatus = app.core.storage.get<app.IEnumeratorReadStatus>(storageFilterReadStatus, 'all');
@@ -67,7 +104,7 @@ export class MainViewModel {
 
   @mobx.observable
   filterSortKey = app.core.storage.get<app.IEnumeratorSortKey>(storageFilterSortKey, 'addedAt');
-  
+
   @mobx.observable
   search = '';
 

@@ -1,3 +1,6 @@
+// TODO: consider the read button in menus, remote might need two fabs?
+// TODO: Check the padding usage (margins are fine).
+// TODO: Checkbox automate persists oddly across close and reopen.
 // UX: Generic: Production-ready lazy loading library for performance-heavy lists (library/chapters). Optimize tooltips?
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Generic: PWA on iOS should be fullscreen like Android (no status bar), iPhone X should not have bottom insets.
@@ -17,6 +20,7 @@
 // UX: Remote/Main: Support infinite scroll while pages are available.
 // UX: Remote/Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
 // UX: Remote/Series: When no chapter is available, the chapter tab should have an empty message.
+// UX: Remote/Series: Add when already in library should produce a warning or prevent it entirely.
 // UX: Screen: Back button support (via history).
 // UX: Touch: Support mouse-drag and mouse-scroll (Desktop-mode).
 // UX: Touch: Support swipe gestures for page navigation.

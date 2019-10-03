@@ -9,7 +9,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <mui.Paper style={{...styles.container, ...app.limiter}}>
+        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={this.props.vm.providerName}
             onChange={(_, providerName) => this.props.vm.changeProviderAsync(providerName)}>
@@ -24,6 +24,12 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.openAsync(series.url)} />
+          <app.SeriesPagerComponent
+            canPageNext={this.props.vm.canPageNext}
+            canPagePrevious={this.props.vm.canPagePrevious}
+            currentPage={this.props.vm.currentPage}
+            pageNext={() => this.props.vm.pageNextAsync()}
+            pagePrevious={() => this.props.vm.pagePreviousAsync()} />
         </mui.Grid>
       </mui.Grid>
     );

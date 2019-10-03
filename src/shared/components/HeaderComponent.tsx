@@ -12,7 +12,7 @@ export class HeaderComponent extends React.Component<{defaultSearch?: string, ic
       <mui.Grid>
         <mui.AppBar className="disablePadding">
           {this.state.showSearch
-            ? <app.HeaderSearchBarComponent icon={this.props.icon} defaultSearch={this.props.defaultSearch}
+            ? <app.HeaderSearchBarComponent icon={this.props.icon} defaultSearch={this.props.defaultSearch} showBack={Boolean(this.props.onBack)}
                 onClose={() => Boolean(this.setState({showSearch: false})) || this.props.onSearch!('')}
                 onSearch={(value) => this.props.onSearch!(value)} />
             : <app.HeaderTitleBarComponent icon={this.props.icon} title={this.props.title}

@@ -20,6 +20,7 @@ export class CenterComponent extends React.Component<{body: string, title: strin
 const styles = app.styles({
   container: {
     left: '50%',
+    padding: 16,
     position: 'absolute',
     top: '50%',
     transform: 'translate(-50%, -50%)',

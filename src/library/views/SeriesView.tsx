@@ -10,7 +10,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
     return (
       <mui.Grid>
         <app.SeriesAutomationView vm={this.props.vm.automation} />
-        <mui.Paper style={{...styles.container, ...app.limiter}}>
+        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
@@ -19,7 +19,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid style={styles.containerBody}>
-          {!this.props.vm.showChapters && <mui.Paper style={styles.seriesContent}>
+          {!this.props.vm.showChapters && <mui.Paper square={true} style={styles.seriesContent}>
             <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
             <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
             <mui.Grid style={styles.seriesClear} />
@@ -29,7 +29,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
               </mui.Fab>
             </mui.Tooltip>
           </mui.Paper>}
-          {this.props.vm.showChapters && <mui.Paper style={styles.chapterContainer}>
+          {this.props.vm.showChapters && <mui.Paper square={true}>
             <mui.List>
               {this.props.vm.chapters.map((chapter) => (
                 <app.SeriesChapterView key={chapter.id} vm={chapter} />
@@ -69,8 +69,5 @@ const styles = app.styles({
     bottom: 24,
     right: 24,
     position: 'fixed'
-  },
-  chapterContainer: {
-    padding: 8
   }
 });

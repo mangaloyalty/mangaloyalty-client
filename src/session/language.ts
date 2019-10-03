@@ -1,5 +1,4 @@
 export const language = {
-  session: 'Session',
   sessionIconNextChapter: 'Next Chapter',
   sessionIconPreviousChapter: 'Previous Chapter',
   sessionToastNextActive: 'Going to the next chapter!',
