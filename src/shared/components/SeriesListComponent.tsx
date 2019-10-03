@@ -27,8 +27,7 @@ const styles = app.styles({
     gridGap: '8px',
     gridTemplateColumns: 'repeat(auto-fill, 152px)',
     justifyContent: 'center',
-    margin: '16px 4px',
-    paddingBottom: 40
+    margin: '16px 4px'
   },
   series: {
     cursor: 'pointer',
