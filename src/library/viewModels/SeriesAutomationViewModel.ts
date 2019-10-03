@@ -18,6 +18,7 @@ export class SeriesAutomationViewModel {
   refreshWith(series: app.ILibrarySeries) {
     this.frequency = series.automation.frequency;
     this.syncAll = series.automation.syncAll;
+    this.state = {frequency: this.frequency, syncAll: this.syncAll};
     return this;
   }
 
@@ -27,6 +28,7 @@ export class SeriesAutomationViewModel {
       const response = await app.api.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.showDialog = false;
+        this.state = {frequency: this.frequency, syncAll: this.syncAll};
       } else if (response.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
@@ -37,7 +39,13 @@ export class SeriesAutomationViewModel {
 
   @mobx.action
   toggleDialog() {
-    this.showDialog = !this.showDialog;
+    if (!this.showDialog) {
+      this.frequency = this.state.frequency;
+      this.syncAll = this.state.syncAll;
+      this.showDialog = true;
+    } else {
+      this.showDialog = false;      
+    }
   }
   
   @mobx.action
@@ -53,4 +61,7 @@ export class SeriesAutomationViewModel {
 
   @mobx.observable
   syncAll!: boolean;
+
+  @mobx.observable
+  private state!: {frequency: app.IEnumeratorFrequency, syncAll: boolean}
 }
