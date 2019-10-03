@@ -18,7 +18,7 @@ export class MenuComponent extends React.Component<{title: string}> {
         <mui.Popper anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} disablePortal placement="left-start" transition>
           {({TransitionProps}) => (
            <mui.Grow {...TransitionProps} style={styles.grow}>
-              <mui.Paper>
+              <mui.Paper square={true}>
                 <mui.ClickAwayListener onClickAway={() => this.setState({anchorEl: undefined})}>
                   <mui.MenuList onClick={() => this.setState({anchorEl: undefined})}>
                     {this.props.children}

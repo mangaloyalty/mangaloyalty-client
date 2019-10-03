@@ -58,6 +58,6 @@ const styles = app.styles({
     zIndex: 2100
   },
   formGroup: {
-    marginBottom: 24
+    marginBottom: 16
   }
 });

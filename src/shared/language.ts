@@ -7,8 +7,5 @@ export const language = {
   errorButtons: ['Retry'],
   iconBack: 'Back',
   iconClose: 'Close',
-  iconSearch: 'Search',
-  navigationLibrary: 'Library',
-  navigationRemote: 'Remote',
-  navigationSession: 'Session'
+  iconSearch: 'Search'
 };

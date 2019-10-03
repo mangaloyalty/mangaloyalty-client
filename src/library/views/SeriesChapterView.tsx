@@ -33,6 +33,6 @@ const styles = app.styles({
     whiteSpace: 'nowrap'
   },
   secondaryAction: {
-    right: -8
+    right: 0
   }
 });
