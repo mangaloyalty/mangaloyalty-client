@@ -13,5 +13,5 @@ if (require.main && require.main.filename.startsWith(__dirname)) {
   server.use(router);
   server.listen(7767, () => console.log(`Client running on http://localhost:7767/`));
 } else {
-  module.exports = router;
+  module.exports = {router};
 }

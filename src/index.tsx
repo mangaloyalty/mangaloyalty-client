@@ -48,6 +48,7 @@ class App extends React.Component {
 }
 
 (function() {
+  areas.shared.api.socket.attach();
   areas.shared.core.screen.openAsync(areas.library.MainController.constructAsync);
   ReactDOM.render(<App />, document.getElementById('container'));
 })();
