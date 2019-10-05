@@ -17,9 +17,9 @@ export class DialogManager {
   }
 
   @mobx.action
-  async errorAsync(retryHandler: () => Promise<void>, ...errors: any[]) {
+  async errorAsync(restoreAsync: () => Promise<void>, ...errors: any[]) {
     await this._openAsync(language.errorBody, language.errorButtons, ...errors);
-    await retryHandler();
+    await restoreAsync();
   }
 
   @mobx.computed
