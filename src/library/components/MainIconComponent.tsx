@@ -7,21 +7,9 @@ export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> 
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <app.MenuComponent title={language.libraryIconMenu}>
-          <mui.MenuItem onClick={() => this.props.vm.refreshAsync()}>
-            <mui.ListItemIcon>
-              <app.icons.Refresh />
-            </mui.ListItemIcon>
-            <mui.ListItemText primary={language.libraryIconMenuRefresh} />
-          </mui.MenuItem>
-          <mui.Divider />
-          <mui.MenuItem onClick={() => this.props.vm.openRemoteAsync()}>
-            <mui.ListItemIcon>
-              <app.icons.Public />
-            </mui.ListItemIcon>
-            <mui.ListItemText primary={language.libraryIconMenuRemote} />
-          </mui.MenuItem>
-        </app.MenuComponent>
+        <app.ButtonComponent title={language.libraryIconRemote} onClick={() => this.props.vm.openRemoteAsync()}>
+          <app.icons.Public />
+        </app.ButtonComponent>
       </mui.Grid>
     );
   }

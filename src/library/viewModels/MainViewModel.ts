@@ -6,6 +6,8 @@ const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
 const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
+  private _refreshPromise = Promise.resolve();
+
   constructor(restoreState?: app.MainRestoreState) {
     this.currentPage = restoreState ? restoreState.currentPage : this.currentPage;
     this.search = restoreState ? restoreState.search : this.search;
@@ -66,10 +68,10 @@ export class MainViewModel {
     if (!this.canPagePrevious) return;
     await this.refreshAsync(this.currentPage - 1).then(() => scrollTo(0, 0));
   }
-  
+
   @mobx.action
   async refreshAsync(nextPage?: number) {
-    await app.core.screen.loadAsync(async () => {
+    await (this._refreshPromise = this._refreshPromise.then(() => app.core.screen.loadAsync(async () => {
       const currentPage = nextPage || this.currentPage;
       const seriesList = await app.api.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search, currentPage);
       if (seriesList.value && !seriesList.value.items.length && currentPage > 1) {
@@ -80,7 +82,14 @@ export class MainViewModel {
       } else {
         await app.core.dialog.errorAsync(() => this.refreshAsync(nextPage), seriesList.error);
       }
-    });
+    })));
+  }
+
+  @mobx.action
+  async socketActionAsync(actions: app.ISocketAction[]) {
+    if (checkActionRefresh(actions)) {
+      await this.refreshAsync();
+    }
   }
 
   @mobx.computed
@@ -110,4 +119,17 @@ export class MainViewModel {
 
   @mobx.observable
   series!: app.ILibraryList;
+}
+
+function checkActionRefresh(actions: app.ISocketAction[]) {
+  return actions.some((action) => {
+    switch (action.type) {
+      case 'SocketConnect': return true;
+      case 'SeriesCreate' : return true;
+      case 'SeriesDelete' : return true;
+      case 'SeriesUpdate' : return true;
+      case 'ChapterPatch' : return true;
+      default: return false;
+    }
+  });
 }

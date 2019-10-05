@@ -4,22 +4,22 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class MainController extends React.Component<{vm: app.MainViewModel}> {
+export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
   static async constructAsync(restoreState?: app.MainRestoreState) {
+    const queue = app.api.socket.createAttachQueue();
     const vm = new app.MainViewModel(restoreState);
     await vm.refreshAsync();
-    return <MainController vm={vm} />;
+    return <MainController queue={queue} vm={vm} />;
   }
 
   render() {
     return (
-      <app.FocusComponent onFocus={() => this.props.vm.refreshAsync()}>
-        <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.library}
-          icon={<app.MainIconComponent vm={this.props.vm} />}
-          onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
-          <app.MainView vm={this.props.vm} />
-        </app.HeaderComponent>
-      </app.FocusComponent>
+      <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.library}
+        icon={<app.MainIconComponent vm={this.props.vm} />}
+        onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
+        <app.SocketComponent queue={this.props.queue} onActionAsync={(action) => this.props.vm.socketActionAsync(action)} />
+        <app.MainView vm={this.props.vm} />
+      </app.HeaderComponent>
     );
   }
 }

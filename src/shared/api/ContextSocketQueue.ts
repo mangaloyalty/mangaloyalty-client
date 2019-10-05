@@ -25,12 +25,12 @@ export class ContextSocketQueue {
     return this;
   }
 
-  register(consumeAsync: (actions: app.ISocketAction[]) => Promise<void>) {
+  mount(consumeAsync: (actions: app.ISocketAction[]) => Promise<void>) {
     if (this._consumeAsync) return;
     this._consumeAsync = consumeAsync;
     this._tryRun();
   }
-
+ 
   private _onAction(action: app.ISocketAction) {
     this._actionQueue.push(action);
     this._tryRun();
