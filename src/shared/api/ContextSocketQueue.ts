@@ -39,6 +39,9 @@ export class ContextSocketQueue {
   private _tryRun() {
     if (!this._actionQueue.length || !this._consumeAsync || this._isRunning) return;
     this._isRunning = true;
-    this._consumeAsync(this._actionQueue.splice(0, this._actionQueue.length)).then(() => this._isRunning = false);
+    this._consumeAsync(this._actionQueue.splice(0, this._actionQueue.length)).then(() => {
+      this._isRunning = false;
+      this._tryRun();
+    });
   }
 }
