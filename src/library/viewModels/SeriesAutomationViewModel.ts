@@ -16,9 +16,7 @@ export class SeriesAutomationViewModel {
   
   @mobx.action
   refreshWith(series: app.ILibrarySeries) {
-    this.frequency = series.automation.frequency;
-    this.syncAll = series.automation.syncAll;
-    this.state = {frequency: this.frequency, syncAll: this.syncAll};
+    this.state = {frequency: series.automation.frequency, syncAll: series.automation.syncAll};
     return this;
   }
 
@@ -28,9 +26,8 @@ export class SeriesAutomationViewModel {
       const response = await app.api.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.showDialog = false;
-        this.state = {frequency: this.frequency, syncAll: this.syncAll};
       } else if (response.status === 404) {
-        await app.core.screen.leaveAsync();
+        return;
       } else {
         await app.core.dialog.errorAsync(() => this.saveAsync(), response.error);
       }

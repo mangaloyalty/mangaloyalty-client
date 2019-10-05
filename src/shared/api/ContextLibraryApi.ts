@@ -42,7 +42,7 @@ export class ContextLibraryApi {
 
   async seriesUpdateAsync(seriesId: string) {
     const request = this._http.put(`/api/library/${encodeURIComponent(seriesId)}`);
-    const response = await request<app.ILibrarySeriesUpdateResponse>();
+    const response = await request();
     return response;
   }
   
@@ -67,7 +67,7 @@ export class ContextLibraryApi {
   
   async chapterUpdateAsync(seriesId: string, chapterId: string) {
     const request = this._http.put(`/api/library/${encodeURIComponent(seriesId)}/${encodeURIComponent(chapterId)}`);
-    const response = await request<app.ILibraryChapterUpdateResponse>();
+    const response = await request();
     return response;
   }
 }
