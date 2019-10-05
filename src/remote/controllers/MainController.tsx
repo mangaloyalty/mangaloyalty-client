@@ -13,14 +13,12 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
 
   render() {
     return (
-      <app.FocusComponent onFocus={() => this.props.vm.refreshAsync()}>
-        <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.remote}
-          icon={<app.MainIconComponent vm={this.props.vm} />}
-          onBack={() => app.core.screen.leaveAsync()}
-          onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
-          <app.MainView vm={this.props.vm} />
-        </app.HeaderComponent>
-      </app.FocusComponent>
+      <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.remote}
+        icon={<app.MainIconComponent vm={this.props.vm} />}
+        onBack={() => app.core.screen.leaveAsync()}
+        onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
+        <app.MainView vm={this.props.vm} />
+      </app.HeaderComponent>
     );
   }
 }

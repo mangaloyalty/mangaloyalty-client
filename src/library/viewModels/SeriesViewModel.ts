@@ -61,9 +61,9 @@ export class SeriesViewModel {
 
   @mobx.action
   async socketActionAsync(actions: app.ISocketAction[]) {
-    if (checkActionLeave(this.id, actions)) {
+    if (checkActionLeave(actions, this.id)) {
       await app.core.screen.leaveAsync();
-    } else if (checkActionRefresh(this.id,actions)) {
+    } else if (checkActionRefresh(actions, this.id)) {
       await this.refreshAsync();
     }
   }
@@ -101,13 +101,13 @@ export class SeriesViewModel {
   }
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
-    const isSynchronizing = checkSynchronizing(this.id, chapter, sessionList);
+    const isSynchronizing = checkSynchronizing(chapter, sessionList, this.id);
     const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.SeriesChapterViewModel(this);
     return vm.refreshWith(chapter, isSynchronizing);
   }
 }
 
-function checkActionLeave(seriesId: string, actions: app.ISocketAction[]) {
+function checkActionLeave(actions: app.ISocketAction[], seriesId: string) {
   return actions.some((action) => {
     switch (action.type) {
       case 'SeriesDelete': return action.seriesId === seriesId;
@@ -116,7 +116,7 @@ function checkActionLeave(seriesId: string, actions: app.ISocketAction[]) {
   });
 }
 
-function checkActionRefresh(seriesId: string, actions: app.ISocketAction[]) {
+function checkActionRefresh(actions: app.ISocketAction[], seriesId: string) {
   return actions.some((action) => {
     switch (action.type) {
       case 'SocketConnect': return true;
@@ -131,7 +131,7 @@ function checkActionRefresh(seriesId: string, actions: app.ISocketAction[]) {
   });
 }
 
-function checkSynchronizing(seriesId: string, chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
+function checkSynchronizing(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList, seriesId: string) {
   return sessionList.some((session) => !session.finishedAt
     && session.library
     && session.library.seriesId === seriesId

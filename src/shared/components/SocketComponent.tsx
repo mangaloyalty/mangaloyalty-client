@@ -5,7 +5,7 @@ import * as React from 'react';
 export class SocketComponent extends React.Component<{queue: app.ContextSocketQueue, onActionAsync: (actions: app.ISocketAction[]) => Promise<void>}> {
   componentDidMount() {
     this.props.queue.attach();
-    this.props.queue.register((actions) => this._runAsync(actions));
+    this.props.queue.mount((actions) => this._runAsync(actions));
   }
 
   componentWillUnmount() {
