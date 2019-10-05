@@ -5,11 +5,9 @@ import {language} from '../language';
 
 export class SeriesChapterViewModel {
   private readonly _series: app.SeriesViewModel;
-  private _ensureSynchronizeTime: number;
 
   constructor(series: app.SeriesViewModel) {
     this._series = series;
-    this._ensureSynchronizeTime = 0;
   }
 
   @mobx.action
@@ -35,7 +33,7 @@ export class SeriesChapterViewModel {
         const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else if (session.status === 404) {
-        await this._series.refreshAsync();
+        return;
       } else {
         await app.core.dialog.errorAsync(() => this.openAsync(), session.error);
       }
@@ -46,7 +44,7 @@ export class SeriesChapterViewModel {
   refreshWith(chapter: app.ILibrarySeriesChapter, isSynchronizing: boolean) {
     this.id = chapter.id;
     this.isReadCompleted = chapter.isReadCompleted;
-    this.isSynchronizing = this._ensureSynchronizeTime >= Date.now() || isSynchronizing;
+    this.isSynchronizing = isSynchronizing;
     this.pageReadNumber = chapter.pageReadNumber;
     this.syncAt = chapter.syncAt;
     this.title = chapter.title;
@@ -57,10 +55,8 @@ export class SeriesChapterViewModel {
   async toggleReadCompleted() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted);
-      if (response.status === 200) {
-        this.isReadCompleted = !this.isReadCompleted;
-      } else if (response.status === 404) {
-        await this._series.refreshAsync();
+      if (response.status === 200 || response.status === 404) {
+        return;
       } else {
         await app.core.dialog.errorAsync(() => this.toggleReadCompleted(), response.error);
       }
@@ -88,10 +84,8 @@ export class SeriesChapterViewModel {
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.chapterDeleteAsync(this._series.id, this.id);
-      if (response.status === 200) {
-        await this._series.refreshAsync();
-      } else if (response.status === 404) {
-        await this._series.refreshAsync();
+      if (response.status === 200 || response.status === 404) {
+        return;
       } else {
         await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
       }
@@ -100,14 +94,11 @@ export class SeriesChapterViewModel {
 
   private async _synchronizeAsync() {
     await app.core.screen.loadAsync(async () => {
-      const session = await app.api.library.chapterUpdateAsync(this._series.id, this.id);
-      if (session.value) {
-        this._ensureSynchronizeTime = Date.now() + app.settings.librarySeriesMinimumSynchronizingTimeout;
-        this.isSynchronizing = true;
-      } else if (session.status === 404) {
-        await this._series.refreshAsync();
+      const response = await app.api.library.chapterUpdateAsync(this._series.id, this.id);
+      if (response.status === 200 || response.status === 404) {
+        return;
       } else {
-        await app.core.dialog.errorAsync(() => this._synchronizeAsync(), session.error);
+        await app.core.dialog.errorAsync(() => this._synchronizeAsync(), response.error);
       }
     });
   }

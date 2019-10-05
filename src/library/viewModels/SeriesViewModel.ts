@@ -17,12 +17,7 @@ export class SeriesViewModel {
   @mobx.action
   async deleteAsync() {
     if (await app.core.dialog.deleteAsync()) return;
-    await app.core.screen.loadAsync(() => this._deleteAsync());
-  }
-
-  @mobx.action
-  async intervalAsync() {
-    await this._refreshAsync({providerUpdate: false, showDialog: false});
+    await this._deleteAsync();
   }
 
   @mobx.action
@@ -33,12 +28,44 @@ export class SeriesViewModel {
 
   @mobx.action
   async refreshAsync() {
-    await app.core.screen.loadAsync(() => this._refreshAsync({providerUpdate: false, showDialog: true}));
+    await app.core.screen.loadAsync(async () => {
+      const seriesPromise = app.api.library.seriesReadAsync(this.id);
+      const sessionListPromise = app.api.session.listAsync(this.id);
+      const series = await seriesPromise;
+      const sessionList = await sessionListPromise;
+      if (series.value && sessionList.value) {
+        this.image = series.value.source.image;
+        this.summary = series.value.source.summary;
+        this.title = series.value.source.title;
+        this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
+        this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
+      } else if (series.status === 404) {
+        await app.core.screen.leaveAsync();
+      } else {
+        await app.core.dialog.errorAsync(() => this.refreshAsync(), series.error, sessionList.error);
+      }
+    });
   }
 
   @mobx.action
   async updateAsync() {
-    await app.core.screen.loadAsync(() => this._refreshAsync({providerUpdate: true, showDialog: true}));
+    await app.core.screen.loadAsync(async () => {
+      const response = await app.api.library.seriesUpdateAsync(this.id);
+      if (response.status === 200 || response.status === 404) {
+        return;
+      } else {
+        await app.core.dialog.errorAsync(() => this.updateAsync(), response.error);
+      }
+    });
+  }
+
+  @mobx.action
+  async socketActionAsync(actions: app.ISocketAction[]) {
+    if (checkActionLeave(this.id, actions)) {
+      await app.core.screen.leaveAsync();
+    } else if (checkActionRefresh(this.id,actions)) {
+      await this.refreshAsync();
+    }
   }
 
   @mobx.observable
@@ -63,44 +90,48 @@ export class SeriesViewModel {
   title!: string;
 
   private async _deleteAsync() {
-    const response = await app.api.library.seriesDeleteAsync(this.id);
-    if (response.status === 200) {
-      await app.core.screen.leaveAsync();
-    } else if (response.status === 404) {
-      await app.core.screen.leaveAsync();
-    } else {
-      await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
-    }
-  }
-
-  private async _refreshAsync(options: {providerUpdate: boolean, showDialog: boolean}) {
-    const seriesPromise = options.providerUpdate ? app.api.library.seriesUpdateAsync(this.id) : app.api.library.seriesReadAsync(this.id);
-    const sessionListPromise = app.api.session.listAsync(this.id);
-    const series = await seriesPromise;
-    const sessionList = await sessionListPromise;
-    if (series.value && sessionList.value) {
-      this.image = series.value.source.image;
-      this.summary = series.value.source.summary;
-      this.title = series.value.source.title;
-      this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
-      this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
-    } else if (!options.showDialog) {
-      return;
-    } else if (series.status === 404) {
-      await app.core.screen.leaveAsync();
-    } else {
-      await app.core.dialog.errorAsync(() => this.refreshAsync(), series.error, sessionList.error);
-    }
+    await app.core.screen.loadAsync(async () => {
+      const response = await app.api.library.seriesDeleteAsync(this.id);
+      if (response.status === 200 || response.status === 404) {
+        return;
+      } else {
+        await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
+      }
+    });
   }
 
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
-    const isSynchronizing = checkIsSynchronizing(this.id, chapter, sessionList);
+    const isSynchronizing = checkSynchronizing(this.id, chapter, sessionList);
     const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.SeriesChapterViewModel(this);
     return vm.refreshWith(chapter, isSynchronizing);
   }
 }
 
-function checkIsSynchronizing(seriesId: string, chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
+function checkActionLeave(seriesId: string, actions: app.ISocketAction[]) {
+  return actions.some((action) => {
+    switch (action.type) {
+      case 'SeriesDelete': return action.seriesId === seriesId;
+      default: return false;
+    }
+  });
+}
+
+function checkActionRefresh(seriesId: string, actions: app.ISocketAction[]) {
+  return actions.some((action) => {
+    switch (action.type) {
+      case 'SocketConnect': return true;
+      case 'SeriesPatch'  : return action.seriesId === seriesId;
+      case 'SeriesUpdate' : return action.seriesId === seriesId;
+      case 'ChapterDelete': return action.seriesId === seriesId;
+      case 'ChapterPatch' : return action.seriesId === seriesId;
+      case 'ChapterUpdate': return action.seriesId === seriesId;
+      case 'SessionCreate': return action.session.library && action.session.library.seriesId === seriesId && action.session.library.sync;
+      default: return false;
+    }
+  });
+}
+
+function checkSynchronizing(seriesId: string, chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
   return sessionList.some((session) => !session.finishedAt
     && session.library
     && session.library.seriesId === seriesId
