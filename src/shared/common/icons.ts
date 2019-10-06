@@ -1,4 +1,5 @@
-import Add from '@material-ui/icons/Add';
+import AccountBalance from '@material-ui/icons/AccountBalance';
+import AddBox from '@material-ui/icons/AddBox';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import ArrowForward from '@material-ui/icons/ArrowForward';
@@ -12,8 +13,7 @@ import DeleteForever from '@material-ui/icons/DeleteForever';
 import MoreVert from '@material-ui/icons/MoreVert';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Public from '@material-ui/icons/Public';
-import Refresh from '@material-ui/icons/Refresh';
 import Search from '@material-ui/icons/Search';
 import Settings from '@material-ui/icons/Settings';
 import Sync from '@material-ui/icons/Sync';
-export const icons = {Add, ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, MoreVert, PlayArrow, Public, Refresh, Search, Settings, Sync};
+export const icons = {AccountBalance, AddBox, ArrowBack, ArrowBackIos, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, MoreVert, PlayArrow, Public, Search, Settings, Sync};

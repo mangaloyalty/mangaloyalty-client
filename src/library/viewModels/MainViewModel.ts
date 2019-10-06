@@ -1,5 +1,4 @@
 import * as app from '..';
-import * as areas from '../../areas';
 import * as mobx from 'mobx';
 const storageFilterReadStatus = 'LibraryFilterReadStatusKey';
 const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
@@ -45,13 +44,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openRemoteAsync() {
-    const restoreState = new app.MainRestoreState(this.currentPage, this.search);
-    await app.core.screen.openChildAsync(areas.remote.MainController.constructAsync, restoreState);
-  }
-  
-  @mobx.action
-  async openSeriesAsync(id: string) {
+  async openAsync(id: string) {
     const constructAsync = app.SeriesController.createConstruct(id);
     const restoreState = new app.MainRestoreState(this.currentPage, this.search);
     await app.core.screen.openChildAsync(constructAsync, restoreState);

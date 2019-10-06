@@ -15,7 +15,6 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
     return (
       <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.remote}
         icon={<app.MainIconComponent vm={this.props.vm} />}
-        onBack={() => app.core.screen.leaveAsync()}
         onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
         <app.MainView vm={this.props.vm} />
       </app.HeaderComponent>

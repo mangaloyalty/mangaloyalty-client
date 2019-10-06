@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SocketComponent extends React.Component<{queue: app.ContextSocketQueue, onActionAsync: (actions: app.ISocketAction[]) => Promise<void>}> {
+export class ActionComponent extends React.Component<{queue: app.ContextSocketQueue, onActionAsync: (actions: app.ISocketAction[]) => Promise<void>}> {
   componentDidMount() {
     this.props.queue.attach();
     this.props.queue.mount((actions) => this._runAsync(actions));
