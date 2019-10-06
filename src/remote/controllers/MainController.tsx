@@ -5,10 +5,12 @@ import {language} from '../language';
 
 @mobxReact.observer
 export class MainController extends React.Component<{vm: app.MainViewModel}> {
-  static async constructAsync(restoreState?: app.MainRestoreState) {
-    const vm = new app.MainViewModel(restoreState);
-    await vm.refreshAsync();
-    return <MainController vm={vm} />;
+  static createConstruct(search?: string) {
+    return async (restoreState?: app.MainRestoreState) => {
+      const vm = new app.MainViewModel(search, restoreState);
+      await vm.refreshAsync();
+      return <MainController vm={vm} />;
+    };
   }
 
   render() {
