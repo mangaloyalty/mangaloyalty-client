@@ -23,11 +23,6 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
             <img src={`data:;base64, ${this.props.vm.image}`} style={styles.seriesImage} />
             <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
             <mui.Grid style={styles.seriesClear} />
-            <mui.Tooltip title={language.libraryIconRead}>
-              <mui.Fab color="primary" style={styles.seriesAction} onClick={() => this.props.vm.readAsync()}>
-                <app.icons.PlayArrow />
-              </mui.Fab>
-            </mui.Tooltip>
           </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper square={true}>
             <mui.List>

@@ -1,6 +1,6 @@
 export const language = {
   library: 'Library',
-  libraryEmptyBody: 'No series have been found. Series can be added to the library using the remote menu item. When filtering, try using different options.',
+  libraryEmptyBody: 'No series have been found. Series can be added to the library using the remote menu button. When filtering, try using different options.',
   libraryEmptyTitle: '何もない',
   libraryIconRead: 'Read',
   libraryIconRemote: 'Remote',
