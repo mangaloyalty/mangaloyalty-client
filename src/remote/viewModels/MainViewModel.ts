@@ -1,6 +1,5 @@
 import * as app from '..';
 import * as mobx from 'mobx';
-const storageProvider = 'RemoteProvider';
 
 export class MainViewModel {
   constructor(restoreState?: app.MainRestoreState) {
@@ -11,7 +10,7 @@ export class MainViewModel {
   @mobx.action
   async changeProviderAsync(providerName: app.IEnumeratorProvider) {
     if (providerName === this.providerName) return;
-    app.core.storage.set(storageProvider, providerName);
+    localStorage.setItem('RemoteProvider', providerName);
     this.providerName = providerName;
     await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
@@ -71,7 +70,7 @@ export class MainViewModel {
   currentPage = 1;
 
   @mobx.observable
-  providerName = app.core.storage.get(storageProvider, app.settings.providerDefaultName as app.IEnumeratorProvider);
+  providerName = <app.IEnumeratorProvider> localStorage.getItem('RemoteProvider') || app.settings.providerDefaultName;
   
   @mobx.observable
   search = '';
