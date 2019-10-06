@@ -5,11 +5,13 @@ import {language} from '../language';
 
 @mobxReact.observer
 export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
-  static async constructAsync(restoreState?: app.MainRestoreState) {
-    const queue = app.api.socket.createAttachQueue();
-    const vm = new app.MainViewModel(restoreState);
-    await vm.refreshAsync();
-    return <MainController queue={queue} vm={vm} />;
+  static createConstruct(search?: string) {
+    return async (restoreState?: app.MainRestoreState) => {
+      const queue = app.api.socket.createAttachQueue();
+      const vm = new app.MainViewModel(search, restoreState);
+      await vm.refreshAsync();
+      return <MainController queue={queue} vm={vm} />;
+    };
   }
 
   render() {

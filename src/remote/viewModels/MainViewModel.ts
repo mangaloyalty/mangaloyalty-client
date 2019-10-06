@@ -1,10 +1,11 @@
 import * as app from '..';
+import * as areas from '../../areas';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  constructor(restoreState?: app.MainRestoreState) {
+  constructor(search?: string, restoreState?: app.MainRestoreState) {
     this.currentPage = restoreState ? restoreState.currentPage : this.currentPage;
-    this.search = restoreState ? restoreState.search : this.search;
+    this.search = restoreState ? restoreState.search : (search || this.search);
   }
 
   @mobx.action
@@ -23,7 +24,13 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openAsync(url: string) {
+  async openLibraryAsync() {
+    const constructAsync = areas.library.MainController.createConstruct(this.search);
+    await app.core.screen.openAsync(constructAsync);
+  }
+
+  @mobx.action
+  async openSeriesAsync(url: string) {
     const constructAsync = app.SeriesController.createConstruct(url);
     const restoreState = new app.MainRestoreState(this.currentPage, this.search);
     await app.core.screen.openChildAsync(constructAsync, restoreState);
