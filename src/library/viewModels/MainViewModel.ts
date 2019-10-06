@@ -1,8 +1,5 @@
 import * as app from '..';
 import * as mobx from 'mobx';
-const storageFilterReadStatus = 'LibraryFilterReadStatusKey';
-const storageFilterSeriesStatus = 'LibraryFilterSeriesStatus';
-const storageFilterSortKey = 'LibraryFilterSortKey';
 
 export class MainViewModel {
   private _refreshPromise = Promise.resolve();
@@ -15,7 +12,7 @@ export class MainViewModel {
   @mobx.action
   async changeFilterReadStatusAsync(filterReadStatus: app.IEnumeratorReadStatus) {
     if (filterReadStatus === this.filterReadStatus) return;
-    app.core.storage.set(storageFilterReadStatus, filterReadStatus);
+    localStorage.setItem('LibraryFilterReadStatus', filterReadStatus);
     this.filterReadStatus = filterReadStatus;
     await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
@@ -23,7 +20,7 @@ export class MainViewModel {
   @mobx.action
   async changeFilterSeriesStatusAsync(filterSeriesStatus: app.IEnumeratorSeriesStatus) {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
-    app.core.storage.set(storageFilterSeriesStatus, filterSeriesStatus);
+    localStorage.setItem('LibraryFilterSeriesStatus', filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
     await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
@@ -31,7 +28,7 @@ export class MainViewModel {
   @mobx.action
   async changeFilterSortKeyAsync(filterSortKey: app.IEnumeratorSortKey) {
     if (filterSortKey === this.filterSortKey) return;
-    app.core.storage.set(storageFilterSortKey, filterSortKey);
+    localStorage.setItem('LibraryFilterSortKey', filterSortKey);
     this.filterSortKey = filterSortKey;
     await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
@@ -99,13 +96,13 @@ export class MainViewModel {
   currentPage = 1;
 
   @mobx.observable
-  filterReadStatus = app.core.storage.get<app.IEnumeratorReadStatus>(storageFilterReadStatus, 'all');
+  filterReadStatus = <app.IEnumeratorReadStatus> localStorage.getItem('LibraryFilterReadStatus') || 'all';
 
   @mobx.observable
-  filterSeriesStatus = app.core.storage.get<app.IEnumeratorSeriesStatus>(storageFilterSeriesStatus, 'all');
+  filterSeriesStatus = <app.IEnumeratorSeriesStatus> localStorage.getItem('LibraryFilterSeriesStatus') || 'all';
 
   @mobx.observable
-  filterSortKey = app.core.storage.get<app.IEnumeratorSortKey>(storageFilterSortKey, 'addedAt');
+  filterSortKey = <app.IEnumeratorSortKey> localStorage.getItem('LibraryFilterSortKey') || 'lastPageReadAt';
 
   @mobx.observable
   search = '';

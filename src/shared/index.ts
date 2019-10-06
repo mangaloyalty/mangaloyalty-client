@@ -24,7 +24,6 @@ export * from './components/SeriesListComponent';
 export * from './components/SeriesPagerComponent';
 export * from './managers/DialogManager';
 export * from './managers/ScreenManager';
-export * from './managers/StorageManager';
 export * from './managers/ToastManager';
 export * from './views/DialogManagerView';
 export * from './views/ScreenManagerView';
