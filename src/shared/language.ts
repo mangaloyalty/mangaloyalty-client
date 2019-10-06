@@ -7,5 +7,7 @@ export const language = {
   errorButtons: ['Retry'],
   iconBack: 'Back',
   iconClose: 'Close',
-  iconSearch: 'Search'
+  iconSearch: 'Search',
+  seriesPageNext: 'Next Page',
+  seriesPagePrevious: 'Previous Page'
 };
