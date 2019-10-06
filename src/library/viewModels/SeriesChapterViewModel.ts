@@ -28,9 +28,9 @@ export class SeriesChapterViewModel {
       const session = await app.api.library.chapterReadAsync(this._series.id, this.id);
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this._series.showChapters);
-        const pageNumber = this.pageReadNumber && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
+        const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
         const navigator = new app.Navigator(this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
-        const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber);
+        const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber || 1);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else if (session.status === 404) {
         return;
