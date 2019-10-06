@@ -14,7 +14,6 @@ export * from './common/styles';
 export * from './common/theme';
 export * from './components/ActionComponent';
 export * from './components/ButtonComponent';
-export * from './components/CenterComponent';
 export * from './components/HeaderComponent';
 export * from './components/HeaderSearchBarComponent';
 export * from './components/HeaderTitleBarComponent';
