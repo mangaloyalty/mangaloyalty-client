@@ -29,7 +29,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.openAsync(series.url)} />
+            onClick={(series) => this.props.vm.openSeriesAsync(series.url)} />
         </app.SeriesPagerComponent>
       </mui.Grid>
     );
