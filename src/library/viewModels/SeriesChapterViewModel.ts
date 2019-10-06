@@ -54,7 +54,8 @@ export class SeriesChapterViewModel {
   @mobx.action
   async toggleReadCompleted() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted);
+      const pageReadNumber = this.isReadCompleted ? 1 : undefined;
+      const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted, pageReadNumber);
       if (response.status === 200 || response.status === 404) {
         return;
       } else {
