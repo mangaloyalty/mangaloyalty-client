@@ -1,6 +1,9 @@
-// Initialize the server router.
+const compression = require('compression');
 const express = require('express');
+
+// Initialize the server router.
 const router = express.Router();
+router.use(compression());
 
 // Initialize the server router handlers.
 router.get('/', (_, res) => res.redirect('/web/'));
