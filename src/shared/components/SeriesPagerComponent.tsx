@@ -13,18 +13,22 @@ export class SeriesPagerComponent extends React.Component<{canPageNext: boolean,
           </mui.Grid>
           <mui.Paper square={true} style={{...app.limiter, ...styles.content}}>
             <mui.Tooltip title={language.seriesPagePrevious}>
-              <mui.Button color="primary" variant="outlined" style={styles.buttonPrevious}
-                disabled={!this.props.canPagePrevious}
-                onClick={() => this.props.pagePrevious()}>
-                <app.icons.ArrowBack />
-              </mui.Button>
+              <mui.Grid>
+                <mui.Button color="primary" variant="outlined" style={styles.buttonPrevious}
+                  disabled={!this.props.canPagePrevious}
+                  onClick={() => this.props.pagePrevious()}>
+                  <app.icons.ArrowBack />
+                </mui.Button>
+              </mui.Grid>
             </mui.Tooltip>
             <mui.Tooltip title={language.seriesPageNext}>
-              <mui.Button color="primary" variant="outlined" style={styles.buttonNext}
-                disabled={!this.props.canPageNext}
-                onClick={() => this.props.pageNext()}>
-                <app.icons.ArrowForward />
-              </mui.Button>
+              <mui.Grid>
+                <mui.Button color="primary" variant="outlined" style={styles.buttonNext}
+                  disabled={!this.props.canPageNext}
+                  onClick={() => this.props.pageNext()}>
+                  <app.icons.ArrowForward />
+                </mui.Button>
+              </mui.Grid>
             </mui.Tooltip>
             <mui.Typography style={styles.text}>
               {(this.props.currentPage < 10 ? '0' : '') + this.props.currentPage}
