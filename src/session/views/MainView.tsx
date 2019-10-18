@@ -6,16 +6,19 @@ import * as React from 'react';
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   private readonly _container: React.RefObject<HTMLImageElement>;
+  private readonly _eventHandler: (ev: KeyboardEvent) => void;
   private readonly _touch: app.Touch;
 
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
     this._container = React.createRef();
+    this._eventHandler = this._onKeyEvent.bind(this);
     this._touch = new app.Touch(this._onTapEvent.bind(this));
   }
 
   componentDidMount() {
     this.componentDidUpdate();
+    addEventListener('keydown', this._eventHandler);
   }
 
   componentDidUpdate() {
@@ -25,6 +28,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 
   componentWillUnmount() {
+    removeEventListener('keydown', this._eventHandler);
     this._touch.destroy();
   }
 
@@ -34,6 +38,19 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
         <img src={this.props.vm.imageUrl} style={styles.image} onContextMenu={(ev) => ev.preventDefault()} />
       </mui.Grid>
     );
+  }
+
+  private _onKeyEvent(ev: KeyboardEvent) {
+    switch (ev.key) {
+      case 'ArrowLeft':
+      case 'Left':
+        this.props.vm.pressNextAsync();
+        break;
+      case 'ArrowRight':
+      case 'Right':
+        this.props.vm.pressPreviousAsync();
+        break;
+    }
   }
 
   private _onTapEvent(x: number, y: number) {
