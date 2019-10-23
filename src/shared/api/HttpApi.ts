@@ -1,35 +1,29 @@
 import * as app from '..';
 
 export class HttpApi {
-  private readonly _baseUrl: string;
-
-  constructor(baseUrl: string) {
-    this._baseUrl = baseUrl;
+  delete<T>(url: string, data?: T) {
+    return this._create('DELETE', url, data);
   }
 
-  delete<T>(relativeUrl: string, data?: T) {
-    return this._create('DELETE', relativeUrl, data);
+  get(url: string) {
+    return this._create('GET', url);
   }
 
-  get(relativeUrl: string) {
-    return this._create('GET', relativeUrl);
+  patch<T>(url: string, data?: T) {
+    return this._create('PATCH', url, data);
   }
 
-  patch<T>(relativeUrl: string, data?: T) {
-    return this._create('PATCH', relativeUrl, data);
+  post<T>(url: string, data?: T) {
+    return this._create('POST', url, data);
   }
 
-  post<T>(relativeUrl: string, data?: T) {
-    return this._create('POST', relativeUrl, data);
+  put<T>(url: string, data?: T) {
+    return this._create('PUT', url, data);
   }
 
-  put<T>(relativeUrl: string, data?: T) {
-    return this._create('PUT', relativeUrl, data);
-  }
-
-  private _create<T>(method: string, relativeUrl: string, data?: T) {
+  private _create<T>(method: string, url: string, data?: T) {
     return async <TResult>() => {
-      const http = await this._xhrAsync(method, relativeUrl, data);
+      const http = await this._xhrAsync(method, url, data);
       const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
       const status = http && http.status || 0;
       const value = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
@@ -37,11 +31,11 @@ export class HttpApi {
     };
   }
 
-  private async _xhrAsync<T>(method: string, relativeUrl: string, data?: T) {
+  private async _xhrAsync<T>(method: string, url: string, data?: T) {
     return await new Promise<XMLHttpRequest | undefined>((resolve) => {
       const request = new XMLHttpRequest();
       request.timeout = app.settings.contextTimeout;
-      request.open(method, this._baseUrl + relativeUrl);
+      request.open(method, url);
       request.addEventListener('abort', () => resolve());
       request.addEventListener('error', () => resolve());
       request.addEventListener('load', () => resolve(request));

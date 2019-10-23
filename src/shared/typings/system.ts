@@ -9,7 +9,8 @@ export interface INavigator {
 }
 
 export interface ISeriesItem {
-  image: string;
+  id?: string;
+  imageId?: string;
   title: string;
   unreadCount?: number;
 }

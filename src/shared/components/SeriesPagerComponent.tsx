@@ -13,8 +13,8 @@ export class SeriesPagerComponent extends React.Component<{canPageNext: boolean,
           </mui.Grid>
           <mui.Paper square={true} style={{...app.limiter, ...styles.content}}>
             <mui.Tooltip title={language.seriesPagePrevious}>
-              <mui.Grid>
-                <mui.Button color="primary" variant="outlined" style={styles.buttonPrevious}
+              <mui.Grid style={styles.buttonPrevious}>
+                <mui.Button color="primary" variant="outlined"
                   disabled={!this.props.canPagePrevious}
                   onClick={() => this.props.pagePrevious()}>
                   <app.icons.ArrowBack />
@@ -22,8 +22,8 @@ export class SeriesPagerComponent extends React.Component<{canPageNext: boolean,
               </mui.Grid>
             </mui.Tooltip>
             <mui.Tooltip title={language.seriesPageNext}>
-              <mui.Grid>
-                <mui.Button color="primary" variant="outlined" style={styles.buttonNext}
+              <mui.Grid style={styles.buttonNext}>
+                <mui.Button color="primary" variant="outlined"
                   disabled={!this.props.canPageNext}
                   onClick={() => this.props.pageNext()}>
                   <app.icons.ArrowForward />

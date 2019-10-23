@@ -1,32 +1,32 @@
 import * as app from '.';
-let cacheLibrary: app.ContextLibraryApi;
-let cacheRemote: app.ContextRemoteApi;
-let cacheSession: app.ContextSessionApi;
-let cacheSocket: app.ContextSocketApi;
+let library: app.ContextLibraryApi;
+let remote: app.ContextRemoteApi;
+let session: app.ContextSessionApi;
+let socket: app.ContextSocketApi;
 
 export const api = {
   get library() {
-    if (cacheLibrary) return cacheLibrary;
-    cacheLibrary = new app.ContextLibraryApi(new app.HttpApi(createUrl()));
-    return cacheLibrary;
+    if (library) return library;
+    library = new app.ContextLibraryApi(createUrl(), new app.HttpApi());
+    return library;
   },
 
   get remote() {
-    if (cacheRemote) return cacheRemote;
-    cacheRemote = new app.ContextRemoteApi(new app.HttpApi(createUrl()));
-    return cacheRemote;
+    if (remote) return remote;
+    remote = new app.ContextRemoteApi(createUrl(), new app.HttpApi());
+    return remote;
   },
 
   get session() {
-    if (cacheSession) return cacheSession;
-    cacheSession = new app.ContextSessionApi(new app.HttpApi(createUrl()));
-    return cacheSession;
+    if (session) return session;
+    session = new app.ContextSessionApi(createUrl(), new app.HttpApi());
+    return session;
   },
 
   get socket() {
-    if (cacheSocket) return cacheSocket;
-    cacheSocket = new app.ContextSocketApi(createUrl());
-    return cacheSocket;
+    if (socket) return socket;
+    socket = new app.ContextSocketApi(createUrl());
+    return socket;
   }
 };
 
