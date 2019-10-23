@@ -5,36 +5,43 @@ export const fanfoxProvider = {
     return url.startsWith(baseUrl);
   },
 
-  async processAsync(image: string) {
+  async processAsync(value: Blob) {
     // Initialize the canvas.
-    const element = await convertAsync(image);
+    const image = await createImageAsync(value);
     const canvas = document.createElement('canvas');
-    canvas.height = element.height;
-    canvas.width = element.width;
+    canvas.height = image.height;
+    canvas.width = image.width;
 
     // Initialize the context
     const context = canvas.getContext('2d');
     if (!context) throw new Error();
-    context.drawImage(element, 0, 0, element.width, element.height);
+    context.drawImage(image, 0, 0, image.width, image.height);
 
     // Initialize the data.
-    const data = context.getImageData(0, 0, element.width, element.height);
-    const count = countLines(data.data, element.width, element.height);
-    if (!count) return canvas.toDataURL();
+    const data = context.getImageData(0, 0, image.width, image.height);
+    const count = countLines(data.data, image.width, image.height);
+    if (!count) return value;
 
     // Initialize the result.
     canvas.height -= count;
     context.putImageData(data, 0, 0);
-    return canvas.toDataURL();
+    return await createBlobAsync(canvas);
   }
 };
 
-async function convertAsync(image: string) {
+async function createBlobAsync(canvas: HTMLCanvasElement) {
+  return await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject());
+  });
+}
+
+async function createImageAsync(value: Blob) {
   return await new Promise<HTMLImageElement>((resolve, reject) => {
     const element = new Image();
-    element.addEventListener('error', () => reject(new Error()));
-    element.addEventListener('load', () => resolve(element));
-    element.src = `data:;base64, ${image}`;
+    const revokeUrl = () => Boolean(URL.revokeObjectURL(element.src));
+    element.addEventListener('error', () => revokeUrl() || reject(new Error()));
+    element.addEventListener('load', () => revokeUrl() || resolve(element));
+    element.src = URL.createObjectURL(value);
   });
 }
 

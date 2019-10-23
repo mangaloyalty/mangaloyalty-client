@@ -5,7 +5,7 @@ import {language} from '../language';
 export class MainViewModel {
   private readonly _loader: app.Loader;
   private readonly _navigator: app.INavigator;
-  private readonly _pageCount: number;
+  private readonly _session: app.ISessionListItem;
   private readonly _title: string;
   private _imageNextTime?: number;
   private _imagePreviousTime?: number;
@@ -14,7 +14,7 @@ export class MainViewModel {
   constructor(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
     this._loader = new app.Loader(session);
     this._navigator = navigator;
-    this._pageCount = session.pageCount;
+    this._session = session;
     this._pageNumber = pageNumber || 1;
     this._title = title;
   }
@@ -26,6 +26,7 @@ export class MainViewModel {
         app.core.toast.add(language.sessionToastNextUnavailable);
       } else {
         app.core.toast.add(language.sessionToastNextActive);
+        await this._loader.revokeAsync();
         await this._navigator.openNextAsync();
       }
     });
@@ -38,16 +39,24 @@ export class MainViewModel {
         app.core.toast.add(language.sessionToastPreviousUnavailable);
       } else {
         app.core.toast.add(language.sessionToastPreviousActive);
+        await this._loader.revokeAsync();
         await this._navigator.openPreviousAsync();
       }
     });
+  }
+
+  // TODO: Shouldn't all leaves go through the VM?
+  @mobx.action
+  async leaveAsync() {
+    await this._loader.revokeAsync();
+    await app.core.screen.leaveAsync();
   }
 
   @mobx.action
   async pressNextAsync() {
     if (this.showControls) {
       this.showControls = false;
-    } else if (this._pageNumber < this._pageCount) {
+    } else if (this._pageNumber < this._session.pageCount) {
       this._pageNumber++;
       await this.updateAsync();
     } else if (!this._navigator.hasNext) {
@@ -85,18 +94,26 @@ export class MainViewModel {
   @mobx.action
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
-      const sessionPagePromise = this._loader.getAsync(this._pageNumber);
-      const trackPromise = this._navigator.trackAsync ? this._navigator.trackAsync(this._pageCount, this._pageNumber) : true;
+      const sessionPagePromise = this._loader.getAsync(this._pageNumber); 
+      const trackPromise = this._navigator.trackAsync ? this._navigator.trackAsync(this._session.pageCount, this._pageNumber) : true;
       const sessionPage = await sessionPagePromise;
-      const track = await trackPromise;
-      if (sessionPage.value && track) {
+      if (sessionPage.value) {
         this.imageUrl = sessionPage.value;
-      } else if (sessionPage.status === 404 || (this._navigator.trackAsync && !track)) {
-        await app.core.screen.leaveAsync();
+        await trackPromise;
+      } else if (sessionPage.status === 404) {
+        await this.leaveAsync();
       } else {
+        await trackPromise;
         await app.core.dialog.errorAsync(() => this.updateAsync(), sessionPage.error);
       }
     });
+  }
+
+  @mobx.action
+  async socketActionAsync(actions: app.ISocketAction[]) {
+    if (checkActionLeave(actions, this._session.id)) {
+      await this.leaveAsync();
+    }
   }
 
   @mobx.computed
@@ -109,4 +126,13 @@ export class MainViewModel {
   
   @mobx.observable
   showControls = false;
+}
+
+function checkActionLeave(actions: app.ISocketAction[], sessionId: string) {
+  return actions.some((action) => {
+    switch (action.type) {
+      case 'SessionDelete': return action.session.id === sessionId;
+      default: return false;
+    }
+  });
 }

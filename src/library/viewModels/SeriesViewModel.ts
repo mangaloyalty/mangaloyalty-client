@@ -3,8 +3,8 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(id: string, restoreState?: app.SeriesRestoreState) {
-    this.id = id;
+  constructor(seriesId: string, restoreState?: app.SeriesRestoreState) {
+    this.id = seriesId;
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
   
@@ -34,7 +34,7 @@ export class SeriesViewModel {
       const series = await seriesPromise;
       const sessionList = await sessionListPromise;
       if (series.value && sessionList.value) {
-        this.image = series.value.source.image;
+        this.imageUrl = app.api.library.seriesImageUrl(series.value.id);
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
         this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
@@ -78,7 +78,7 @@ export class SeriesViewModel {
   id: string;
 
   @mobx.observable
-  image!: string;
+  imageUrl!: string;
 
   @mobx.observable
   showChapters = false;

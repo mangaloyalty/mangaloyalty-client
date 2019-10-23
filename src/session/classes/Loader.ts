@@ -24,11 +24,19 @@ export class Loader {
     }
   }
 
+  async revokeAsync() {
+    for (let i = 1; i < this._session.pageCount; i++) {
+      if (!this._cache[i]) continue;
+      revoke(this._cache[i]);
+    }
+  }
+  
   private _expire(pageNumber: number) {
     const minimum = pageNumber - app.settings.sessionLoadRange;
     const maximum = pageNumber + app.settings.sessionLoadRange;
     for (let i = 1; i < this._session.pageCount; i++) {
       if (i >= minimum && i <= maximum) continue;
+      if (this._cache[i]) revoke(this._cache[i]);
       delete this._cache[i];
     }
   }
@@ -45,13 +53,20 @@ export class Loader {
   private async _pageAsync(pageNumber: number) {
     const sessionPage = await app.api.session.pageAsync(this._session.id, pageNumber);
     if (sessionPage.value && app.fanfoxProvider.isSupported(this._session.url)) {
-      const value = await app.fanfoxProvider.processAsync(sessionPage.value.image);
-      return {error: sessionPage.error, status: sessionPage.status, value};
+      const value = await app.fanfoxProvider.processAsync(sessionPage.value);
+      return {error: sessionPage.error, status: sessionPage.status, value: URL.createObjectURL(value)};
     } else if (sessionPage.value) {
-      const value = `data:;base64, ${sessionPage.value.image}`;
-      return {error: sessionPage.error, status: sessionPage.status, value};
+      const value = sessionPage.value;
+      return {error: sessionPage.error, status: sessionPage.status, value: URL.createObjectURL(value)};
     } else {
-      return {error: sessionPage.error, status: sessionPage.status};
+      return sessionPage;
     }
   }
+}
+
+function revoke(pagePromise: Promise<{value?: string}>) {
+  pagePromise.then((page) => {
+    if (!page.value) return;
+    URL.revokeObjectURL(page.value);
+  });
 }

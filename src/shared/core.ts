@@ -1,24 +1,24 @@
 import * as app from '.';
-let cacheDialog: app.DialogManager;
-let cacheScreen: app.ScreenManager;
-let cacheToast: app.ToastManager;
+let dialog: app.DialogManager;
+let screen: app.ScreenManager;
+let toast: app.ToastManager;
 
 export const core = {
   get dialog() {
-    if (cacheDialog) return cacheDialog;
-    cacheDialog = new app.DialogManager();
-    return cacheDialog;
+    if (dialog) return dialog;
+    dialog = new app.DialogManager();
+    return dialog;
   },
 
   get screen() {
-    if (cacheScreen) return cacheScreen;
-    cacheScreen = new app.ScreenManager();
-    return cacheScreen;
+    if (screen) return screen;
+    screen = new app.ScreenManager();
+    return screen;
   },
 
   get toast() {
-    if (cacheToast) return cacheToast;
-    cacheToast = new app.ToastManager();
-    return cacheToast;
+    if (toast) return toast;
+    toast = new app.ToastManager();
+    return toast;
   }
 };

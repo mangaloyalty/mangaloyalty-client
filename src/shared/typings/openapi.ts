@@ -23,7 +23,6 @@ export interface ILibraryList {
 }
 export interface ILibraryListItem {
   id: string;
-  image: string;
   title: string;
   unreadCount: number;
 }
@@ -56,7 +55,6 @@ export interface ILibrarySeriesChapter {
 export interface ILibrarySeriesSource {
   authors: string[];
   genres: string[];
-  image: string;
   isCompleted: boolean;
   summary?: string;
   title: string;
@@ -67,7 +65,7 @@ export interface IRemoteList {
   items: IRemoteListItem[];
 }
 export interface IRemoteListItem {
-  image: string;
+  imageId: string;
   title: string;
   url: string;
 }
@@ -75,7 +73,7 @@ export interface IRemoteSeries {
   authors: string[];
   chapters: IRemoteSeriesChapter[];
   genres: string[];
-  image: string;
+  imageId: string;
   isCompleted: boolean;
   summary?: string;
   title: string;
@@ -95,9 +93,6 @@ export interface ISessionListItem {
     chapterId: string;
     sync: boolean;
   };
-}
-export interface ISessionPage {
-  image: string;
 }
 export interface ILibraryListContext {
   query: {
@@ -137,6 +132,11 @@ export interface ILibrarySeriesPatchContext {
     syncAll: boolean;
   };
 }
+export interface ILibrarySeriesImageContext {
+  path: {
+    seriesId: string;
+  };
+}
 export interface ILibraryChapterDeleteContext {
   path: {
     seriesId: string;
@@ -163,6 +163,11 @@ export interface ILibraryChapterPatchContext {
   query: {
     isReadCompleted?: boolean;
     pageReadNumber?: number;
+  };
+}
+export interface IRemoteImageContext {
+  query: {
+    imageId: string;
   };
 }
 export interface IRemotePopularContext {
@@ -211,4 +216,3 @@ export type IRemoteSearchResponse = IRemoteList;
 export type IRemoteSeriesResponse = IRemoteSeries;
 export type IRemoteStartResponse = ISessionListItem;
 export type ISessionListResponse = ISessionList;
-export type ISessionPageResponse = ISessionPage;
