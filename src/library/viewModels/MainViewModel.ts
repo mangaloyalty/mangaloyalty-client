@@ -48,8 +48,8 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openSeriesAsync(id: string) {
-    const constructAsync = app.SeriesController.createConstruct(id);
+  async openSeriesAsync(seriesId: string) {
+    const constructAsync = app.SeriesController.createConstruct(seriesId);
     const restoreState = new app.MainRestoreState(this.currentPage, this.search);
     await app.core.screen.openChildAsync(constructAsync, restoreState);
   }

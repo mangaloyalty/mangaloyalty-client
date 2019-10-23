@@ -54,7 +54,7 @@ export class SeriesViewModel {
       const series = await app.api.remote.seriesAsync(this.url);
       if (series.value) {
         this.chapters = series.value.chapters;
-        this.image = series.value.image;
+        this.imageUrl = app.api.remote.imageUrl(series.value.imageId);
         this.summary = series.value.summary;
         this.title = series.value.title;
         this.url = series.value.url;
@@ -68,7 +68,7 @@ export class SeriesViewModel {
   chapters!: app.IRemoteSeriesChapter[];
   
   @mobx.observable
-  image!: string;
+  imageUrl!: string;
 
   @mobx.observable
   showChapters = false;
