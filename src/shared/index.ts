@@ -19,6 +19,7 @@ export * from './components/HeaderSearchBarComponent';
 export * from './components/HeaderTitleBarComponent';
 export * from './components/LoadingComponent';
 export * from './components/MenuComponent';
+export * from './components/SeriesImageComponent';
 export * from './components/SeriesListComponent';
 export * from './components/SeriesPagerComponent';
 export * from './managers/DialogManager';
