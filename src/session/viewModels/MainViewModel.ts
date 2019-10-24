@@ -2,6 +2,7 @@ import * as app from '..';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
+// TODO: Images should be lazy-loaded because a blob isn't loaded immediately.
 export class MainViewModel {
   private readonly _loader: app.Loader;
   private readonly _navigator: app.INavigator;

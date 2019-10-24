@@ -5,13 +5,13 @@ import * as React from 'react';
 
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
-  private readonly _container: React.RefObject<HTMLImageElement>;
+  private readonly _containerRef: React.RefObject<HTMLImageElement>;
   private readonly _eventHandler: (ev: KeyboardEvent) => void;
   private readonly _touch: app.Touch;
 
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
-    this._container = React.createRef();
+    this._containerRef = React.createRef();
     this._eventHandler = this._onKeyEvent.bind(this);
     this._touch = new app.Touch(this._onTapEvent.bind(this));
   }
@@ -22,8 +22,8 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 
   componentDidUpdate() {
-    if (!this._container.current) return;
-    this._touch.attach(this._container.current);
+    if (!this._containerRef.current) return;
+    this._touch.attach(this._containerRef.current);
     this._touch.reset();
   }
 
@@ -34,7 +34,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
 
   render() {
     return (
-      <mui.Grid ref={this._container} style={styles.container}>
+      <mui.Grid ref={this._containerRef} style={styles.container}>
         <img src={this.props.vm.imageUrl} style={styles.image} onContextMenu={(ev) => ev.preventDefault()} />
       </mui.Grid>
     );
