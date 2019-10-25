@@ -3,8 +3,6 @@ import * as areas from '../../areas';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  private _refreshPromise = Promise.resolve();
-
   constructor(search?: string, restoreState?: app.MainRestoreState) {
     this.currentPage = restoreState ? restoreState.currentPage : this.currentPage;
     this.search = restoreState ? restoreState.search : (search || this.search);
@@ -66,10 +64,9 @@ export class MainViewModel {
     await this.refreshAsync(this.currentPage - 1).then(() => scrollTo(0, 0));
   }
 
-  // TODO: Recovering is impossible; nested calls (pagePreviousAsync, error) will end up blocking the refresh queue.
   @mobx.action
   async refreshAsync(nextPage?: number) {
-    await (this._refreshPromise = this._refreshPromise.then(() => app.core.screen.loadAsync(async () => {
+    await app.core.screen.loadAsync(async () => {
       const currentPage = nextPage || this.currentPage;
       const seriesList = await app.api.library.listAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search, currentPage);
       if (seriesList.value && !seriesList.value.items.length && currentPage > 1) {
@@ -80,7 +77,7 @@ export class MainViewModel {
       } else {
         await app.core.dialog.errorAsync(() => this.refreshAsync(nextPage), seriesList.error);
       }
-    })));
+    });
   }
 
   @mobx.action
