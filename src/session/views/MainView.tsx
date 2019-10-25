@@ -54,15 +54,16 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
     this._touch.reset();
   }
 
-  // TODO: Calling pressNext/pressPrevious even though the disabler is there..
   private _onKeyEvent(ev: KeyboardEvent) {
     switch (ev.key) {
       case 'ArrowLeft':
       case 'Left':
+        if (app.core.screen.loadCount) return;
         this.props.vm.pressNextAsync();
         break;
       case 'ArrowRight':
       case 'Right':
+        if (app.core.screen.loadCount) return;
         this.props.vm.pressPreviousAsync();
         break;
     }
