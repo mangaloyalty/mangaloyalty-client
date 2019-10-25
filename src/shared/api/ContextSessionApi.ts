@@ -18,22 +18,31 @@ export class ContextSessionApi {
     
   async pageAsync(sessionId: string, pageNumber: number) {
     const query = new app.HttpQuery().add('pageNumber', pageNumber);
-    const response = await fetch(`${this._baseUrl}/api/session/${encodeURIComponent(sessionId)}` + query);
-    return createAsync(response);
+    const response = await fetchBlob(`${this._baseUrl}/api/session/${encodeURIComponent(sessionId)}` + query);
+    return response;
   }
 }
 
 // TODO: Use fetch-based API for JSON calls, too.
 // TODO: Use fetch-based with an added timeout.
-async function createAsync(response: Response) {
-  if (response.status === 200) {
-    const status = response.status;
-    const value = await response.blob();
-    return {status, value};
-  } else {
-    const data = await response.json() as {error?: string};
-    const error = data.error;
-    const status = response.status;
-    return {error, status};
+async function fetchBlob(input: RequestInfo, init?: RequestInit) {
+  try {
+    const response = await fetch(input, init);
+    if (response.status === 200) {
+      const status = response.status;
+      const value = await response.blob();
+      return {status, value};
+    } else try {
+      const data = await response.json() as {error?: string};
+      const error = data.error;
+      const status = response.status;
+      return {error, status};
+    } catch {
+      const status = response.status;
+      return {status};
+    }
+  } catch {
+    const status = 0;
+    return {status};
   }
 }

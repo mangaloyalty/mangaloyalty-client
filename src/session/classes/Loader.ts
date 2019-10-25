@@ -15,9 +15,8 @@ export class Loader {
       this._load(pageNumber);
       return await this._cache[pageNumber];
     } else {
-      const sessionPagePromise = this._pageAsync(pageNumber);
-      const sessionPage = await sessionPagePromise;
-      this._cache[pageNumber] = sessionPagePromise;
+      this._cache[pageNumber] = this._pageAsync(pageNumber);
+      const sessionPage = await this._cache[pageNumber];
       this._expire(pageNumber);
       this._load(pageNumber);
       return sessionPage;
@@ -48,11 +47,12 @@ export class Loader {
       const current = await imageAsync(sessionPage.value);
       const result = await app.fanfoxProvider.processAsync(current);
       const value = result && await imageAsync(result) || current;
-      return {error: sessionPage.error, status: sessionPage.status, value};
+      return {status: sessionPage.status, value};
     } else if (sessionPage.value) {
       const value = await imageAsync(sessionPage.value);
-      return {error: sessionPage.error, status: sessionPage.status, value};
+      return {status: sessionPage.status, value};
     } else {
+      delete this._cache[pageNumber];
       return sessionPage;
     }
   }
