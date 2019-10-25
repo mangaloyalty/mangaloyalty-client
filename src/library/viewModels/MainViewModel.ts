@@ -66,6 +66,7 @@ export class MainViewModel {
     await this.refreshAsync(this.currentPage - 1).then(() => scrollTo(0, 0));
   }
 
+  // TODO: Recovering is impossible; nested calls (pagePreviousAsync, error) will end up blocking the refresh queue.
   @mobx.action
   async refreshAsync(nextPage?: number) {
     await (this._refreshPromise = this._refreshPromise.then(() => app.core.screen.loadAsync(async () => {

@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
@@ -6,19 +7,27 @@ import * as React from 'react';
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   private readonly _containerRef: React.RefObject<HTMLImageElement>;
-  private readonly _eventHandler: (ev: KeyboardEvent) => void;
+  private readonly _keyHandler: (ev: KeyboardEvent) => void;
   private readonly _touch: app.Touch;
+  private _observableDisposer: () => void;
 
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
     this._containerRef = React.createRef();
-    this._eventHandler = this._onKeyEvent.bind(this);
-    this._touch = new app.Touch(this._onTapEvent.bind(this));
+    this._keyHandler = (ev) => this._onKeyEvent(ev);
+    this._observableDisposer = () => undefined;
+    this._touch = new app.Touch((x, y) => this._onTapEvent(x, y));
   }
 
   componentDidMount() {
     this.componentDidUpdate();
-    addEventListener('keydown', this._eventHandler);
+    this.componentWillReceiveProps(this.props);
+    addEventListener('keydown', this._keyHandler);
+  }
+
+  componentWillReceiveProps(props: {vm: app.MainViewModel}) {
+    this._observableDisposer();
+    this._observableDisposer = mobx.observe(props.vm, 'imageNode', (ev) => this._onImageEvent(ev), true);
   }
 
   componentDidUpdate() {
@@ -28,18 +37,24 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 
   componentWillUnmount() {
-    removeEventListener('keydown', this._eventHandler);
+    removeEventListener('keydown', this._keyHandler);
+    this._observableDisposer();
     this._touch.destroy();
   }
 
   render() {
-    return (
-      <mui.Grid ref={this._containerRef} style={styles.container}>
-        <img src={this.props.vm.imageUrl} style={styles.image} onContextMenu={(ev) => ev.preventDefault()} />
-      </mui.Grid>
-    );
+    return <mui.Grid ref={this._containerRef} style={styles.container} />;
   }
 
+  private _onImageEvent(ev: mobx.IValueDidChange<HTMLImageElement>) {
+    if (!this._containerRef.current) return;
+    Object.assign(ev.newValue.style, styles.image);
+    this._removeFirstChild(this._containerRef.current);
+    this._containerRef.current.appendChild(ev.newValue);
+    this._touch.reset();
+  }
+
+  // TODO: Calling pressNext/pressPrevious even though the disabler is there..
   private _onKeyEvent(ev: KeyboardEvent) {
     switch (ev.key) {
       case 'ArrowLeft':
@@ -63,6 +78,11 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
     } else {
       this.props.vm.pressPreviousAsync();
     }
+  }
+
+  private _removeFirstChild(container: HTMLElement) {
+    const firstElementChild = container.firstElementChild;
+    if (firstElementChild) container.removeChild(firstElementChild);
   }
 }
 

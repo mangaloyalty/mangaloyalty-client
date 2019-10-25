@@ -13,7 +13,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
 
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
-    this._resizeHandler = this._onResize.bind(this);
+    this._resizeHandler = () => this._onResize();
     this._selectReadStatusRef = React.createRef();
     this._selectSeriesStatusRef = React.createRef();
     this._selectSortKeyRef = React.createRef();

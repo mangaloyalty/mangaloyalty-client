@@ -57,7 +57,7 @@ const styles = app.styles({
   textContent: {
     left: '50%',
     padding: 16,
-    position: 'absolute',
+    position: 'fixed',
     top: '50%',
     transform: 'translate(-50%, -50%)',
     width: 320

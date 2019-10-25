@@ -5,9 +5,8 @@ export const fanfoxProvider = {
     return url.startsWith(baseUrl);
   },
 
-  async processAsync(value: Blob) {
+  async processAsync(image: HTMLImageElement) {
     // Initialize the canvas.
-    const image = await createImageAsync(value);
     const canvas = document.createElement('canvas');
     canvas.height = image.height;
     canvas.width = image.width;
@@ -20,30 +19,14 @@ export const fanfoxProvider = {
     // Initialize the data.
     const data = context.getImageData(0, 0, image.width, image.height);
     const count = countLines(data.data, image.width, image.height);
-    if (!count) return value;
+    if (!count) return;
 
     // Initialize the result.
     canvas.height -= count;
     context.putImageData(data, 0, 0);
-    return await createBlobAsync(canvas);
+    return await new Promise<Blob>((resolve, reject) => canvas.toBlob((result) => result ? resolve(result) : reject()));
   }
 };
-
-async function createBlobAsync(canvas: HTMLCanvasElement) {
-  return await new Promise<Blob>((resolve, reject) => {
-    canvas.toBlob((blob) => blob ? resolve(blob) : reject());
-  });
-}
-
-async function createImageAsync(value: Blob) {
-  return await new Promise<HTMLImageElement>((resolve, reject) => {
-    const element = new Image();
-    const revokeUrl = () => Boolean(URL.revokeObjectURL(element.src));
-    element.addEventListener('error', () => revokeUrl() || reject(new Error()));
-    element.addEventListener('load', () => revokeUrl() || resolve(element));
-    element.src = URL.createObjectURL(value);
-  });
-}
 
 function countLines(data: Uint8ClampedArray, width: number, height: number) {
   let count = -1;

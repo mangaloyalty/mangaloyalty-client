@@ -2,7 +2,6 @@ import * as app from '..';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-// TODO: Images should be lazy-loaded because a blob isn't loaded immediately.
 export class MainViewModel {
   private readonly _loader: app.Loader;
   private readonly _navigator: app.INavigator;
@@ -27,7 +26,6 @@ export class MainViewModel {
         app.core.toast.add(language.sessionToastNextUnavailable);
       } else {
         app.core.toast.add(language.sessionToastNextActive);
-        await this._loader.revokeAsync();
         await this._navigator.openNextAsync();
       }
     });
@@ -40,17 +38,9 @@ export class MainViewModel {
         app.core.toast.add(language.sessionToastPreviousUnavailable);
       } else {
         app.core.toast.add(language.sessionToastPreviousActive);
-        await this._loader.revokeAsync();
         await this._navigator.openPreviousAsync();
       }
     });
-  }
-
-  // TODO: Shouldn't all leaves go through the VM?
-  @mobx.action
-  async leaveAsync() {
-    await this._loader.revokeAsync();
-    await app.core.screen.leaveAsync();
   }
 
   @mobx.action
@@ -99,10 +89,11 @@ export class MainViewModel {
       const trackPromise = this._navigator.trackAsync ? this._navigator.trackAsync(this._session.pageCount, this._pageNumber) : true;
       const sessionPage = await sessionPagePromise;
       if (sessionPage.value) {
-        this.imageUrl = sessionPage.value;
-        await trackPromise;
+        this.imageNode = sessionPage.value;
+        // TODO: The tracking API call can take ~90-400ms, causing a spinner. Off-load this call?
+        if (!await trackPromise) await app.core.dialog.errorAsync(() => this.updateAsync());
       } else if (sessionPage.status === 404) {
-        await this.leaveAsync();
+        await app.core.screen.leaveAsync();
       } else {
         await trackPromise;
         await app.core.dialog.errorAsync(() => this.updateAsync(), sessionPage.error);
@@ -113,7 +104,7 @@ export class MainViewModel {
   @mobx.action
   async socketActionAsync(actions: app.ISocketAction[]) {
     if (checkActionLeave(actions, this._session.id)) {
-      await this.leaveAsync();
+      await app.core.screen.leaveAsync();
     }
   }
 
@@ -123,7 +114,7 @@ export class MainViewModel {
   }
 
   @mobx.observable
-  imageUrl!: string;
+  imageNode!: HTMLImageElement;
   
   @mobx.observable
   showControls = false;

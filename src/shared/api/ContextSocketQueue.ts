@@ -8,7 +8,7 @@ export class ContextSocketQueue {
   private _isRunning?: boolean;
 
   constructor(queueHandlers: ((action: app.ISocketAction) => void)[]) {
-    this._actionHandler = this._onAction.bind(this);
+    this._actionHandler = (action) => this._onAction(action);
     this._actionQueue = [];
     this._queueHandlers = queueHandlers;
   }
@@ -30,18 +30,21 @@ export class ContextSocketQueue {
     this._consumeAsync = consumeAsync;
     this._tryRun();
   }
- 
+
   private _onAction(action: app.ISocketAction) {
     this._actionQueue.push(action);
     this._tryRun();
   }
 
+  private _onEnd() {
+    this._isRunning = false;
+    this._tryRun();
+  }
+
   private _tryRun() {
     if (!this._actionQueue.length || !this._consumeAsync || this._isRunning) return;
+    const endHandler = () => this._onEnd();
     this._isRunning = true;
-    this._consumeAsync(this._actionQueue.splice(0, this._actionQueue.length)).then(() => {
-      this._isRunning = false;
-      this._tryRun();
-    });
+    this._consumeAsync(this._actionQueue.splice(0, this._actionQueue.length)).then(endHandler, endHandler);
   }
 }
