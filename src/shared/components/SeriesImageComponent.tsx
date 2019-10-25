@@ -7,17 +7,13 @@ export class SeriesImage extends React.Component<{src: string, style?: React.CSS
   render() {
     return (
       <mui.Grid style={{...this.props.style, ...styles.container}}>
-        <LazyLoad resize>
+        <LazyLoad height={'100%'} resize>
           <img src={this.props.src} style={styles.image}
-            onError={(ev) => this._onShow(ev)}
-            onLoad={(ev) => this._onShow(ev)} />
+            onError={(ev) => ev.currentTarget.style.opacity = '1'}
+            onLoad={(ev) => ev.currentTarget.style.opacity = '1'} />
         </LazyLoad>
       </mui.Grid>
     );
-  }
-
-  private _onShow(ev: React.SyntheticEvent<HTMLImageElement>) {
-    ev.currentTarget.style.opacity = '1';
   }
 }
 
