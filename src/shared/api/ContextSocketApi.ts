@@ -14,8 +14,8 @@ export class ContextSocketApi {
   attach() {
     if (this._socket) return;
     this._socket = io.connect(this._baseUrl);
-    this._socket.on('action', this._onAction.bind(this));
-    this._socket.on('reconnect', this._onReconnect.bind(this));
+    this._socket.on('action', (action: app.ISocketAction) => this._onAction(action));
+    this._socket.on('reconnect', () => this._onReconnect());
   }
 
   createAttachQueue() {
@@ -23,7 +23,7 @@ export class ContextSocketApi {
   }
 
   private _onAction(action: app.ISocketAction) {
-    this._queueHandlers.forEach((handler) => handler(action));
+    this._queueHandlers.forEach((queueHandler) => queueHandler(action));
   }
 
   private _onReconnect() {
