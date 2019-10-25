@@ -31,15 +31,13 @@ export class Navigator implements app.INavigator {
   }
 
   private async _openAsync() {
-    await app.core.screen.loadAsync(async () => {
-      const chapter = this._chapters[this._index];
-      const session = await app.api.remote.startAsync(chapter.url);
-      if (session.value) {
-        const constructAsync = areas.session.MainController.createConstruct(this, session.value, chapter.title);
-        await app.core.screen.replaceChildAsync(constructAsync);
-      } else {
-        await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
-      }
-    });
+    const chapter = this._chapters[this._index];
+    const session = await app.api.remote.startAsync(chapter.url);
+    if (session.value) {
+      const constructAsync = areas.session.MainController.createConstruct(this, session.value, chapter.title);
+      await app.core.screen.replaceChildAsync(constructAsync);
+    } else {
+      await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
+    }
   }
 }
