@@ -33,26 +33,22 @@ export class Navigator implements app.INavigator {
   }
   
   async trackAsync(pageCount: number, pageReadNumber: number) {
-    return await app.core.screen.loadAsync(async () => {
-      const chapter = this._chapters[this._index];     
-      const response = await app.api.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
-      return response.status === 200;
-    });
+    const chapter = this._chapters[this._index];     
+    const response = await app.api.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
+    return response.status === 200;
   }
 
   private async _openAsync() {
-    await app.core.screen.loadAsync(async () => {
-      const chapter = this._chapters[this._index];
-      const session = await app.api.library.chapterReadAsync(this._seriesId, chapter.id);
-      if (session.value) {
-        const pageNumber = chapter.pageReadNumber && chapter.pageReadNumber < session.value.pageCount && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);
-        const constructAsync = areas.session.MainController.createConstruct(this, session.value, chapter.title, pageNumber || 1);
-        await app.core.screen.replaceChildAsync(constructAsync);
-      } else if (session.status === 404) {
-        await app.core.screen.leaveAsync();
-      } else {
-        await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
-      }
-    });
+    const chapter = this._chapters[this._index];
+    const session = await app.api.library.chapterReadAsync(this._seriesId, chapter.id);
+    if (session.value) {
+      const pageNumber = chapter.pageReadNumber && chapter.pageReadNumber < session.value.pageCount && Math.max(Math.min(chapter.pageReadNumber, session.value.pageCount), 1);
+      const constructAsync = areas.session.MainController.createConstruct(this, session.value, chapter.title, pageNumber || 1);
+      await app.core.screen.replaceChildAsync(constructAsync);
+    } else if (session.status === 404) {
+      await app.core.screen.leaveAsync();
+    } else {
+      await app.core.dialog.errorAsync(() => this._openAsync(), session.error);
+    }
   }
 }
