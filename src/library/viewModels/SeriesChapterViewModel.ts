@@ -32,9 +32,7 @@ export class SeriesChapterViewModel {
         const navigator = new app.Navigator(this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
         const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber || 1);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
-      } else if (session.status === 404) {
-        return;
-      } else {
+      } else if (session.status !== 404) {
         await app.core.dialog.errorAsync(() => this.openAsync(), session.error);
       }
     });
@@ -56,11 +54,7 @@ export class SeriesChapterViewModel {
     await app.core.screen.loadAsync(async () => {
       const pageReadNumber = this.isReadCompleted ? 1 : undefined;
       const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted, pageReadNumber);
-      if (response.status === 200 || response.status === 404) {
-        return;
-      } else {
-        await app.core.dialog.errorAsync(() => this.toggleReadCompleted(), response.error);
-      }
+      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.toggleReadCompleted(), response.error);
     });
   }
   
@@ -85,22 +79,14 @@ export class SeriesChapterViewModel {
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.chapterDeleteAsync(this._series.id, this.id);
-      if (response.status === 200 || response.status === 404) {
-        return;
-      } else {
-        await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
-      }
+      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     });
   }
 
   private async _synchronizeAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.chapterUpdateAsync(this._series.id, this.id);
-      if (response.status === 200 || response.status === 404) {
-        return;
-      } else {
-        await app.core.dialog.errorAsync(() => this._synchronizeAsync(), response.error);
-      }
+      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this._synchronizeAsync(), response.error);
     });
   }
 }
