@@ -26,9 +26,7 @@ export class SeriesAutomationViewModel {
       const response = await app.api.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.showDialog = false;
-      } else if (response.status === 404) {
-        return;
-      } else {
+      } else if (response.status !== 404) {
         await app.core.dialog.errorAsync(() => this.saveAsync(), response.error);
       }
     });

@@ -51,11 +51,7 @@ export class SeriesViewModel {
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.seriesUpdateAsync(this.id);
-      if (response.status === 200 || response.status === 404) {
-        return;
-      } else {
-        await app.core.dialog.errorAsync(() => this.updateAsync(), response.error);
-      }
+      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.updateAsync(), response.error);
     });
   }
 
@@ -92,11 +88,7 @@ export class SeriesViewModel {
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.seriesDeleteAsync(this.id);
-      if (response.status === 200 || response.status === 404) {
-        return;
-      } else {
-        await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
-      }
+      if (response.status !== 200 && response.status !== 404)  await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     });
   }
 

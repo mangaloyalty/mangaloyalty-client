@@ -52,8 +52,9 @@ export class Loader {
       const value = await imageAsync(sessionPage.value);
       return {status: sessionPage.status, value};
     } else {
+      const error = sessionPage.error;
       delete this._cache[pageNumber];
-      return sessionPage;
+      return {status: sessionPage.status, error};
     }
   }
 }
