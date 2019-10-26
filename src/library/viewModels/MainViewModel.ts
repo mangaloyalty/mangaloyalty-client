@@ -42,7 +42,7 @@ export class MainViewModel {
   @mobx.action
   async openRemoteAsync() {
     const constructAsync = areas.remote.MainController.createConstruct(this.search);
-    await app.core.screen.openAsync(constructAsync);
+    await app.core.screen.openChildAsync(constructAsync);
   }
 
   @mobx.action
