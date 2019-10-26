@@ -6,7 +6,7 @@ import * as React from 'react';
 export class SeriesController extends React.Component<{queue: app.ContextSocketQueue, vm: app.SeriesViewModel}> {
   static createConstruct(seriesId: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
-      const queue = app.api.socket.createAttachQueue();
+      const queue = app.api.socket.createQueue().attach();
       const vm = new app.SeriesViewModel(seriesId, restoreState);
       await vm.refreshAsync();
       return <SeriesController queue={queue} vm={vm} />;
