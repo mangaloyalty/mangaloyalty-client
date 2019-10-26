@@ -7,7 +7,7 @@ import {language} from '../language';
 export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
   static createConstruct(search?: string) {
     return async (restoreState?: app.MainRestoreState) => {
-      const queue = app.api.socket.createAttachQueue();
+      const queue = app.api.socket.createQueue().attach();
       const vm = new app.MainViewModel(search, restoreState);
       await vm.refreshAsync();
       return <MainController queue={queue} vm={vm} />;
