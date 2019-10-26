@@ -7,7 +7,7 @@ import * as React from 'react';
 export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
   static createConstruct(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
     return async () => {
-      const queue = app.api.socket.createAttachQueue();
+      const queue = app.api.socket.createQueue().attach();
       const vm = new app.MainViewModel(navigator, session, title, pageNumber);
       await vm.updateAsync();
       return <MainController queue={queue} vm={vm} />;

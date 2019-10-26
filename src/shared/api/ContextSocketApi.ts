@@ -18,7 +18,7 @@ export class ContextSocketApi {
     this._socket.on('reconnect', () => this._onReconnect());
   }
 
-  createAttachQueue() {
+  createQueue() {
     return new app.ContextSocketQueue(this._queueHandlers);
   }
 
