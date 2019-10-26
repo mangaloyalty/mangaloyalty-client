@@ -1,66 +1,55 @@
-import * as app from '..';
-
 export class HttpApi {
   delete<T>(url: string, data?: T) {
-    return this._create('DELETE', url, data);
+    return createWrapper('DELETE', url, data);
   }
 
   get(url: string) {
-    return this._create('GET', url);
+    return createWrapper('GET', url);
   }
-
+  
   patch<T>(url: string, data?: T) {
-    return this._create('PATCH', url, data);
+    return createWrapper('PATCH', url, data);
   }
 
   post<T>(url: string, data?: T) {
-    return this._create('POST', url, data);
+    return createWrapper('POST', url, data);
   }
 
   put<T>(url: string, data?: T) {
-    return this._create('PUT', url, data);
-  }
-
-  private _create<T>(method: string, url: string, data?: T) {
-    return async <TResult>() => {
-      const http = await this._xhrAsync(method, url, data);
-      const error = http && http.status !== 200 ? parseError(http.responseText) : undefined;
-      const status = http && http.status || 0;
-      const value = http && http.status === 200 ? parseJson<TResult>(http.responseText) : undefined;
-      return {error, status, value};
-    };
-  }
-
-  private async _xhrAsync<T>(method: string, url: string, data?: T) {
-    return await new Promise<XMLHttpRequest | undefined>((resolve) => {
-      const request = new XMLHttpRequest();
-      request.timeout = app.settings.contextTimeout;
-      request.open(method, url);
-      request.addEventListener('abort', () => resolve());
-      request.addEventListener('error', () => resolve());
-      request.addEventListener('load', () => resolve(request));
-      request.addEventListener('timeout', () => resolve());
-      request.setRequestHeader('Accept', 'application/json');
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.send(data ? JSON.stringify(data) : undefined);
-    });
+    return createWrapper('PUT', url, data);
   }
 }
 
-function parseError(text: string) {
-  try {
-    const result = JSON.parse(text) as {message?: string};
-    const error = result && result.message;
-    return error;
-  } catch (error) {
-    return;
-  }
+function createWrapper<T>(method: string, url: string, data?: T) {
+  const blob = () => requestAsync(method, url, data, (response) => response.blob());
+  const json = <T>() => requestAsync(method, url, data, (response) => response.json() as Promise<T>);
+  const status = () => requestAsync(method, url, data, () => Promise.resolve());
+  return {blob, json, status};
 }
 
-function parseJson<T>(text: string) {
+async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valueFactory?: (response: Response) => Promise<TV>) {
   try {
-    return JSON.parse(text) as T;
-  } catch (error) {
-    return;
+    const body = data && JSON.stringify(data);
+    const headers = data && {'Content-Type': 'application/json'};
+    const response = await fetch(url, {method, headers, body});
+    if (response.status === 200) try {
+      const status = response.status;
+      const value = valueFactory && await valueFactory(response);
+      return {status, value};
+    } catch {
+      const status = response.status;
+      return {status};
+    } else try {
+      const data = await response.json() as {error?: string};
+      const error = data.error;
+      const status = response.status;
+      return {status, error};
+    } catch {
+      const status = response.status;
+      return {status};
+    }
+  } catch {
+    const status = 0;
+    return {status};
   }
 }
