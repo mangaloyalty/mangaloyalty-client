@@ -2,11 +2,6 @@
 // UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Generic: PWA on iOS should be fullscreen like Android (no status bar), iPhone X should not have bottom insets.
 // UX: Generic: Night-mode (black background on reader, different color scheme for UI).
-// UX: Reader: Option to disable image processing (e.g. old series are parsed too aggressively).
-// UX: Reader: Direction (LTR, RTL).
-// UX: Reader: Mode (Page-By-Page, Webtoon/Scroll).
-// UX: Reader: Quick jump to page.
-// UX: Reader: Show the page number and page count (20 / 51).
 // UX: Library: Provider is not visible. It should be on both list and series.
 // UX: Library/Main: Automation settings for ALL series in the library.
 // UX: Library/Main: Update from source for ALL series in the library.
@@ -16,17 +11,11 @@
 // UX: Library/Series: When no chapter is available, the chapter tab should have an empty message.
 // UX: Library/Series: Mark-as-read for all chapters.
 // UX: Library/Series: Download all? Using automations or something different?
-// UX: Remote/Main: Support infinite scroll while pages are available.
 // UX: Remote/Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
 // UX: Remote/Series: When no chapter is available, the chapter tab should have an empty message.
 // UX: Remote/Series: Add when already in library should produce a warning or prevent it entirely.
 // UX: Remote/Series: On add, prompt with automation dialog to configure frequency/chapters.
 // UX: Screen: Back button support (via history).
-// UX: Touch: Support mouse-drag and mouse-scroll (Desktop-mode).
-// UX: Touch: Support swipe gestures for page navigation.
-// UX: Touch: Double click/tap for quick zoom-in on designated point.
-// UX: Touch: Zoom with constraints of the image instead of the container.
-// UX: Touch: Zoom to the center of the pinch (ev.center?).
 import * as areas from './areas';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';

@@ -11,7 +11,7 @@ export class SeriesPagerComponent extends React.Component<{canPageNext: boolean,
           <mui.Grid>
             {this.props.children}
           </mui.Grid>
-          <mui.Paper square={true} style={{...app.limiter, ...styles.content}}>
+          <mui.Paper square={true} style={{...styles.content, ...app.limiter}}>
             <mui.Tooltip title={language.seriesPagePrevious}>
               <mui.Grid style={styles.buttonPrevious}>
                 <mui.Button color="primary" variant="outlined"

@@ -22,7 +22,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends React.Compon
         {this.props.series.length !== 0 && <mui.Grid style={styles.seriesContent}>
           {this.props.series.map((series) => (
             <mui.Grid key={getKey(series)} style={styles.series} onClick={() => this.props.onClick(series)}>
-              <app.SeriesImage src={getUrl(series)} style={styles.image} />
+              <app.SeriesImage offset={516} src={getUrl(series)} style={styles.image} />
               <mui.Typography style={styles.title}>{series.title}</mui.Typography>
               {Boolean(series.unreadCount) && <mui.Typography style={styles.unreadCount}>{series.unreadCount}</mui.Typography>}
             </mui.Grid>
