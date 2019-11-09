@@ -1,5 +1,4 @@
 import * as app from '..';
-import * as areas from '../../areas';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
@@ -40,13 +39,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openRemoteAsync() {
-    const constructAsync = areas.remote.MainController.createConstruct(this.search);
-    await app.core.screen.openChildAsync(constructAsync);
-  }
-
-  @mobx.action
-  async openSeriesAsync(seriesId: string) {
+  async openAsync(seriesId: string) {
     const constructAsync = app.SeriesController.createConstruct(seriesId);
     const restoreState = new app.MainRestoreState(this.currentPage, this.search);
     await app.core.screen.openChildAsync(constructAsync, restoreState);

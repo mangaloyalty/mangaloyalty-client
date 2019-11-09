@@ -1,7 +1,6 @@
 import * as app from '..';
 import * as mobxReact from 'mobx-react';
 import * as React from 'react';
-import {language} from '../language';
 
 @mobxReact.observer
 export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
@@ -16,12 +15,12 @@ export class MainController extends React.Component<{queue: app.ContextSocketQue
 
   render() {
     return (
-      <app.HeaderComponent defaultSearch={this.props.vm.search} title={language.library}
-        icon={<app.MainIconComponent vm={this.props.vm} />}
+      <app.HeaderMainComponent
+        defaultSearch={this.props.vm.search}
         onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
         <app.ActionComponent queue={this.props.queue} onActionAsync={(action) => this.props.vm.socketActionAsync(action)} />
         <app.MainView vm={this.props.vm} />
-      </app.HeaderComponent>
+      </app.HeaderMainComponent>
     );
   }
 }

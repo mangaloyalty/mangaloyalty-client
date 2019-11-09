@@ -6,8 +6,11 @@ export const language = {
   errorBody: 'The server could not be reached or returned an error.',
   errorButtons: ['Retry'],
   iconBack: 'Back',
-  iconClose: 'Close',
+  iconClose: 'Clear',
   iconSearch: 'Search',
+  menuBatoto: 'Batoto',
+  menuFanfox: 'Fanfox',
+  menuLibrary: 'Library',
   seriesPageNext: 'Next Page',
   seriesPagePrevious: 'Previous Page'
 };
