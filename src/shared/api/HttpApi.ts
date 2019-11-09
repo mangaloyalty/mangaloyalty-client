@@ -40,8 +40,8 @@ async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valu
       const status = response.status;
       return {status};
     } else try {
-      const data = await response.json() as {error?: string};
-      const error = data.error;
+      const data = await response.json() as {message?: string};
+      const error = data.message;
       const status = response.status;
       return {status, error};
     } catch {
