@@ -1,6 +1,4 @@
 export const language = {
-  remote: 'Remote',
-  remoteIconLibrary: 'Library',
   remoteIconAdd: 'Add',
   remoteIconRead: 'Read',
   remoteEmptyBody: 'No series have been found. When searching for a specific series, try using a different name or provider.',
