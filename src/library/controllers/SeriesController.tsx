@@ -15,12 +15,12 @@ export class SeriesController extends React.Component<{queue: app.ContextSocketQ
 
   render() {
     return (
-      <app.HeaderComponent title={this.props.vm.title}
+      <app.HeaderTitleComponent title={this.props.vm.title}
         icon={<app.SeriesIconComponent vm={this.props.vm} />}
         onBack={() => app.core.screen.leaveAsync()}>
         <app.ActionComponent queue={this.props.queue} onActionAsync={(action) => this.props.vm.socketActionAsync(action)} />
         <app.SeriesView vm={this.props.vm} />
-      </app.HeaderComponent>
+      </app.HeaderTitleComponent>
     );
   }
 }

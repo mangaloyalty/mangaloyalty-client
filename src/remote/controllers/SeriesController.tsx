@@ -14,11 +14,11 @@ export class SeriesController extends React.Component<{vm: app.SeriesViewModel}>
 
   render() {
     return (
-      <app.HeaderComponent title={this.props.vm.title}
+      <app.HeaderTitleComponent title={this.props.vm.title}
         icon={<app.SeriesIconComponent vm={this.props.vm} />}
         onBack={() => app.core.screen.leaveAsync()}>
         <app.SeriesView vm={this.props.vm} />
-      </app.HeaderComponent>
+      </app.HeaderTitleComponent>
     );
   }
 }

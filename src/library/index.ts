@@ -1,6 +1,5 @@
 export * from '../shared';
 export * from './classes/Navigator';
-export * from './components/MainIconComponent';
 export * from './components/SeriesIconComponent';
 export * from './controllers/MainController';
 export * from './controllers/SeriesController';

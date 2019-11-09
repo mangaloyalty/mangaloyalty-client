@@ -1,17 +1,16 @@
 import * as app from '..';
-import * as areas from '../../areas';
 import * as mobx from 'mobx';
 
 export class MainViewModel {
-  constructor(search?: string, restoreState?: app.MainRestoreState) {
+  constructor(providerName: app.IEnumeratorProvider, search?: string, restoreState?: app.MainRestoreState) {
     this.currentPage = restoreState ? restoreState.currentPage : this.currentPage;
+    this.providerName = providerName;
     this.search = restoreState ? restoreState.search : (search || this.search);
   }
 
   @mobx.action
   async changeProviderAsync(providerName: app.IEnumeratorProvider) {
     if (providerName === this.providerName) return;
-    localStorage.setItem('RemoteProvider', providerName);
     this.providerName = providerName;
     await this.refreshAsync(1).then(() => scrollTo(0, 0));
   }
@@ -24,13 +23,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openLibraryAsync() {
-    const constructAsync = areas.library.MainController.createConstruct(this.search);
-    await app.core.screen.openAsync(constructAsync);
-  }
-
-  @mobx.action
-  async openSeriesAsync(url: string) {
+  async openAsync(url: string) {
     const constructAsync = app.SeriesController.createConstruct(url);
     const restoreState = new app.MainRestoreState(this.currentPage, this.search);
     await app.core.screen.openChildAsync(constructAsync, restoreState);
@@ -77,7 +70,7 @@ export class MainViewModel {
   currentPage = 1;
 
   @mobx.observable
-  providerName = <app.IEnumeratorProvider> localStorage.getItem('RemoteProvider') || app.settings.providerDefaultName;
+  providerName: app.IEnumeratorProvider;
   
   @mobx.observable
   search = '';

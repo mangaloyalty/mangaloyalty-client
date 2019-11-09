@@ -4,19 +4,20 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
+// TODO: Rework the pager to sit at the top.
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
         <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
-          <mui.Tabs indicatorColor="primary" variant="fullWidth"
+          {/*<mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={this.props.vm.providerName}
             onChange={(_, providerName) => this.props.vm.changeProviderAsync(providerName)}>
             {app.settings.providerNames.map((providerName) => (
               <mui.Tab key={providerName} label={providerName} value={providerName} />
             ))}
-          </mui.Tabs>
+          </mui.Tabs>*/}
         </mui.Paper>
         <app.SeriesPagerComponent
             canPageNext={this.props.vm.canPageNext}
@@ -29,7 +30,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
-            onClick={(series) => this.props.vm.openSeriesAsync(series.url)} />
+            onClick={(series) => this.props.vm.openAsync(series.url)} />
         </app.SeriesPagerComponent>
       </mui.Grid>
     );
@@ -43,6 +44,6 @@ const styles = app.styles({
     zIndex: 1
   },
   content: {
-    paddingTop: 48
+    /*paddingTop: 48*/
   }
 });
