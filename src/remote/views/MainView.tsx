@@ -4,34 +4,37 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-// TODO: Rework the pager to sit at the top.
 @mobxReact.observer
 export class MainView extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
         <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
-          {/*<mui.Tabs indicatorColor="primary" variant="fullWidth"
-            value={this.props.vm.providerName}
-            onChange={(_, providerName) => this.props.vm.changeProviderAsync(providerName)}>
-            {app.settings.providerNames.map((providerName) => (
-              <mui.Tab key={providerName} label={providerName} value={providerName} />
-            ))}
-          </mui.Tabs>*/}
+          <mui.Grid style={styles.pageButtonPrevious}>
+            <app.ButtonComponent color="primary" title={language.remotePagePrevious}
+              disabled={!this.props.vm.canPagePrevious}
+              onClick={() => this.props.vm.pagePreviousAsync()}>
+              <app.icons.ArrowBack />
+            </app.ButtonComponent>
+          </mui.Grid>
+          <mui.Grid style={styles.pageButtonNext}>
+            <app.ButtonComponent color="primary" title={language.remotePageNext}
+              disabled={!this.props.vm.canPageNext}
+              onClick={() => this.props.vm.pageNextAsync()}>
+              <app.icons.ArrowForward />
+            </app.ButtonComponent>
+          </mui.Grid>
+          <mui.Typography style={styles.pageText}>
+            {language.remotePage} {(this.props.vm.currentPage < 10 ? '0' : '') + this.props.vm.currentPage}
+          </mui.Typography>
         </mui.Paper>
-        <app.SeriesPagerComponent
-            canPageNext={this.props.vm.canPageNext}
-            canPagePrevious={this.props.vm.canPagePrevious}
-            currentPage={this.props.vm.currentPage}
-            pageNext={() => this.props.vm.pageNextAsync()}
-            pagePrevious={() => this.props.vm.pagePreviousAsync()}
-            style={styles.content}>
+        <mui.Grid style={styles.content}>
           <app.SeriesListComponent
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.openAsync(series.url)} />
-        </app.SeriesPagerComponent>
+        </mui.Grid>
       </mui.Grid>
     );
   }
@@ -39,11 +42,30 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
 
 const styles = app.styles({
   container: {
+    padding: 6,
     position: 'fixed',
+    textAlign: 'center',
     top: 64,
     zIndex: 1
   },
   content: {
-    /*paddingTop: 48*/
+    paddingTop: 48
+  },
+  pageButtonNext: {
+    position: 'absolute',
+    right: 1,
+    top: 0
+  },
+  pageButtonPrevious: {
+    left: 1,
+    position: 'absolute',
+    top: 0
+  },
+  pageText: {
+    fontSize: 13,
+    lineHeight: '36px',
+    opacity: 0.7,
+    pointerEvents: 'none',
+    textTransform: 'uppercase'
   }
 });
