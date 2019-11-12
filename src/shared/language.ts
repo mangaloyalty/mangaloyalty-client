@@ -10,7 +10,5 @@ export const language = {
   iconSearch: 'Search',
   menuBatoto: 'Batoto',
   menuFanfox: 'Fanfox',
-  menuLibrary: 'Library',
-  seriesPageNext: 'Next Page',
-  seriesPagePrevious: 'Previous Page'
+  menuLibrary: 'Library'
 };

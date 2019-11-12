@@ -100,8 +100,8 @@ const styles = app.styles({
   },
   searchIcon: {
     color: app.theme.palette.primary.main,
-    padding: 6,
+    padding: 8,
     position: 'absolute',
-    right: 18
+    right: 16
   }
 });
