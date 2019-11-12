@@ -9,8 +9,8 @@ export class ContextLibraryApi {
     this._http = http;
   }
 
-  async listAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string, pageNumber?: number) {
-    const query = new app.HttpQuery().add('readStatus', readStatus).add('seriesStatus', seriesStatus).add('sortKey', sortKey).add('title', title).add('pageNumber', pageNumber);
+  async listAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string) {
+    const query = new app.HttpQuery().add('readStatus', readStatus).add('seriesStatus', seriesStatus).add('sortKey', sortKey).add('title', title);
     const request = this._http.get(`${this._baseUrl}/api/library` + query);
     const response = await request.json<app.ILibraryListResponse>();
     return response;

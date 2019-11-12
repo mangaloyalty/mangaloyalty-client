@@ -62,19 +62,13 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             <mui.MenuItem value="title">{language.libraryMainSortKeyTitle}</mui.MenuItem>
           </mui.Select>
         </mui.Paper>
-        <app.SeriesPagerComponent
-          canPageNext={this.props.vm.canPageNext}
-          canPagePrevious={this.props.vm.canPagePrevious}
-          currentPage={this.props.vm.currentPage}
-          pageNext={() => this.props.vm.pageNextAsync()}
-          pagePrevious={() => this.props.vm.pagePreviousAsync()}
-          style={styles.content}>
-            <app.SeriesListComponent
-              emptyBody={language.libraryEmptyBody}
-              emptyTitle={language.libraryEmptyTitle}
-              series={this.props.vm.series.items}
-              onClick={(series) => this.props.vm.openAsync(series.id)} />
-        </app.SeriesPagerComponent>
+        <mui.Grid style={styles.content}>
+          <app.SeriesListComponent
+            emptyBody={language.libraryEmptyBody}
+            emptyTitle={language.libraryEmptyTitle}
+            series={this.props.vm.series}
+            onClick={(series) => this.props.vm.openAsync(series.id)} />
+        </mui.Grid>
       </mui.Grid>
     );
   }
