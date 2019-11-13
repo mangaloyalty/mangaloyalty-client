@@ -7,10 +7,10 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <app.ButtonComponent title={language.remoteIconRead} onClick={() => this.props.vm.readAsync()}>
+        <app.ButtonComponent color="inherit" title={language.remoteIconRead} onClick={() => this.props.vm.startAsync()}>
           <app.icons.PlayArrow />
         </app.ButtonComponent>
-        <app.ButtonComponent title={language.remoteIconAdd} onClick={() => this.props.vm.addAsync()}>
+        <app.ButtonComponent color="inherit" title={language.remoteIconAdd} onClick={() => this.props.vm.addAsync()}>
           <app.icons.AddBox />
         </app.ButtonComponent>
       </mui.Grid>

@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as areas from '../../areas'
 import * as mobx from 'mobx';
 
 export class MainViewModel {
@@ -23,10 +24,21 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openAsync(url: string) {
-    const constructAsync = app.SeriesController.createConstruct(url);
-    const restoreState = new app.MainRestoreState(this.currentPage, this.search);
-    await app.core.screen.openChildAsync(constructAsync, restoreState);
+  async openAsync(series: app.IRemoteListItem) {
+    await app.core.screen.loadAsync(async () => {
+      const libraryQueue = app.api.socket.createQueue().attach();
+      const library = await app.api.library.seriesFindByUrlAsync(series.url);
+      if (library.value) {
+        const constructAsync = areas.library.SeriesController.createConstruct(library.value.id, libraryQueue);
+        await app.api.library.seriesUpdateAsync(library.value.id);
+        await app.core.screen.openChildAsync(constructAsync);
+      } else {
+        const constructAsync = app.SeriesController.createConstruct(series.imageId, series.url);
+        const restoreState = new app.MainRestoreState(this.currentPage, this.search);
+        await app.core.screen.openChildAsync(constructAsync, restoreState);
+        libraryQueue.detach();
+      }
+    });
   }
 
   @mobx.action

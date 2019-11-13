@@ -90,7 +90,6 @@ const styles = app.styles({
   search: {
     backgroundColor: app.theme.palette.primary.contrastText,
     borderRadius: 8,
-    color: app.theme.palette.primary.main,
     maxWidth: '45%',
     paddingBottom: 4,
     paddingLeft: 8,
@@ -99,9 +98,9 @@ const styles = app.styles({
     width: 155
   },
   searchIcon: {
-    color: app.theme.palette.primary.main,
     padding: 8,
     position: 'absolute',
-    right: 16
+    right: 16,
+    top: 12
   }
 });

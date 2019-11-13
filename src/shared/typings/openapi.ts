@@ -15,7 +15,7 @@ export type IProviderSeriesUrl = string;
 export type ILibraryList = ILibraryListItem[];
 export type ISessionList = ISessionListItem[];
 
-export interface ILibraryCreate {
+export interface ILibraryResult {
   id: string;
 }
 export interface ILibraryListItem {
@@ -100,6 +100,11 @@ export interface ILibraryListContext {
   };
 }
 export interface ILibrarySeriesCreateContext {
+  query: {
+    url: IProviderSeriesUrl;
+  };
+}
+export interface ILibrarySeriesFindByUrlContext {
   query: {
     url: IProviderSeriesUrl;
   };
@@ -204,7 +209,8 @@ export interface ISessionPageContext {
 }
 
 export type ILibraryListResponse = ILibraryList;
-export type ILibrarySeriesCreateResponse = ILibraryCreate;
+export type ILibrarySeriesCreateResponse = ILibraryResult;
+export type ILibrarySeriesFindByUrlResponse = ILibraryResult;
 export type ILibrarySeriesReadResponse = ILibrarySeries;
 export type ILibraryChapterReadResponse = ISessionListItem;
 export type IRemotePopularResponse = IRemoteList;

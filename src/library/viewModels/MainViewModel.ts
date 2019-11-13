@@ -38,10 +38,12 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async openAsync(seriesId: string) {
-    const constructAsync = app.SeriesController.createConstruct(seriesId);
-    const restoreState = new app.MainRestoreState(this.search);
-    await app.core.screen.openChildAsync(constructAsync, restoreState);
+  async openAsync(series: app.ILibraryListItem) {
+    await app.core.screen.loadAsync(async () => {
+      const constructAsync = app.SeriesController.createConstruct(series.id);
+      const restoreState = new app.MainRestoreState(this.search);
+      await app.core.screen.openChildAsync(constructAsync, restoreState);
+    });
   }
 
   @mobx.action
