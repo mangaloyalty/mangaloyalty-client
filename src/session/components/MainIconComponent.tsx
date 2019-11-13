@@ -7,10 +7,10 @@ export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> 
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <app.ButtonComponent title={language.sessionIconNextChapter} onClick={() => this.props.vm.chapterNextAsync()}>
+        <app.ButtonComponent color="inherit" title={language.sessionIconNextChapter} onClick={() => this.props.vm.chapterNextAsync()}>
           <app.icons.ArrowBack />
         </app.ButtonComponent>
-        <app.ButtonComponent title={language.sessionIconPreviousChapter} onClick={() => this.props.vm.chapterPreviousAsync()}>
+        <app.ButtonComponent color="inherit" title={language.sessionIconPreviousChapter} onClick={() => this.props.vm.chapterPreviousAsync()}>
           <app.icons.ArrowForward />
         </app.ButtonComponent>
       </mui.Grid>

@@ -3,9 +3,9 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(seriesId: string, restoreState?: app.SeriesRestoreState) {
+  constructor(seriesId: string, showChapters?: boolean, restoreState?: app.SeriesRestoreState) {
     this.id = seriesId;
-    this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
+    this.showChapters = restoreState ? restoreState.showChapters : Boolean(showChapters);
   }
   
   @mobx.action
@@ -21,20 +21,29 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async readAsync() {
-    for (let i = this.chapters.length - 1; i >= 0; i--) if (!this.chapters[i].isReadCompleted) return await this.chapters[i].openAsync();
-    app.core.toast.add(language.librarySeriesToastQuickRead);
+  async imageDataAsync() {
+    if (this.imageData) return true;
+    return await app.core.screen.loadAsync(async () => {
+      const seriesImage = await app.api.library.seriesImageDataAsync(this.id);
+      if (seriesImage.value) {
+        this.imageData = seriesImage.value;
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
+      const imageDataPromise = this.imageDataAsync();
       const seriesPromise = app.api.library.seriesReadAsync(this.id);
       const sessionListPromise = app.api.session.listAsync(this.id);
+      const imageData = await imageDataPromise;
       const series = await seriesPromise;
       const sessionList = await sessionListPromise;
-      if (series.value && sessionList.value) {
-        this.imageUrl = app.api.library.seriesImageUrl(series.value.id);
+      if (imageData && series.value && sessionList.value) {
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
         this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
@@ -45,6 +54,12 @@ export class SeriesViewModel {
         await app.core.dialog.errorAsync(() => this.refreshAsync(), series.error, sessionList.error);
       }
     });
+  }
+
+  @mobx.action
+  async startAsync() {
+    for (let i = this.chapters.length - 1; i >= 0; i--) if (!this.chapters[i].isReadCompleted) return await this.chapters[i].openAsync();
+    app.core.toast.add(language.librarySeriesToastQuickRead);
   }
 
   @mobx.action
@@ -74,10 +89,10 @@ export class SeriesViewModel {
   id: string;
 
   @mobx.observable
-  imageUrl!: string;
+  imageData!: string;
 
   @mobx.observable
-  showChapters = false;
+  showChapters: boolean;
 
   @mobx.observable
   summary?: string;

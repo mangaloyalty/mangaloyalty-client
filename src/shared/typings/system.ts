@@ -16,7 +16,7 @@ export interface ISeriesItem {
 }
 
 export type ISocketAction = 
-  {type: 'SeriesCreate' , seriesId: string} |
+  {type: 'SeriesCreate' , seriesId: string, seriesUrl: string} |
   {type: 'SeriesDelete' , seriesId: string} |
   {type: 'SeriesPatch'  , seriesId: string} |
   {type: 'SeriesUpdate' , seriesId: string} |

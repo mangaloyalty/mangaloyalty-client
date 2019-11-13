@@ -22,9 +22,19 @@ export class HttpApi {
 
 function createWrapper<T>(method: string, url: string, data?: T) {
   const blob = () => requestAsync(method, url, data, (response) => response.blob());
+  const imageData = () => requestAsync(method, url, data, (response) => imageDataAsync(response.blob()));
   const json = <T>() => requestAsync(method, url, data, (response) => response.json() as Promise<T>);
   const status = () => requestAsync(method, url, data, () => Promise.resolve());
-  return {blob, json, status};
+  return {blob, imageData, json, status};
+}
+
+function imageDataAsync(blob: Promise<Blob>) {
+  return blob.then((blob) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener('error', () => reject());
+    reader.addEventListener('load', () => resolve(reader.result as string));
+    reader.readAsDataURL(blob);
+  }));
 }
 
 async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valueFactory?: (response: Response) => Promise<TV>) {

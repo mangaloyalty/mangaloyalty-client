@@ -3,8 +3,12 @@ import * as areas from '../../areas'
 import * as mobx from 'mobx';
 import {language} from '../language';
 
+// TODO: FABs should make a come-back to reduce the icon clutter on series pages.
+// TODO: Virtual keyboard to make a SPA on Chrome feel like an actual app?
+
 export class SeriesViewModel {
-  constructor(url: string, restoreState?: app.SeriesRestoreState) {
+  constructor(imageId: string, url: string, restoreState?: app.SeriesRestoreState) {
+    this.imageId = imageId;
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
     this.url = url;
   }
@@ -28,6 +32,20 @@ export class SeriesViewModel {
   }
 
   @mobx.action
+  async imageDataAsync(imageId?: string) {
+    if (this.imageData || !imageId) return Boolean(this.imageData);
+    return await app.core.screen.loadAsync(async () => {
+      const image = await app.api.remote.imageDataAsync(imageId);
+      if (image.value) {
+        this.imageData = image.value;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     await app.core.screen.loadAsync(async () => {
       const session = await app.api.remote.startAsync(chapter.url);
@@ -43,18 +61,14 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async readAsync() {
-    for (let i = this.chapters.length - 1; i >= 0; i--) return await this.openAsync(this.chapters[i]);
-    app.core.toast.add(language.remoteSeriesToastQuickRead);
-  }
-
-  @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const series = await app.api.remote.seriesAsync(this.url);
-      if (series.value) {
+      const imageDataPromise = this.imageDataAsync(this.imageId);
+      const seriesPromise = app.api.remote.seriesAsync(this.url);
+      const imageData = await imageDataPromise;
+      const series = await seriesPromise;
+      if (imageData && series.value) {
         this.chapters = series.value.chapters;
-        this.imageUrl = app.api.remote.imageUrl(series.value.imageId);
         this.summary = series.value.summary;
         this.title = series.value.title;
         this.url = series.value.url;
@@ -64,11 +78,32 @@ export class SeriesViewModel {
     });
   }
 
+  @mobx.action
+  async startAsync() {
+    for (let i = this.chapters.length - 1; i >= 0; i--) return await this.openAsync(this.chapters[i]);
+    app.core.toast.add(language.remoteSeriesToastQuickRead);
+  }
+
+  @mobx.action
+  async socketActionAsync(actions: app.ISocketAction[]) {
+    for (const action of actions) {
+      switch (action.type) {
+        case 'SeriesCreate':
+          if (action.seriesUrl !== this.url) continue;
+          await app.core.screen.replaceChildAsync(areas.library.SeriesController.createConstruct(action.seriesId, undefined, this.showChapters));
+          break;
+      }
+    }
+  }
+
   @mobx.observable
   chapters!: app.IRemoteSeriesChapter[];
   
   @mobx.observable
-  imageUrl!: string;
+  imageData!: string;
+
+  @mobx.observable
+  imageId: string;
 
   @mobx.observable
   showChapters = false;

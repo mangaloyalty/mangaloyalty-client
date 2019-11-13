@@ -9,6 +9,12 @@ export class ContextRemoteApi {
     this._http = http;
   }
 
+  async imageDataAsync(imageId: string) {
+    const request = this._http.get(this.imageUrl(imageId));
+    const response = await request.imageData();
+    return response;
+  }
+
   imageUrl(imageId: string) {
     const query = new app.HttpQuery().add('imageId', imageId);
     const requestUrl = `${this._baseUrl}/api/remote/image` + query;
