@@ -51,6 +51,7 @@ const styles = app.styles({
     right: 0,
     position: 'fixed',
     top: 0,
+    touchAction: 'none',
     zIndex: 2000
   },
   container: {

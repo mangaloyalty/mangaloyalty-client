@@ -6,8 +6,8 @@ export class ButtonComponent extends React.Component<{color?: mui.PropTypes.Colo
   render() {
     return (
       <mui.Tooltip title={this.props.title}>
-        <mui.Grid style={{...this.props.style, ...styles.container}}>
-          <mui.IconButton color={this.props.color || 'inherit'}
+        <mui.Grid style={styles.container}>
+          <mui.IconButton color={this.props.color} style={this.props.style}
             disabled={this.props.disabled}
             onClick={() => this.props.onClick()}>
             {this.props.children}

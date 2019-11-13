@@ -7,7 +7,7 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
   render() {
     return (
       <mui.Grid style={styles.container}>
-        <app.ButtonComponent title={language.libraryIconRead} onClick={() => this.props.vm.readAsync()}>
+        <app.ButtonComponent color="inherit" title={language.libraryIconRead} onClick={() => this.props.vm.startAsync()}>
           <app.icons.PlayArrow />
         </app.ButtonComponent>
         <app.MenuComponent title={language.libraryIconMenu}>

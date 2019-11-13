@@ -9,7 +9,7 @@ export class HeaderTitleComponent extends React.Component<{icon?: React.ReactEle
       <mui.Grid>
         <mui.AppBar className="disablePadding">
           <mui.Toolbar className="ios-inset-top" style={app.limiter}>
-            <app.ButtonComponent title={language.iconBack} style={styles.back} onClick={() => this.props.onBack()}>
+            <app.ButtonComponent color="inherit" title={language.iconBack} style={styles.back} onClick={() => this.props.onBack()}>
               <app.icons.ArrowBackIos />
             </app.ButtonComponent>
             <mui.Typography color="inherit" variant="h6" style={styles.title}>

@@ -4,7 +4,7 @@ let remote: app.ContextRemoteApi;
 let session: app.ContextSessionApi;
 let socket: app.ContextSocketApi;
 
-export const api = {
+export const api = {  
   get library() {
     if (library) return library;
     library = new app.ContextLibraryApi(createUrl(), new app.HttpApi());
