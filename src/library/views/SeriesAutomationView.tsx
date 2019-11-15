@@ -18,7 +18,9 @@ export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomat
               {language.libraryAutomationFrequency}:
             </mui.InputLabel>
             <mui.FormControl fullWidth variant="outlined">
-              <mui.Select value={this.props.vm.frequency} onChange={(ev) => this.props.vm.changeFrequency(ev.target.value as any)}>
+              <mui.Select value={this.props.vm.frequency}
+                MenuProps={{transitionDuration: 0}}
+                onChange={(ev) => this.props.vm.changeFrequency(ev.target.value as any)}>
                 <mui.MenuItem value="never">{language.libraryAutomationFrequencyNever}</mui.MenuItem>
                 <mui.MenuItem value="hourly">{language.libraryAutomationFrequencyHourly}</mui.MenuItem>
                 <mui.MenuItem value="daily">{language.libraryAutomationFrequencyDaily}</mui.MenuItem>

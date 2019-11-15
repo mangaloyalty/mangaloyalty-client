@@ -3,8 +3,6 @@ import * as areas from '../../areas'
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-// TODO: Virtual keyboard to make a SPA on Chrome feel like an actual app?
-
 export class SeriesViewModel {
   constructor(imageId: string, url: string, restoreState?: app.SeriesRestoreState) {
     this.imageId = imageId;

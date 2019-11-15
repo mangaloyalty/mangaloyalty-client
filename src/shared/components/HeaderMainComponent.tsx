@@ -18,7 +18,7 @@ export class HeaderMainComponent extends React.Component<{currentProvider?: app.
             <mui.Grid style={styles.selectContainer}>
               <mui.Select disableUnderline displayEmpty value={String(this.props.currentProvider)} style={styles.select}
                 IconComponent={() => <app.icons.ArrowDropDown style={styles.selectIcon} />}
-                MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null}}
+                MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
                 onChange={(ev) => this._onChangeAsync(ev.target.value as any)}>
                 <mui.MenuItem>{language.menuLibrary}</mui.MenuItem>
                 <mui.MenuItem value="batoto">{language.menuBatoto}</mui.MenuItem>
