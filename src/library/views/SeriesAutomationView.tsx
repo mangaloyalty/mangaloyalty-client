@@ -8,12 +8,12 @@ import {language} from '../language';
 export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomationViewModel}> {
   render() {
     return (
-      <mui.Dialog fullWidth maxWidth={false} open={this.props.vm.showDialog} style={styles.container}>
+      <mui.Dialog fullWidth maxWidth={false} open={this.props.vm.showDialog} transitionDuration={0} style={styles.container}>
         <mui.DialogTitle>
           {language.libraryAutomation}
         </mui.DialogTitle>
         <mui.DialogContent>
-          <mui.FormGroup style={styles.formGroup}>
+          <mui.FormGroup style={styles.formGroup}>  
             <mui.InputLabel>
               {language.libraryAutomationFrequency}:
             </mui.InputLabel>
