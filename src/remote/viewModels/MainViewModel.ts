@@ -30,7 +30,6 @@ export class MainViewModel {
       const library = await app.api.library.seriesFindByUrlAsync(series.url);
       if (library.value) {
         const constructAsync = areas.library.SeriesController.createConstruct(library.value.id, libraryQueue);
-        await app.api.library.seriesUpdateAsync(library.value.id);
         await app.core.screen.openChildAsync(constructAsync);
       } else {
         const constructAsync = app.SeriesController.createConstruct(series.imageId, series.url);
