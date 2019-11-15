@@ -30,7 +30,8 @@ export class MainViewModel {
       const library = await app.api.library.seriesFindByUrlAsync(series.url);
       if (library.value) {
         const constructAsync = areas.library.SeriesController.createConstruct(library.value.id, libraryQueue);
-        await app.core.screen.openChildAsync(constructAsync);
+        const restoreState = new app.MainRestoreState(this.currentPage, this.search);
+        await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else {
         const constructAsync = app.SeriesController.createConstruct(series.imageId, series.url);
         const restoreState = new app.MainRestoreState(this.currentPage, this.search);
