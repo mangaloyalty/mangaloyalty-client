@@ -2,10 +2,8 @@ import * as app from '..';
 import * as mobx from 'mobx';
 
 export class SeriesAutomationViewModel {
-  private readonly _series: app.SeriesViewModel;
-
-  constructor(series: app.SeriesViewModel) {
-    this._series = series;
+  constructor(showAutomation?: boolean) {
+    this.showDialog = Boolean(showAutomation);
   }
 
   @mobx.action
@@ -16,14 +14,22 @@ export class SeriesAutomationViewModel {
   
   @mobx.action
   refreshWith(series: app.ILibrarySeries) {
-    this.state = {frequency: series.automation.frequency, syncAll: series.automation.syncAll};
-    return this;
+    if (!this.state) {
+      this.frequency = series.automation.frequency;
+      this.syncAll = series.automation.syncAll;
+      this.state = {id: series.id, frequency: series.automation.frequency, syncAll: series.automation.syncAll};
+      return this;
+    } else {
+      this.state.frequency = series.automation.frequency;
+      this.state.syncAll = series.automation.syncAll;
+      return this;
+    }
   }
 
   @mobx.action
   async saveAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesPatchAsync(this._series.id, this.frequency, this.syncAll);
+      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.syncAll);
       if (response.status === 200) {
         this.showDialog = false;
       } else if (response.status !== 404) {
@@ -52,11 +58,11 @@ export class SeriesAutomationViewModel {
   frequency!: app.IEnumeratorFrequency;
 
   @mobx.observable
-  showDialog = false;
+  showDialog: boolean;
 
   @mobx.observable
   syncAll!: boolean;
 
   @mobx.observable
-  private state!: {frequency: app.IEnumeratorFrequency, syncAll: boolean}
+  private state!: {id: string, frequency: app.IEnumeratorFrequency, syncAll: boolean}
 }

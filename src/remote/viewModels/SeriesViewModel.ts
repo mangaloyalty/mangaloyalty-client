@@ -3,7 +3,6 @@ import * as areas from '../../areas'
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-// TODO: FABs should make a come-back to reduce the icon clutter on series pages.
 // TODO: Virtual keyboard to make a SPA on Chrome feel like an actual app?
 
 export class SeriesViewModel {
@@ -18,7 +17,7 @@ export class SeriesViewModel {
     await app.core.screen.loadAsync(async () => {
       const response = await app.api.library.seriesCreateAsync(this.url);
       if (response.value) {
-        await app.core.dialog.addedAsync();
+        return;
       } else {
         await app.core.dialog.errorAsync(() => this.addAsync(), response.error);
       }
@@ -90,7 +89,7 @@ export class SeriesViewModel {
       switch (action.type) {
         case 'SeriesCreate':
           if (action.seriesUrl !== this.url) continue;
-          await app.core.screen.replaceChildAsync(areas.library.SeriesController.createConstruct(action.seriesId, undefined, this.showChapters));
+          await app.core.screen.replaceChildAsync(areas.library.SeriesController.createConstruct(action.seriesId, undefined, true));
           break;
       }
     }

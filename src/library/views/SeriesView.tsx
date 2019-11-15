@@ -26,11 +26,16 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper square={true}>
             <mui.List>
-              {this.props.vm.chapters.map((chapter) => (
-                <app.SeriesChapterView key={chapter.id} vm={chapter} />
-              ))}
+              {this.props.vm.chapters.map((chapter) => <app.SeriesChapterView key={chapter.id} vm={chapter} />)}
             </mui.List>
           </mui.Paper>}
+          <mui.Grid style={styles.fabContainer}>
+            <mui.Tooltip title={language.libraryIconRead}>
+              <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.startAsync()}>
+                <app.icons.PlayArrow />
+              </mui.Fab>
+            </mui.Tooltip>
+          </mui.Grid>
         </mui.Grid>
       </mui.Grid>
     );
@@ -61,9 +66,14 @@ const styles = app.styles({
   seriesClear: {
     clear: 'both'
   },
-  seriesAction: {
-    bottom: 24,
-    right: 24,
-    position: 'fixed'
+  fabContainer: {
+    bottom: 0,
+    height: 44,
+    position: 'sticky'
+  },
+  fabButton: {
+    bottom: 16,
+    position: 'absolute',
+    right: 16
   }
 });

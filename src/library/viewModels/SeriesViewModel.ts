@@ -3,9 +3,10 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(seriesId: string, showChapters?: boolean, restoreState?: app.SeriesRestoreState) {
+  constructor(seriesId: string, showAutomation?: boolean, restoreState?: app.SeriesRestoreState) {
     this.id = seriesId;
-    this.showChapters = restoreState ? restoreState.showChapters : Boolean(showChapters);
+    this.automation = new app.SeriesAutomationViewModel(showAutomation);
+    this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
   
   @mobx.action
@@ -46,7 +47,7 @@ export class SeriesViewModel {
       if (imageData && series.value && sessionList.value) {
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
-        this.automation = (this.automation || new app.SeriesAutomationViewModel(this)).refreshWith(series.value);
+        this.automation = this.automation.refreshWith(series.value);
         this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
       } else if (series.status === 404) {
         await app.core.screen.leaveAsync();
@@ -80,7 +81,7 @@ export class SeriesViewModel {
   }
 
   @mobx.observable
-  automation!: app.SeriesAutomationViewModel;
+  automation: app.SeriesAutomationViewModel;
 
   @mobx.observable
   chapters!: app.SeriesChapterViewModel[];
@@ -92,7 +93,7 @@ export class SeriesViewModel {
   imageData!: string;
 
   @mobx.observable
-  showChapters: boolean;
+  showChapters = false;
 
   @mobx.observable
   summary?: string;

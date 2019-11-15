@@ -18,20 +18,38 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid style={styles.containerBody}>
-          {!this.props.vm.showChapters && <mui.Paper square={true} style={styles.seriesContent}>
-            <img src={this.props.vm.imageData} style={styles.seriesImage} />
-            <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
-            <mui.Grid style={styles.seriesClear} />
-          </mui.Paper>}
-          {this.props.vm.showChapters && <mui.Paper square={true}>
-            <mui.List>
-              {this.props.vm.chapters.map((chapter) => (
-                <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
-                  <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
-                </mui.ListItem>
-              ))}
-            </mui.List>
-          </mui.Paper>}
+          {!this.props.vm.showChapters && <mui.Grid>
+            <mui.Paper square={true} style={styles.seriesContent}>
+              <img src={this.props.vm.imageData} style={styles.seriesImage} />
+              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
+              <mui.Grid style={styles.seriesClear} />
+            </mui.Paper>
+            <mui.Grid style={styles.fabContainer}>
+              <mui.Tooltip title={language.remoteIconAdd}>
+                <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.addAsync()}>
+                  <app.icons.Add />
+                </mui.Fab>
+              </mui.Tooltip>
+            </mui.Grid>
+          </mui.Grid>}
+          {this.props.vm.showChapters && <mui.Grid>
+            <mui.Paper square={true}>
+              <mui.List>
+                {this.props.vm.chapters.map((chapter) => (
+                  <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
+                    <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
+                  </mui.ListItem>
+                ))}
+              </mui.List>
+            </mui.Paper>
+            <mui.Grid style={styles.fabContainer}>
+              <mui.Tooltip title={language.remoteIconRead}>
+                <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.startAsync()}>
+                  <app.icons.PlayArrow />
+                </mui.Fab>
+              </mui.Tooltip>
+            </mui.Grid>
+          </mui.Grid>}
         </mui.Grid>
       </mui.Grid>
     );
@@ -71,5 +89,15 @@ const styles = app.styles({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
+  },
+  fabContainer: {
+    bottom: 0,
+    height: 44,
+    position: 'sticky'
+  },
+  fabButton: {
+    bottom: 16,
+    position: 'absolute',
+    right: 16
   }
 });

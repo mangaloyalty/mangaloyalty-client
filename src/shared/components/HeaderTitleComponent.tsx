@@ -35,8 +35,7 @@ const styles = app.styles({
     paddingTop: 64
   },
   back: {
-    marginLeft: -16,
-    marginRight: 4,
+    marginLeft: -24,
     paddingLeft: 16,
     paddingRight: 6
   },
