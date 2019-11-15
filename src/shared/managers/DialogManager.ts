@@ -7,11 +7,6 @@ export class DialogManager {
   }
 
   @mobx.action
-  async addedAsync() {
-    await this._openAsync(language.addedBody, language.addedButtons);
-  }
-
-  @mobx.action
   async deleteAsync() {
     return await this._openAsync(language.deleteBody, language.deleteButtons).then(Boolean);
   }

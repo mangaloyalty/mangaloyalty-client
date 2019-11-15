@@ -1,4 +1,4 @@
-import AddBox from '@material-ui/icons/AddBox';
+import Add from '@material-ui/icons/Add';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
@@ -15,4 +15,4 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Search from '@material-ui/icons/Search';
 import Settings from '@material-ui/icons/Settings';
 import Sync from '@material-ui/icons/Sync';
-export const icons = {AddBox, ArrowBack, ArrowBackIos, ArrowDropDown, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, MoreVert, PlayArrow, Search, Settings, Sync};
+export const icons = {Add, ArrowBack, ArrowBackIos, ArrowDropDown, ArrowForward, CheckCircle, CheckCircleOutlined, Close, Cloud, CloudDownload, CloudQueue, DeleteForever, MoreVert, PlayArrow, Search, Settings, Sync};
