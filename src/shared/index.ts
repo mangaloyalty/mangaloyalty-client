@@ -16,6 +16,7 @@ export * from './components/ActionComponent';
 export * from './components/ButtonComponent';
 export * from './components/HeaderMainComponent';
 export * from './components/HeaderTitleComponent';
+export * from './components/LazyListComponent';
 export * from './components/LoadingComponent';
 export * from './components/MenuComponent';
 export * from './components/SeriesImageComponent';

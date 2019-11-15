@@ -35,11 +35,13 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           {this.props.vm.showChapters && <mui.Grid>
             <mui.Paper square={true}>
               <mui.List>
-                {this.props.vm.chapters.map((chapter) => (
-                  <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
-                    <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
-                  </mui.ListItem>
-                ))}
+                <app.LazyListComponent items={this.props.vm.chapters} itemHeight={48} itemsPerBatch={10}>
+                  {(chapter) => (
+                    <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
+                      <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
+                    </mui.ListItem>
+                  )}
+                </app.LazyListComponent>
               </mui.List>
             </mui.Paper>
             <mui.Grid style={styles.fabContainer}>
