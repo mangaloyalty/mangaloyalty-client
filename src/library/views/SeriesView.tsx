@@ -26,7 +26,9 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
           </mui.Paper>}
           {this.props.vm.showChapters && <mui.Paper square={true}>
             <mui.List>
-              {this.props.vm.chapters.map((chapter) => <app.SeriesChapterView key={chapter.id} vm={chapter} />)}
+              <app.LazyListComponent items={this.props.vm.chapters} itemHeight={48} itemsPerBatch={10}>
+                {(chapter) => <app.SeriesChapterView key={chapter.id} vm={chapter} />}
+              </app.LazyListComponent>
             </mui.List>
           </mui.Paper>}
           <mui.Grid style={styles.fabContainer}>
