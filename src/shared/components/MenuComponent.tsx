@@ -15,7 +15,7 @@ export class MenuComponent extends React.Component<{title: string}> {
             <app.icons.MoreVert />
           </mui.IconButton>
         </mui.Tooltip>
-        <mui.Popper anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} disablePortal placement="left-end">
+        <mui.Popper anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} disablePortal placement="left-start">
           <mui.Paper square={true} style={styles.menu}>
             <mui.ClickAwayListener onClickAway={() => this.setState({anchorEl: undefined})}>
               <mui.MenuList onClick={() => this.setState({anchorEl: undefined})}>
