@@ -17,12 +17,12 @@ body, .disablePadding {
   padding: 0 !important;
 }
 
-.ios-inset-top {
+.inset-top {
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
 }
 
-.ios-inset-bottom {
+.inset-bottom {
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
 }
