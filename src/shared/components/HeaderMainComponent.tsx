@@ -14,31 +14,33 @@ export class HeaderMainComponent extends React.Component<{currentProvider?: app.
     return (
       <mui.Grid>
         <mui.AppBar className="disablePadding">
-          <mui.Toolbar className="ios-inset-top" style={{...styles.toolBar, ...app.limiter}}>
-            <mui.Grid style={styles.selectContainer}>
-              <mui.Select disableUnderline displayEmpty value={String(this.props.currentProvider)} style={styles.select}
-                IconComponent={() => <app.icons.ArrowDropDown style={styles.selectIcon} />}
-                MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
-                onChange={(ev) => this._onChangeAsync(ev.target.value as any)}>
-                <mui.MenuItem>{language.menuLibrary}</mui.MenuItem>
-                <mui.MenuItem value="batoto">{language.menuBatoto}</mui.MenuItem>
-                <mui.MenuItem value="fanfox">{language.menuFanfox}</mui.MenuItem>
-              </mui.Select>
-            </mui.Grid>
-            <mui.InputBase value={this.state.nextSearch} style={styles.search}
-              onBlur={() => this._onSearch()}
-              onChange={(ev) => this.setState({nextSearch: (ev.currentTarget as HTMLInputElement).value})}
-              onKeyDown={(ev) => ev.keyCode === 13 && ev.currentTarget.blur()} />
-            {this.state.currentSearch && this.state.currentSearch === this.state.nextSearch
-              ? <app.ButtonComponent style={styles.searchIcon}
-                  title={language.iconClose}
-                  onClick={() => this._onResetSearch()}><app.icons.Close /></app.ButtonComponent>
-              : <app.ButtonComponent style={styles.searchIcon}
-                  title={language.iconSearch}
-                  onClick={() => this._onSearch()}><app.icons.Search /></app.ButtonComponent>}
-          </mui.Toolbar>
+          <mui.Grid className="inset-top">
+            <mui.Toolbar style={{...styles.toolBar, ...app.limiter}}>
+              <mui.Grid style={styles.selectContainer}>
+                <mui.Select disableUnderline displayEmpty value={String(this.props.currentProvider)} style={styles.select}
+                  IconComponent={() => <app.icons.ArrowDropDown style={styles.selectIcon} />}
+                  MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
+                  onChange={(ev) => this._onChangeAsync(ev.target.value as any)}>
+                  <mui.MenuItem>{language.menuLibrary}</mui.MenuItem>
+                  <mui.MenuItem value="batoto">{language.menuBatoto}</mui.MenuItem>
+                  <mui.MenuItem value="fanfox">{language.menuFanfox}</mui.MenuItem>
+                </mui.Select>
+              </mui.Grid>
+              <mui.InputBase value={this.state.nextSearch} style={styles.search}
+                onBlur={() => this._onSearch()}
+                onChange={(ev) => this.setState({nextSearch: (ev.currentTarget as HTMLInputElement).value})}
+                onKeyDown={(ev) => ev.keyCode === 13 && ev.currentTarget.blur()} />
+              {this.state.currentSearch && this.state.currentSearch === this.state.nextSearch
+                ? <app.ButtonComponent style={styles.searchIcon}
+                    title={language.iconClose}
+                    onClick={() => this._onResetSearch()}><app.icons.Close /></app.ButtonComponent>
+                : <app.ButtonComponent style={styles.searchIcon}
+                    title={language.iconSearch}
+                    onClick={() => this._onSearch()}><app.icons.Search /></app.ButtonComponent>}
+            </mui.Toolbar>
+          </mui.Grid>
         </mui.AppBar>
-        <mui.Grid className="ios-inset-top ios-inset-bottom">
+        <mui.Grid className="inset-top">
           <mui.Grid style={{...styles.children, ...app.limiter}}>
             {this.props.children}
           </mui.Grid>

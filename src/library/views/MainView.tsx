@@ -94,7 +94,6 @@ const styles = app.styles({
   container: {
     padding: '10px 16px',
     position: 'fixed',
-    top: 64,
     zIndex: 1
   },
   content: {
