@@ -4,10 +4,7 @@ const express = require('express');
 // Initialize the server router.
 const router = express.Router();
 router.use(compression());
-
-// Initialize the server router handlers.
-router.get('/', (_, res) => res.redirect('/web/'));
-router.use('/web', express.static(`${__dirname}/public`));
+router.use('/', express.static(`${__dirname}/public`));
 
 // Initialize the server.
 if (require.main && require.main.filename.startsWith(__dirname)) {
