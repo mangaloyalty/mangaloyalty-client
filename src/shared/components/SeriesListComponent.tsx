@@ -19,7 +19,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends React.Compon
             {this.props.emptyBody}
           </mui.Typography>
         </mui.Grid>}
-        {this.props.series.length !== 0 && <mui.Grid style={styles.seriesContent}>
+        {this.props.series.length !== 0 && <mui.Grid className="inset-bottom" style={styles.seriesContent}>
           {this.props.series.map((series) => (
             <mui.Grid key={getKey(series)} style={styles.series} onClick={() => this.props.onClick(series)}>
               <app.SeriesImage offset={516} src={getUrl(series)} style={styles.image} />
@@ -67,7 +67,7 @@ const styles = app.styles({
     gridGap: '8px',
     gridTemplateColumns: 'repeat(auto-fill, 152px)',
     justifyContent: 'center',
-    margin: '16px 4px'
+    padding: '16px 4px'
   },
   series: {
     cursor: 'pointer',

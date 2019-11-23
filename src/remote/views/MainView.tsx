@@ -45,7 +45,6 @@ const styles = app.styles({
     padding: 6,
     position: 'fixed',
     textAlign: 'center',
-    top: 64,
     zIndex: 1
   },
   content: {

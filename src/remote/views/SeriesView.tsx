@@ -24,7 +24,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
               <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
               <mui.Grid style={styles.seriesClear} />
             </mui.Paper>
-            <mui.Grid style={styles.fabContainer}>
+            <mui.Grid className="inset-bottom" style={styles.fabContainer}>
               <mui.Tooltip title={language.remoteIconAdd}>
                 <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.addAsync()}>
                   <app.icons.Add />
@@ -44,7 +44,7 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
                 </app.LazyListComponent>
               </mui.List>
             </mui.Paper>
-            <mui.Grid style={styles.fabContainer}>
+            <mui.Grid className="inset-bottom" style={styles.fabContainer}>
               <mui.Tooltip title={language.remoteIconRead}>
                 <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.startAsync()}>
                   <app.icons.PlayArrow />
@@ -61,7 +61,6 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
 const styles = app.styles({
   container: {
     position: 'fixed',
-    top: 64,
     zIndex: 1
   },
   containerBody: {

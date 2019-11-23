@@ -8,19 +8,21 @@ export class HeaderTitleComponent extends React.Component<{icon?: React.ReactEle
     return (
       <mui.Grid>
         <mui.AppBar className="disablePadding">
-          <mui.Toolbar className="ios-inset-top" style={app.limiter}>
-            <app.ButtonComponent color="inherit" title={language.iconBack} style={styles.back} onClick={() => this.props.onBack()}>
-              <app.icons.ArrowBackIos />
-            </app.ButtonComponent>
-            <mui.Typography color="inherit" variant="h6" style={styles.title}>
-              {this.props.title}
-            </mui.Typography>
-            <mui.Grid style={styles.menu}>
-              {this.props.icon}
-            </mui.Grid>
-          </mui.Toolbar>
+          <mui.Grid className="inset-top">
+            <mui.Toolbar style={app.limiter}>
+              <app.ButtonComponent color="inherit" title={language.iconBack} style={styles.back} onClick={() => this.props.onBack()}>
+                <app.icons.ArrowBackIos />
+              </app.ButtonComponent>
+              <mui.Typography color="inherit" variant="h6" style={styles.title}>
+                {this.props.title}
+              </mui.Typography>
+              <mui.Grid style={styles.menu}>
+                {this.props.icon}
+              </mui.Grid>
+            </mui.Toolbar>
+          </mui.Grid>
         </mui.AppBar>
-        <mui.Grid className="ios-inset-top ios-inset-bottom">
+        <mui.Grid className="inset-top">
           <mui.Grid style={{...styles.children, ...app.limiter}}>
             {this.props.children}
           </mui.Grid>
