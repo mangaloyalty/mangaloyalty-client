@@ -34,6 +34,8 @@ export const language = {
   libraryAutomationFrequencyDaily: 'CHECK DAILY',
   libraryAutomationFrequencyWeekly: 'CHECK WEEKLY',
   libraryAutomationFrequencyMonthly: 'CHECK MONTHLY',
-  libraryAutomationSynchronize: 'Synchronize',
-  libraryAutomationSynchronizeAll: 'CHAPTERS'
+  libraryAutomationStrategy: 'Synchronize',
+  libraryAutomationStrategyNone: 'NO CHAPTERS',
+  libraryAutomationStrategyUnread: 'UNREAD CHAPTERS',
+  libraryAutomationStrategyAll: 'ALL CHAPTERS'
 };
