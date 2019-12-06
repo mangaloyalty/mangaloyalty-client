@@ -13,11 +13,11 @@ export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomat
           {language.libraryAutomation}
         </mui.DialogTitle>
         <mui.DialogContent>
-          <mui.FormGroup style={styles.formGroup}>  
+          <mui.FormGroup style={styles.formGroup}>
             <mui.InputLabel>
               {language.libraryAutomationFrequency}:
             </mui.InputLabel>
-            <mui.FormControl fullWidth variant="outlined">
+            <mui.FormControl fullWidth>
               <mui.Select value={this.props.vm.frequency}
                 MenuProps={{transitionDuration: 0}}
                 onChange={(ev) => this.props.vm.changeFrequency(ev.target.value as any)}>
@@ -29,14 +29,19 @@ export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomat
               </mui.Select>
             </mui.FormControl>
           </mui.FormGroup>
-          <mui.FormGroup>
+          <mui.FormGroup style={styles.formGroup}>
             <mui.InputLabel>
-            {language.libraryAutomationSynchronize}:
+            {language.libraryAutomationStrategy}:
             </mui.InputLabel>
-            <mui.FormControlLabel control={<mui.Checkbox />}
-              checked={this.props.vm.syncAll}
-              onChange={() => this.props.vm.toggleSyncAll()}
-              label={language.libraryAutomationSynchronizeAll} />
+            <mui.FormControl fullWidth>
+              <mui.Select value={this.props.vm.strategy}
+                MenuProps={{transitionDuration: 0}}
+                onChange={(ev) => this.props.vm.changeStrategy(ev.target.value as any)}>
+                <mui.MenuItem value="none">{language.libraryAutomationStrategyNone}</mui.MenuItem>
+                <mui.MenuItem value="unread">{language.libraryAutomationStrategyUnread}</mui.MenuItem>
+                <mui.MenuItem value="all">{language.libraryAutomationStrategyAll}</mui.MenuItem>
+              </mui.Select>
+            </mui.FormControl>
           </mui.FormGroup>
         </mui.DialogContent>
         <mui.DialogActions>

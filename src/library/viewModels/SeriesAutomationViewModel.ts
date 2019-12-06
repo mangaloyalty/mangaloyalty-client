@@ -13,15 +13,21 @@ export class SeriesAutomationViewModel {
   }
   
   @mobx.action
+  async changeStrategy(strategy: app.IEnumeratorStrategy) {
+    if (strategy === this.strategy) return;
+    this.strategy = strategy;
+  }
+  
+  @mobx.action
   refreshWith(series: app.ILibrarySeries) {
     if (!this.state) {
       this.frequency = series.automation.frequency;
-      this.syncAll = series.automation.syncAll;
-      this.state = {id: series.id, frequency: series.automation.frequency, syncAll: series.automation.syncAll};
+      this.strategy = series.automation.strategy;
+      this.state = {id: series.id, frequency: series.automation.frequency, strategy: series.automation.strategy};
       return this;
     } else {
       this.state.frequency = series.automation.frequency;
-      this.state.syncAll = series.automation.syncAll;
+      this.state.strategy = series.automation.strategy;
       return this;
     }
   }
@@ -29,7 +35,7 @@ export class SeriesAutomationViewModel {
   @mobx.action
   async saveAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.syncAll);
+      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.strategy);
       if (response.status === 200) {
         this.showDialog = false;
       } else if (response.status !== 404) {
@@ -42,18 +48,13 @@ export class SeriesAutomationViewModel {
   toggleDialog() {
     if (!this.showDialog) {
       this.frequency = this.state.frequency;
-      this.syncAll = this.state.syncAll;
+      this.strategy = this.state.strategy;
       this.showDialog = true;
     } else {
       this.showDialog = false;      
     }
   }
   
-  @mobx.action
-  toggleSyncAll() {
-    this.syncAll = !this.syncAll;
-  }
-
   @mobx.observable
   frequency!: app.IEnumeratorFrequency;
 
@@ -61,8 +62,8 @@ export class SeriesAutomationViewModel {
   showDialog: boolean;
 
   @mobx.observable
-  syncAll!: boolean;
+  strategy!: app.IEnumeratorStrategy;
 
   @mobx.observable
-  private state!: {id: string, frequency: app.IEnumeratorFrequency, syncAll: boolean}
+  private state!: {id: string, frequency: app.IEnumeratorFrequency, strategy: app.IEnumeratorStrategy}
 }
