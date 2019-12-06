@@ -53,8 +53,8 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, syncAll: boolean) {
-    const query = new app.HttpQuery().add('frequency', frequency).add('syncAll', syncAll);
+  async seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, strategy: app.IEnumeratorStrategy) {
+    const query = new app.HttpQuery().add('frequency', frequency).add('strategy', strategy);
     const request = this._http.patch(`${this._baseUrl}/api/library/${encodeURIComponent(seriesId)}` + query);
     const response = await request.status();
     return response;
