@@ -27,9 +27,9 @@ export class MainViewModel {
   async openAsync(series: app.IRemoteListItem) {
     await app.core.screen.loadAsync(async () => {
       const libraryQueue = app.api.socket.createQueue().attach();
-      const library = await app.api.library.seriesFindByUrlAsync(series.url);
-      if (library.value) {
-        const constructAsync = areas.library.SeriesController.createConstruct(library.value.id, libraryQueue);
+      const library = await findByUrlAsync(series);
+      if (library) {
+        const constructAsync = areas.library.SeriesController.createConstruct(library.id, libraryQueue);
         const restoreState = new app.MainRestoreState(this.currentPage, this.search);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else {
@@ -89,4 +89,14 @@ export class MainViewModel {
   
   @mobx.observable
   series!: app.IRemoteList;
+}
+
+async function findByUrlAsync(series: app.IRemoteListItem) {
+  const seriesList = await app.api.library.listAsync('all', 'all', 'title', series.title);
+  if (seriesList.value) {
+    const url = series.url;
+    return seriesList.value.find((series) => series.url === url);
+  } else {
+    return undefined;
+  }
 }
