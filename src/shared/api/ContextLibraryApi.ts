@@ -29,13 +29,6 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async seriesFindByUrlAsync(url: string) {
-    const query = new app.HttpQuery().add('url', url);
-    const request = this._http.get(`${this._baseUrl}/api/library/findByUrl` + query);
-    const response = await request.json<app.ILibrarySeriesFindByUrlResponse>();
-    return response;
-  }
-
   async seriesImageDataAsync(seriesId: string) {
     const request = this._http.get(this.seriesImageUrl(seriesId));
     const response = await request.imageData();
