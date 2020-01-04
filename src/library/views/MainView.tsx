@@ -5,7 +5,7 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class MainView extends React.Component<{vm: app.MainViewModel}> {
+export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.MainViewModel}> {
   private readonly _resizeHandler: () => void;
   private readonly _selectReadStatusRef: React.RefObject<HTMLElement>;
   private readonly _selectSeriesStatusRef: React.RefObject<HTMLElement>;
@@ -35,8 +35,8 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
-          <mui.Select disableUnderline ref={this._selectReadStatusRef} value={this.props.vm.filterReadStatus} style={styles.select}
+        <mui.Paper className={this.classes.container} square={true}>
+          <mui.Select className={this.classes.select} disableUnderline ref={this._selectReadStatusRef} value={this.props.vm.filterReadStatus}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
             onChange={(ev) => this.props.vm.changeFilterReadStatusAsync(ev.target.value as any)}>
@@ -44,7 +44,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             <mui.MenuItem value="unread">{language.libraryMainReadStatusUnread}</mui.MenuItem>
             <mui.MenuItem value="read">{language.libraryMainReadStatusRead}</mui.MenuItem>
           </mui.Select>
-          <mui.Select disableUnderline ref={this._selectSeriesStatusRef} value={this.props.vm.filterSeriesStatus} style={styles.select}
+          <mui.Select className={this.classes.select} disableUnderline ref={this._selectSeriesStatusRef} value={this.props.vm.filterSeriesStatus}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
             onChange={(ev) => this.props.vm.changeFilterSeriesStatusAsync(ev.target.value as any)}>
@@ -52,7 +52,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             <mui.MenuItem value="ongoing">{language.libraryMainSeriesStatusOngoing}</mui.MenuItem>
             <mui.MenuItem value="completed">{language.libraryMainSeriesStatusCompleted}</mui.MenuItem>
           </mui.Select>
-          <mui.Select disableUnderline ref={this._selectSortKeyRef} value={this.props.vm.filterSortKey} style={styles.selectResizable}
+          <mui.Select className={this.classes.selectResizable} disableUnderline ref={this._selectSortKeyRef} value={this.props.vm.filterSortKey}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
             onChange={(ev) => this.props.vm.changeFilterSortKeyAsync(ev.target.value as any)}>
@@ -62,7 +62,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
             <mui.MenuItem value="title">{language.libraryMainSortKeyTitle}</mui.MenuItem>
           </mui.Select>
         </mui.Paper>
-        <mui.Grid style={styles.content}>
+        <mui.Grid className={this.classes.content}>
           <app.SeriesListComponent
             emptyBody={language.libraryEmptyBody}
             emptyTitle={language.libraryEmptyTitle}
@@ -90,12 +90,12 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 }
 
-const styles = app.styles({
-  container: {
+export const MainViewStyles = mui.createStyles({
+  container: app.withLimiter({
     padding: '10px 16px',
     position: 'fixed',
     zIndex: 1
-  },
+  }),
   content: {
     paddingTop: 48
   },

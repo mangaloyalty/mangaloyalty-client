@@ -2,12 +2,12 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class ButtonComponent extends React.Component<{color?: mui.PropTypes.Color, title: string, disabled?: boolean, style?: React.CSSProperties, onClick: () => void}> {
+export class ButtonComponent extends app.BaseComponent<typeof ButtonComponentStyles, {className?: string, color?: mui.PropTypes.Color, title: string, disabled?: boolean, onClick: () => void}> {
   render() {
     return (
       <mui.Tooltip title={this.props.title}>
-        <mui.Grid style={styles.container}>
-          <mui.IconButton color={this.props.color} style={this.props.style}
+        <mui.Grid className={this.classes.container}>
+          <mui.IconButton className={this.props.className} color={this.props.color}
             disabled={this.props.disabled}
             onClick={() => this.props.onClick()}>
             {this.props.children}
@@ -18,7 +18,7 @@ export class ButtonComponent extends React.Component<{color?: mui.PropTypes.Colo
   }
 }
 
-const styles = app.styles({
+export const ButtonComponentStyles = mui.createStyles({
   container: {
     display: 'inline-block'
   }

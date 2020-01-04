@@ -3,7 +3,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {forceCheck} from 'react-lazyload';
 
-export class SeriesListComponent<T extends app.ISeriesItem> extends React.Component<{emptyBody: string, emptyTitle: string, series: T[], onClick: (series: T) => void}> {
+export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComponent<typeof SeriesListComponentStyles, {emptyBody: string, emptyTitle: string, series: T[], onClick: (series: T) => void}> {
   componentDidUpdate() {
     forceCheck();
   }
@@ -11,7 +11,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends React.Compon
   render() {
     return (
       <mui.Grid>
-        {this.props.series.length === 0 && <mui.Grid style={styles.textContent}>
+        {this.props.series.length === 0 && <mui.Grid className={this.classes.textContent}>
           <mui.Typography align="center" variant="h6">
             {this.props.emptyTitle}
           </mui.Typography>
@@ -19,12 +19,12 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends React.Compon
             {this.props.emptyBody}
           </mui.Typography>
         </mui.Grid>}
-        {this.props.series.length !== 0 && <mui.Grid className="inset-bottom" style={styles.seriesContent}>
+        {this.props.series.length !== 0 && <mui.Grid className={`inset-bottom ${this.classes.seriesContent}`}>
           {this.props.series.map((series) => (
-            <mui.Grid key={getKey(series)} style={styles.series} onClick={() => this.props.onClick(series)}>
-              <app.SeriesImage offset={516} src={getUrl(series)} style={styles.image} />
-              <mui.Typography style={styles.title}>{series.title}</mui.Typography>
-              {Boolean(series.unreadCount) && <mui.Typography style={styles.unreadCount}>{series.unreadCount}</mui.Typography>}
+            <mui.Grid className={this.classes.series} key={getKey(series)} onClick={() => this.props.onClick(series)}>
+              <app.SeriesImage className={this.classes.image} offset={516} src={getUrl(series)} />
+              <mui.Typography className={this.classes.title}>{series.title}</mui.Typography>
+              {Boolean(series.unreadCount) && <mui.Typography className={this.classes.unreadCount}>{series.unreadCount}</mui.Typography>}
             </mui.Grid>
           ))}
         </mui.Grid>}
@@ -53,7 +53,7 @@ function getUrl(series: app.ISeriesItem) {
   }
 }
 
-const styles = app.styles({
+export const SeriesListComponentStyles = mui.createStyles({
   textContent: {
     left: '50%',
     padding: 16,

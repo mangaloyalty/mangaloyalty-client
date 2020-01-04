@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class LoadingComponent extends React.Component<{open: boolean}> {
+export class LoadingComponent extends app.BaseComponent<typeof LoadingComponentStyles, {open: boolean}> {
   state = {
     open: false,
     timeoutHandle: undefined,
@@ -33,10 +33,10 @@ export class LoadingComponent extends React.Component<{open: boolean}> {
 
   render() {
     return (
-      this.props.open && <mui.Grid style={styles.disabler}>
+      this.props.open && <mui.Grid className={this.classes.disabler}>
         <mui.Modal open={this.state.open}>
-          <mui.Grid style={styles.container}>
-            <mui.CircularProgress style={styles.icon} />
+          <mui.Grid className={this.classes.container}>
+            <mui.CircularProgress className={this.classes.icon} />
           </mui.Grid>
         </mui.Modal>
       </mui.Grid>
@@ -44,7 +44,7 @@ export class LoadingComponent extends React.Component<{open: boolean}> {
   }
 }
 
-const styles = app.styles({
+export const LoadingComponentStyles = mui.createStyles({
   disabler: {
     bottom: 0,
     left: 0,
@@ -52,7 +52,7 @@ const styles = app.styles({
     position: 'fixed',
     top: 0,
     touchAction: 'none',
-    zIndex: 2000
+    zIndex: 1250
   },
   container: {
     outline: 0

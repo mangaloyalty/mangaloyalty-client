@@ -5,30 +5,30 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class MainView extends React.Component<{vm: app.MainViewModel}> {
+export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.MainViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
-          <mui.Grid style={styles.pageButtonPrevious}>
+        <mui.Paper className={this.classes.container} square={true}>
+          <mui.Grid className={this.classes.pageButtonPrevious}>
             <app.ButtonComponent color="primary" title={language.remotePagePrevious}
               disabled={!this.props.vm.canPagePrevious}
               onClick={() => this.props.vm.pagePreviousAsync()}>
               <app.icons.ArrowBack />
             </app.ButtonComponent>
           </mui.Grid>
-          <mui.Grid style={styles.pageButtonNext}>
+          <mui.Grid className={this.classes.pageButtonNext}>
             <app.ButtonComponent color="primary" title={language.remotePageNext}
               disabled={!this.props.vm.canPageNext}
               onClick={() => this.props.vm.pageNextAsync()}>
               <app.icons.ArrowForward />
             </app.ButtonComponent>
           </mui.Grid>
-          <mui.Typography style={styles.pageText}>
+          <mui.Typography className={this.classes.pageText}>
             {language.remotePage} {(this.props.vm.currentPage < 10 ? '0' : '') + this.props.vm.currentPage}
           </mui.Typography>
         </mui.Paper>
-        <mui.Grid style={styles.content}>
+        <mui.Grid className={this.classes.content}>
           <app.SeriesListComponent
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
@@ -40,13 +40,13 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 }
 
-const styles = app.styles({
-  container: {
+export const MainViewStyles = mui.createStyles({
+  container: app.withLimiter({
     padding: 6,
     position: 'fixed',
     textAlign: 'center',
     zIndex: 1
-  },
+  }),
   content: {
     paddingTop: 48
   },
