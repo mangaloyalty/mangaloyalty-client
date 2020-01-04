@@ -6,6 +6,7 @@ export class ContextSocketQueue {
   private readonly _queueHandlers: ((action: app.ISocketAction) => void)[];
   private _consumeAsync?: (actions: app.ISocketAction[]) => Promise<void>;
   private _isRunning?: boolean;
+  private _timeout?: NodeJS.Timeout;
 
   constructor(queueHandlers: ((action: app.ISocketAction) => void)[]) {
     this._actionHandler = (action) => this._onAction(action);
@@ -15,20 +16,37 @@ export class ContextSocketQueue {
   
   attach() {
     const index = this._queueHandlers.indexOf(this._actionHandler);
-    if (index === -1) this._queueHandlers.push(this._actionHandler);
-    return this;
+    if (index === -1) {
+      this._timeout = setTimeout(() => this.detach(), app.settings.socketMountTimeout);
+      this._queueHandlers.push(this._actionHandler);
+      return this;
+    } else {
+      return this;
+    }
   }
 
   detach() {
     const index = this._queueHandlers.indexOf(this._actionHandler);
-    if (index !== -1) this._queueHandlers.splice(index, 1);
-    return this;
+    if (index !== -1) {
+      this._clearTimeout();
+      this._queueHandlers.splice(index, 1);
+      return this;
+    } else {
+      return this;
+    }
   }
 
   mount(consumeAsync: (actions: app.ISocketAction[]) => Promise<void>) {
     if (this._consumeAsync) return;
+    this._clearTimeout();
     this._consumeAsync = consumeAsync;
     this._tryRun();
+  }
+
+  private _clearTimeout() {
+    if (!this._timeout) return;
+    clearTimeout(this._timeout);
+    delete this._timeout;
   }
 
   private _onAction(action: app.ISocketAction) {
