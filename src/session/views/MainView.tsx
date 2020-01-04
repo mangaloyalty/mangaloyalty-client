@@ -5,7 +5,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class MainView extends React.Component<{vm: app.MainViewModel}> {
+export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.MainViewModel}> {
   private readonly _containerRef: React.RefObject<HTMLImageElement>;
   private readonly _keyHandler: (ev: KeyboardEvent) => void;
   private readonly _touch: app.Touch;
@@ -43,12 +43,12 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 
   render() {
-    return <mui.Grid ref={this._containerRef} style={styles.container} />;
+    return <mui.Grid className={this.classes.container} ref={this._containerRef} />;
   }
 
   private _onImageEvent(ev: mobx.IValueDidChange<HTMLImageElement>) {
     if (!this._containerRef.current) return;
-    Object.assign(ev.newValue.style, styles.image);
+    ev.newValue.className = this.classes.image;
     this._removeFirstChild(this._containerRef.current);
     this._containerRef.current.appendChild(ev.newValue);
     this._touch.reset();
@@ -87,7 +87,7 @@ export class MainView extends React.Component<{vm: app.MainViewModel}> {
   }
 }
 
-const styles = app.styles({
+export const MainViewStyles = mui.createStyles({
   container: {
     bottom: 0,
     left: 0,
