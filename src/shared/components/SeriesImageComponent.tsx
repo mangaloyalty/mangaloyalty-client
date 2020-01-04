@@ -3,12 +3,12 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesImage extends React.Component<{offset?: number, src: string, style?: React.CSSProperties}> {
+export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {className?: string, offset?: number, src: string}> {
   render() {
     return (
-      <mui.Grid style={{...this.props.style, ...styles.container}}>
+      <mui.Grid className={`${this.classes.container} ${this.props.className}`}>
         <LazyLoad height={'100%'} offset={this.props.offset} resize>
-          <img src={this.props.src} style={styles.image}
+          <img className={this.classes.image} src={this.props.src}
             onError={(ev) => ev.currentTarget.style.opacity = '1'}
             onLoad={(ev) => ev.currentTarget.style.opacity = '1'} />
         </LazyLoad>
@@ -17,7 +17,7 @@ export class SeriesImage extends React.Component<{offset?: number, src: string, 
   }
 }
 
-const styles = app.styles({
+export const SeriesImageStyles = mui.createStyles({
   container: {
     backgroundColor: '#E1E2E1'
   },

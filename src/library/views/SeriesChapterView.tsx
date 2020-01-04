@@ -5,12 +5,12 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class SeriesChapterView extends React.Component<{vm: app.SeriesChapterViewModel}> {
+export class SeriesChapterView extends app.BaseComponent<typeof SeriesChapterViewStyles, {vm: app.SeriesChapterViewModel}> {
   render() {
     return (
       <mui.ListItem button onClick={() => this.props.vm.openAsync()}>
-        <mui.ListItemText primary={this.props.vm.title} style={styles.text} />
-        <mui.ListItemSecondaryAction style={styles.secondaryAction}>
+        <mui.ListItemText className={this.classes.text} primary={this.props.vm.title} />
+        <mui.ListItemSecondaryAction className={this.classes.secondaryAction}>
           <app.ButtonComponent color="inherit"
             title={this.props.vm.isReadCompleted ? language.libraryChapterMarkUnread : language.libraryChapterMarkRead}
             onClick={() => this.props.vm.toggleReadCompleted()}>
@@ -27,7 +27,7 @@ export class SeriesChapterView extends React.Component<{vm: app.SeriesChapterVie
   }
 }
 
-const styles = app.styles({
+export const SeriesChapterViewStyles = mui.createStyles({
   text: {
     overflow: 'hidden',
     paddingRight: 40,

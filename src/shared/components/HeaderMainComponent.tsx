@@ -4,7 +4,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class HeaderMainComponent extends React.Component<{currentProvider?: app.IEnumeratorProvider, defaultSearch: string, onSearch: (value: string) => void}> {
+export class HeaderMainComponent extends app.BaseComponent<typeof HeaderMainComponentStyles, {currentProvider?: app.IEnumeratorProvider, defaultSearch: string, onSearch: (value: string) => void}> {
   state = {
     currentSearch: this.props.defaultSearch,
     nextSearch: this.props.defaultSearch,
@@ -15,10 +15,10 @@ export class HeaderMainComponent extends React.Component<{currentProvider?: app.
       <mui.Grid>
         <mui.AppBar className="disablePadding">
           <mui.Grid className="inset-top">
-            <mui.Toolbar style={{...styles.toolBar, ...app.limiter}}>
-              <mui.Grid style={styles.selectContainer}>
-                <mui.Select disableUnderline displayEmpty value={String(this.props.currentProvider)} style={styles.select}
-                  IconComponent={() => <app.icons.ArrowDropDown style={styles.selectIcon} />}
+            <mui.Toolbar className={this.classes.toolBar}>
+              <mui.Grid className={this.classes.selectContainer}>
+                <mui.Select className={this.classes.select} disableUnderline displayEmpty value={String(this.props.currentProvider)}
+                  IconComponent={() => <app.icons.ArrowDropDown className={this.classes.selectIcon} />}
                   MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
                   onChange={(ev) => this._onChangeAsync(ev.target.value as any)}>
                   <mui.MenuItem>{language.menuLibrary}</mui.MenuItem>
@@ -26,22 +26,22 @@ export class HeaderMainComponent extends React.Component<{currentProvider?: app.
                   <mui.MenuItem value="fanfox">{language.menuFanfox}</mui.MenuItem>
                 </mui.Select>
               </mui.Grid>
-              <mui.InputBase value={this.state.nextSearch} style={styles.search}
+              <mui.InputBase className={this.classes.search} value={this.state.nextSearch}
                 onBlur={() => this._onSearch()}
                 onChange={(ev) => this.setState({nextSearch: (ev.currentTarget as HTMLInputElement).value})}
                 onKeyDown={(ev) => ev.keyCode === 13 && ev.currentTarget.blur()} />
               {this.state.currentSearch && this.state.currentSearch === this.state.nextSearch
-                ? <app.ButtonComponent style={styles.searchIcon}
+                ? <app.ButtonComponent className={this.classes.searchIcon}
                     title={language.iconClose}
                     onClick={() => this._onResetSearch()}><app.icons.Close /></app.ButtonComponent>
-                : <app.ButtonComponent style={styles.searchIcon}
+                : <app.ButtonComponent className={this.classes.searchIcon}
                     title={language.iconSearch}
                     onClick={() => this._onSearch()}><app.icons.Search /></app.ButtonComponent>}
             </mui.Toolbar>
           </mui.Grid>
         </mui.AppBar>
         <mui.Grid className="inset-top">
-          <mui.Grid style={{...styles.children, ...app.limiter}}>
+          <mui.Grid className={this.classes.children}>
             {this.props.children}
           </mui.Grid>
         </mui.Grid>
@@ -69,14 +69,14 @@ export class HeaderMainComponent extends React.Component<{currentProvider?: app.
   }
 }
 
-const styles = app.styles({
-  children: {
+export const HeaderMainComponentStyles = mui.createStyles({
+  children: app.withLimiter({
     paddingTop: 64
-  },
-  toolBar: {
+  }),
+  toolBar: app.withLimiter({
     paddingLeft: 16,
     paddingRight: 16
-  },
+  }),
   selectContainer: {
     flex: 1
   },

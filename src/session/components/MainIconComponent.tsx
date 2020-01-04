@@ -3,10 +3,10 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> {
+export class MainIconComponent extends app.BaseComponent<typeof MainIconComponentStyles, {vm: app.MainViewModel}> {
   render() {
     return (
-      <mui.Grid style={styles.container}>
+      <mui.Grid className={this.classes.container}>
         <app.ButtonComponent color="inherit" title={language.sessionIconNextChapter} onClick={() => this.props.vm.chapterNextAsync()}>
           <app.icons.ArrowBack />
         </app.ButtonComponent>
@@ -18,7 +18,7 @@ export class MainIconComponent extends React.Component<{vm: app.MainViewModel}> 
   }
 }
 
-const styles = app.styles({
+export const MainIconComponentStyles = mui.createStyles({
   container: {
     display: 'inline-block'
   }

@@ -5,11 +5,11 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
+export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: app.SeriesViewModel}> {
   render() {
     return (
       <mui.Grid>
-        <mui.Paper square={true} style={{...styles.container, ...app.limiter}}>
+        <mui.Paper className={this.classes.container} square={true}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
@@ -17,16 +17,16 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
             <mui.Tab label={`${language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
           </mui.Tabs>
         </mui.Paper>
-        <mui.Grid style={styles.containerBody}>
+        <mui.Grid className={this.classes.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
-            <mui.Paper square={true} style={styles.seriesContent}>
-              <img src={this.props.vm.imageData} style={styles.seriesImage} />
-              <mui.Typography style={styles.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
-              <mui.Grid style={styles.seriesClear} />
+            <mui.Paper className={this.classes.seriesContent} square={true}>
+              <img className={this.classes.seriesImage} src={this.props.vm.imageData} />
+              <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
+              <mui.Grid className={this.classes.seriesClear} />
             </mui.Paper>
-            <mui.Grid className="inset-bottom" style={styles.fabContainer}>
+            <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
               <mui.Tooltip title={language.remoteIconAdd}>
-                <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.addAsync()}>
+                <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.addAsync()}>
                   <app.icons.Add />
                 </mui.Fab>
               </mui.Tooltip>
@@ -38,15 +38,15 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
                 <app.LazyListComponent items={this.props.vm.chapters} itemHeight={48} itemsPerBatch={10}>
                   {(chapter) => (
                     <mui.ListItem button key={chapter.url} onClick={() => this.props.vm.openAsync(chapter)}>
-                      <mui.ListItemText primary={chapter.title} style={styles.chapterText} />
+                      <mui.ListItemText className={this.classes.chapterText} primary={chapter.title} />
                     </mui.ListItem>
                   )}
                 </app.LazyListComponent>
               </mui.List>
             </mui.Paper>
-            <mui.Grid className="inset-bottom" style={styles.fabContainer}>
+            <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
               <mui.Tooltip title={language.remoteIconRead}>
-                <mui.Fab color="primary" style={styles.fabButton} onClick={() => this.props.vm.startAsync()}>
+                <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.startAsync()}>
                   <app.icons.PlayArrow />
                 </mui.Fab>
               </mui.Tooltip>
@@ -58,11 +58,11 @@ export class SeriesView extends React.Component<{vm: app.SeriesViewModel}> {
   }
 }
 
-const styles = app.styles({
-  container: {
+export const SeriesViewStyles = mui.createStyles({
+  container: app.withLimiter({
     position: 'fixed',
     zIndex: 1
-  },
+  }),
   containerBody: {
     paddingTop: 48
   },

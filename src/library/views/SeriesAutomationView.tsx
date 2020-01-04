@@ -5,15 +5,15 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomationViewModel}> {
+export class SeriesAutomationView extends app.BaseComponent<typeof SeriesAutomationViewStyles, {vm: app.SeriesAutomationViewModel}> {
   render() {
     return (
-      <mui.Dialog fullWidth maxWidth={false} open={this.props.vm.showDialog} transitionDuration={0} style={styles.container}>
+      <mui.Dialog className={this.classes.container} fullWidth maxWidth={false} open={this.props.vm.showDialog} transitionDuration={0}>
         <mui.DialogTitle>
           {language.libraryAutomation}
         </mui.DialogTitle>
         <mui.DialogContent>
-          <mui.FormGroup style={styles.formGroup}>
+          <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
               {language.libraryAutomationFrequency}:
             </mui.InputLabel>
@@ -29,7 +29,7 @@ export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomat
               </mui.Select>
             </mui.FormControl>
           </mui.FormGroup>
-          <mui.FormGroup style={styles.formGroup}>
+          <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
             {language.libraryAutomationStrategy}:
             </mui.InputLabel>
@@ -57,7 +57,7 @@ export class SeriesAutomationView extends React.Component<{vm: app.SeriesAutomat
   }
 }
 
-const styles = app.styles({
+export const SeriesAutomationViewStyles = mui.createStyles({
   container: {
     margin: '0 auto',
     maxWidth: '100%',
