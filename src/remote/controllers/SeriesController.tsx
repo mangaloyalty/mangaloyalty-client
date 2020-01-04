@@ -17,7 +17,7 @@ export class SeriesController extends React.Component<{queue: app.ContextSocketQ
     return (
       <app.HeaderTitleComponent title={this.props.vm.title}
         onBack={() => app.core.screen.leaveAsync()}>
-        <app.ActionComponent queue={this.props.queue} onActionAsync={(action) => this.props.vm.socketActionAsync(action)} />
+        <app.ActionComponent queue={this.props.queue} onActionAsync={(actions) => this.props.vm.socketActionAsync(actions)} />
         <app.SeriesView vm={this.props.vm} />
       </app.HeaderTitleComponent>
     );

@@ -18,7 +18,7 @@ export class MainController extends React.Component<{queue: app.ContextSocketQue
       <app.HeaderMainComponent
         defaultSearch={this.props.vm.search}
         onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
-        <app.ActionComponent queue={this.props.queue} onActionAsync={(action) => this.props.vm.socketActionAsync(action)} />
+        <app.ActionComponent queue={this.props.queue} onActionAsync={(actions) => this.props.vm.socketActionAsync(actions)} />
         <app.MainView vm={this.props.vm} />
       </app.HeaderMainComponent>
     );
