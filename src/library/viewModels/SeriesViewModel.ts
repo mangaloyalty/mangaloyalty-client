@@ -6,6 +6,7 @@ export class SeriesViewModel {
   constructor(seriesId: string, showAutomation?: boolean, restoreState?: app.SeriesRestoreState) {
     this.id = seriesId;
     this.automation = new app.SeriesAutomationViewModel(showAutomation);
+    this.chapters = new app.SeriesListViewModel(this);
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
   
@@ -17,7 +18,7 @@ export class SeriesViewModel {
 
   @mobx.action
   async deleteAsync() {
-    if (await app.core.dialog.deleteAsync()) return;
+    if (await app.core.dialog.confirmAsync(language.libraryConfirmDelete)) return;
     await this._deleteAsync();
   }
 
@@ -48,7 +49,7 @@ export class SeriesViewModel {
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
         this.automation = this.automation.refreshWith(series.value);
-        this.chapters = series.value.chapters.map((chapter) => this._viewModelFor(chapter, sessionList.value!));
+        this.chapters = this.chapters.refreshWith(series.value, sessionList.value);
       } else if (series.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
@@ -59,8 +60,13 @@ export class SeriesViewModel {
 
   @mobx.action
   async startAsync() {
-    for (let i = this.chapters.length - 1; i >= 0; i--) if (!this.chapters[i].isReadCompleted) return await this.chapters[i].openAsync();
-    app.core.toast.add(language.librarySeriesToastQuickRead);
+    for (let i = this.chapters.items.length - 1; i >= 0; i--) {
+      if (!this.chapters.items[i].isReadCompleted) {
+        return await this.chapters.items[i].openAsync();
+      } else if (i === 0) {
+        app.core.toast.add(language.librarySeriesToastQuickRead);
+      }
+    }
   }
 
   @mobx.action
@@ -84,7 +90,7 @@ export class SeriesViewModel {
   automation: app.SeriesAutomationViewModel;
 
   @mobx.observable
-  chapters!: app.SeriesChapterViewModel[];
+  chapters: app.SeriesListViewModel;
 
   @mobx.observable
   id: string;
@@ -106,12 +112,6 @@ export class SeriesViewModel {
       const response = await app.api.library.seriesDeleteAsync(this.id);
       if (response.status !== 200 && response.status !== 404)  await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     });
-  }
-
-  private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
-    const isSynchronizing = checkSynchronizing(chapter, sessionList, this.id);
-    const vm = this.chapters && this.chapters.find((vm) => chapter.id === vm.id) || new app.SeriesChapterViewModel(this);
-    return vm.refreshWith(chapter, isSynchronizing);
   }
 }
 
@@ -137,12 +137,4 @@ function checkActionRefresh(actions: app.ISocketAction[], seriesId: string) {
       default: return false;
     }
   });
-}
-
-function checkSynchronizing(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList, seriesId: string) {
-  return sessionList.some((session) => !session.finishedAt
-    && session.library
-    && session.library.seriesId === seriesId
-    && session.library.chapterId === chapter.id
-    && session.library.sync)
 }

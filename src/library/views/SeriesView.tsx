@@ -15,29 +15,24 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
             <mui.Tab label={language.librarySeriesAbout} value={0} />
-            <mui.Tab label={`${language.librarySeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
+            <mui.Tab label={`${language.librarySeriesChapters} (${this.props.vm.chapters.items.length})`} value={1} />
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid className={this.classes.containerBody}>
-          {!this.props.vm.showChapters && <mui.Paper className={this.classes.seriesContent} square={true}>
-            <img className={this.classes.seriesImage} src={this.props.vm.imageData} />
-            <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
-            <mui.Grid className={this.classes.seriesClear} />
-          </mui.Paper>}
-          {this.props.vm.showChapters && <mui.Paper square={true}>
-            <mui.List>
-              <app.LazyListComponent items={this.props.vm.chapters} itemHeight={48} itemsPerBatch={10}>
-                {(chapter) => <app.SeriesChapterView key={chapter.id} vm={chapter} />}
-              </app.LazyListComponent>
-            </mui.List>
-          </mui.Paper>}
-          <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
-            <mui.Tooltip title={language.libraryIconRead}>
-              <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.startAsync()}>
-                <app.icons.PlayArrow />
-              </mui.Fab>
-            </mui.Tooltip>
-          </mui.Grid>
+          {this.props.vm.showChapters ? <app.SeriesListView vm={this.props.vm.chapters} /> : <mui.Grid>
+            <mui.Paper className={this.classes.seriesContent} square={true}>
+              <img className={this.classes.seriesImage} src={this.props.vm.imageData} />
+              <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
+              <mui.Grid className={this.classes.seriesClear} />
+            </mui.Paper>
+            <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
+              <mui.Tooltip title={language.libraryIconRead}>
+                <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.startAsync()}>
+                  <app.icons.PlayArrow />
+                </mui.Fab>
+              </mui.Tooltip>
+            </mui.Grid>
+          </mui.Grid>}
         </mui.Grid>
       </mui.Grid>
     );
