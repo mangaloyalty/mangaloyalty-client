@@ -3,7 +3,7 @@ import * as areas from '../../areas';
 import * as mobx from 'mobx';
 import {language} from '../language';
 
-export class SeriesChapterViewModel {
+export class SeriesListItemViewModel {
   private readonly _series: app.SeriesViewModel;
 
   constructor(series: app.SeriesViewModel) {
@@ -15,7 +15,7 @@ export class SeriesChapterViewModel {
     if (this.isSynchronizing) {
       app.core.toast.add(language.libraryChapterActionBusy);
     } else if (this.syncAt) {
-      if (await app.core.dialog.deleteAsync()) return;
+      if (await app.core.dialog.confirmAsync(language.libraryConfirmDelete)) return;
       await this._deleteAsync();
     } else {
       await this._synchronizeAsync();
@@ -29,7 +29,7 @@ export class SeriesChapterViewModel {
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this._series.showChapters);
         const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
-        const navigator = new app.Navigator(this._series.id, this._series.chapters, this._series.chapters.indexOf(this));
+        const navigator = new app.Navigator(this._series.id, this._series.chapters.items, this._series.chapters.items.indexOf(this));
         const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber || 1);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else if (session.status !== 404) {
@@ -50,17 +50,25 @@ export class SeriesChapterViewModel {
   }
 
   @mobx.action
-  async toggleReadCompleted() {
+  setChecked(checked: boolean) {
+    this.isChecked = checked;
+  }
+    
+  @mobx.action
+  async toggleReadCompletedAsync() {
     await app.core.screen.loadAsync(async () => {
       const pageReadNumber = this.isReadCompleted ? 1 : undefined;
       const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted, pageReadNumber);
-      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.toggleReadCompleted(), response.error);
+      if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.toggleReadCompletedAsync(), response.error);
     });
   }
   
   @mobx.observable
   id!: string;
 
+  @mobx.observable
+  isChecked = false;
+  
   @mobx.observable
   isReadCompleted?: boolean;
 

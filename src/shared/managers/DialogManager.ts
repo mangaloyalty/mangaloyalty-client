@@ -7,8 +7,8 @@ export class DialogManager {
   }
 
   @mobx.action
-  async deleteAsync() {
-    return await this._openAsync(language.deleteBody, language.deleteButtons).then(Boolean);
+  async confirmAsync(confirmBody: string) {
+    return await this._openAsync(confirmBody, language.confirmButtons).then(Boolean);
   }
 
   @mobx.action

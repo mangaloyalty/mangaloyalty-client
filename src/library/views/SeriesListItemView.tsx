@@ -5,15 +5,21 @@ import * as React from 'react';
 import {language} from '../language';
 
 @mobxReact.observer
-export class SeriesChapterView extends app.BaseComponent<typeof SeriesChapterViewStyles, {vm: app.SeriesChapterViewModel}> {
+export class SeriesListItemView extends app.BaseComponent<typeof SeriesListItemViewStyles, {vm: app.SeriesListItemViewModel}> {
   render() {
     return (
       <mui.ListItem button onClick={() => this.props.vm.openAsync()}>
+        <mui.ListItemIcon className={this.classes.controlContainer}>
+          <mui.Checkbox className={this.classes.controlCheckbox} edge="start"
+            checked={this.props.vm.isChecked}
+            onChange={() => this.props.vm.setChecked(!this.props.vm.isChecked)}
+            onClick={(ev) => ev.stopPropagation()} />
+        </mui.ListItemIcon>
         <mui.ListItemText className={this.classes.text} primary={this.props.vm.title} />
         <mui.ListItemSecondaryAction className={this.classes.secondaryAction}>
           <app.ButtonComponent color="inherit"
             title={this.props.vm.isReadCompleted ? language.libraryChapterMarkUnread : language.libraryChapterMarkRead}
-            onClick={() => this.props.vm.toggleReadCompleted()}>
+            onClick={() => this.props.vm.toggleReadCompletedAsync()}>
             {this.props.vm.isReadCompleted ? <app.icons.CheckCircle /> : <app.icons.CheckCircleOutlined />}
           </app.ButtonComponent>
           <app.ButtonComponent color="inherit"
@@ -27,7 +33,14 @@ export class SeriesChapterView extends app.BaseComponent<typeof SeriesChapterVie
   }
 }
 
-export const SeriesChapterViewStyles = mui.createStyles({
+export const SeriesListItemViewStyles = mui.createStyles({
+  controlContainer: {
+    minWidth: 0
+  },
+  controlCheckbox: {
+    padding: '4px 9px',
+    marginTop: -2
+  },
   text: {
     overflow: 'hidden',
     paddingRight: 40,
