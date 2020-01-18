@@ -7,7 +7,7 @@ export class LazyListComponent<T> extends React.Component<{children: (item: T) =
     return (
       <mui.Grid>
         {batchItems(this.props.items).map((items, index) => (
-          <LazyLoad key={index} resize
+          <LazyLoad key={index} resize unmountIfInvisible
             height={this.props.itemHeight * this.props.itemsPerBatch}
             offset={this.props.itemHeight * this.props.itemsPerBatch}>
             {items.map((item) => this.props.children(item))}
