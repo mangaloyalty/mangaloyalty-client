@@ -17,12 +17,12 @@ export class LoadingComponent extends app.BaseComponent<typeof LoadingComponentS
     if (this.state.showInitial) {
       this.componentWillUnmount();
       this.setState({open: true, showInitial: false});
-    } else if (props.open) {
-      this.componentWillUnmount();
-      this.setState({timeoutHandle: setTimeout(() => this.setState({open: props.open}), app.settings.loadingMinimumTimeout)});
-    } else {
+    } else if (!props.open) {
       this.componentWillUnmount();
       this.setState({open: props.open, timeoutHandle: undefined});
+    } else if (!this.state.timeoutHandle) {
+      this.componentWillUnmount();
+      this.setState({timeoutHandle: setTimeout(() => this.setState({open: props.open}), app.settings.loadingMinimumTimeout)});
     }
   }
 

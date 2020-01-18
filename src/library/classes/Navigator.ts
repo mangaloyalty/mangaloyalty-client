@@ -2,11 +2,11 @@ import * as app from '..';
 import * as areas from '../../areas';
 
 export class Navigator implements app.INavigator {
-  private readonly _chapters: app.SeriesChapterViewModel[];
+  private readonly _chapters: app.SeriesListItemViewModel[];
   private readonly _seriesId: string;
   private _index: number;
 
-  constructor(seriesId: string, chapters: app.SeriesChapterViewModel[], index: number) {
+  constructor(seriesId: string, chapters: app.SeriesListItemViewModel[], index: number) {
     this._chapters = chapters;
     this._seriesId = seriesId;
     this._index = index;
