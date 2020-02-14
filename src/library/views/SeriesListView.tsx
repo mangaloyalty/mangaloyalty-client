@@ -8,7 +8,7 @@ import {language} from '../language';
 export class SeriesListView extends app.BaseComponent<typeof SeriesListViewStyles, {vm: app.SeriesListViewModel}> {
   render() {
     return (
-      <mui.Grid className={`${this.props.vm.showControls && this.classes.contentControls}`}>
+      <mui.Grid>
         <mui.Paper square={true}>
           <mui.List>
             <app.LazyListComponent items={this.props.vm.items} itemHeight={48} itemsPerBatch={10}>
@@ -16,33 +16,30 @@ export class SeriesListView extends app.BaseComponent<typeof SeriesListViewStyle
             </app.LazyListComponent>
           </mui.List>
         </mui.Paper>
-        <mui.Grid className={`${this.classes.container} ${this.props.vm.showControls && this.classes.containerControls}`}>
-          <mui.Divider />
-          <mui.Paper className={this.classes.control} square={true}>
-            <mui.Select className={this.classes.controlSelect} disableUnderline value={this.props.vm.selectionMode}
-              IconComponent={() => <span />}
-              MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
-              renderValue={(value) => getText(value as any)}
-              onChange={(ev) => this.props.vm.changeSelectionMode(ev.target.value as any)}>
-              <mui.MenuItem value="none" >{language.librarySeriesSelectionNone}</mui.MenuItem>
-              {this.props.vm.canSelectAll && <mui.MenuItem value="all">{language.librarySeriesSelectionAll}</mui.MenuItem>}
-              {this.props.vm.canSelectUnread && <mui.MenuItem value="unread">{language.librarySeriesSelectionUnread}</mui.MenuItem>}
-              {this.props.vm.canSelectRead && <mui.MenuItem value="read">{language.librarySeriesSelectionRead}</mui.MenuItem>}
-            </mui.Select>
-            <mui.Grid className={this.classes.controlActions}>
-              <app.ButtonComponent color="inherit"
-                title={this.props.vm.isSelectionReadCompleted ? language.libraryChapterMarkUnread : language.libraryChapterMarkRead}
-                onClick={() => this.props.vm.toggleReadCompletedAsync()}>
-                {this.props.vm.isSelectionReadCompleted ? <app.icons.CheckCircle /> : <app.icons.CheckCircleOutlined />}
-              </app.ButtonComponent>
-              <app.ButtonComponent color="inherit"
-                title={this.props.vm.isSelectionSynchronizing ? language.libraryChapterActionBusy : this.props.vm.isSelectionSynchronized ? language.libraryChapterActionDelete : language.libraryChapterActionSynchronize}
-                onClick={() => this.props.vm.actionAsync()}>
-                {this.props.vm.isSelectionSynchronizing ? <app.icons.CloudDownload /> : this.props.vm.isSelectionSynchronized ? <app.icons.Cloud /> : <app.icons.CloudQueue />}
-              </app.ButtonComponent>
-            </mui.Grid>
-          </mui.Paper>
-        </mui.Grid>
+        <mui.Paper className={`${this.classes.container} ${this.props.vm.showControls && this.classes.containerControls}`} elevation={1} square={true}>
+          <mui.Select className={this.classes.controlSelect} disableUnderline value={this.props.vm.selectionMode}
+            IconComponent={() => <span />}
+            MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
+            renderValue={(value) => getText(value as any)}
+            onChange={(ev) => this.props.vm.changeSelectionMode(ev.target.value as any)}>
+            <mui.MenuItem value="none" >{language.librarySeriesSelectionNone}</mui.MenuItem>
+            {this.props.vm.canSelectAll && <mui.MenuItem value="all">{language.librarySeriesSelectionAll}</mui.MenuItem>}
+            {this.props.vm.canSelectUnread && <mui.MenuItem value="unread">{language.librarySeriesSelectionUnread}</mui.MenuItem>}
+            {this.props.vm.canSelectRead && <mui.MenuItem value="read">{language.librarySeriesSelectionRead}</mui.MenuItem>}
+          </mui.Select>
+          <mui.Grid className={this.classes.controlActions}>
+            <app.ButtonComponent color="inherit"
+              title={this.props.vm.isSelectionReadCompleted ? language.libraryChapterMarkUnread : language.libraryChapterMarkRead}
+              onClick={() => this.props.vm.toggleReadCompletedAsync()}>
+              {this.props.vm.isSelectionReadCompleted ? <app.icons.CheckCircle /> : <app.icons.CheckCircleOutlined />}
+            </app.ButtonComponent>
+            <app.ButtonComponent color="inherit"
+              title={this.props.vm.isSelectionSynchronizing ? language.libraryChapterActionBusy : this.props.vm.isSelectionSynchronized ? language.libraryChapterActionDelete : language.libraryChapterActionSynchronize}
+              onClick={() => this.props.vm.actionAsync()}>
+              {this.props.vm.isSelectionSynchronizing ? <app.icons.CloudDownload /> : this.props.vm.isSelectionSynchronized ? <app.icons.Cloud /> : <app.icons.CloudQueue />}
+            </app.ButtonComponent>
+          </mui.Grid>
+        </mui.Paper>
       </mui.Grid>
     );
   }
@@ -65,18 +62,12 @@ function getText(selectionMode: app.SeriesListViewModel['selectionMode']) {
 
 export const SeriesListViewStyles = mui.createStyles({
   container: app.withLimiter({
-    bottom: -48,
-    position: 'fixed',
+    padding: '10px 8px 10px 16px',
     zIndex: 1
   }),
   containerControls: {
-    bottom: 0
-  },
-  contentControls: {
-    paddingBottom: 40
-  },
-  control: {
-    padding: '10px 8px'
+    bottom: 0,
+    position: 'sticky'
   },
   controlSelect: {
     fontSize: 13,
