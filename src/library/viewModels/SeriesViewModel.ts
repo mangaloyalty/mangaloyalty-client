@@ -23,10 +23,16 @@ export class SeriesViewModel {
   }
 
   @mobx.action
+  async dumpAsync() {
+    if (await app.core.dialog.confirmAsync(language.libraryConfirmDump)) return;
+    window.location.href = app.api.library.seriesDumpUrl(this.id);
+  }
+
+  @mobx.action
   async imageDataAsync() {
     if (this.imageData) return true;
     return await app.core.screen.loadAsync(async () => {
-      const seriesImage = await app.api.library.seriesImageDataAsync(this.id);
+      const seriesImage = await app.api.library.seriesImageAsync(this.id);
       if (seriesImage.value) {
         this.imageData = seriesImage.value;
         return true;
