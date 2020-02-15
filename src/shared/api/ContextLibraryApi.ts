@@ -29,7 +29,12 @@ export class ContextLibraryApi {
     return response;
   }
   
-  async seriesImageDataAsync(seriesId: string) {
+  seriesDumpUrl(seriesId: string) {
+    const requestUrl = `${this._baseUrl}/api/library/${encodeURIComponent(seriesId)}/dump`;
+    return requestUrl;
+  }
+
+  async seriesImageAsync(seriesId: string) {
     const request = this._http.get(this.seriesImageUrl(seriesId));
     const response = await request.imageData();
     return response;
