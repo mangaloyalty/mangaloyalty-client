@@ -4,8 +4,7 @@ import * as mobx from 'mobx';
 import {language} from '../language';
 
 export class SeriesViewModel {
-  constructor(imageId: string, url: string, restoreState?: app.SeriesRestoreState) {
-    this.imageId = imageId;
+  constructor(url: string, restoreState?: app.SeriesRestoreState) {
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
     this.url = url;
   }
@@ -29,20 +28,6 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async imageDataAsync(imageId?: string) {
-    if (this.imageData || !imageId) return Boolean(this.imageData);
-    return await app.core.screen.loadAsync(async () => {
-      const image = await app.api.remote.imageDataAsync(imageId);
-      if (image.value) {
-        this.imageData = image.value;
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }
-
-  @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     await app.core.screen.loadAsync(async () => {
       const session = await app.api.remote.startAsync(chapter.url);
@@ -60,12 +45,11 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const imageDataPromise = this.imageDataAsync(this.imageId);
-      const seriesPromise = app.api.remote.seriesAsync(this.url);
-      const imageData = await imageDataPromise;
-      const series = await seriesPromise;
-      if (imageData && series.value) {
+      const series = await app.api.remote.seriesAsync(this.url);
+      const imageData = series.value && await app.api.remote.imageDataAsync(series.value.imageId);
+      if (imageData && imageData.value && series.value) {
         this.chapters = series.value.chapters;
+        this.imageData = imageData.value;
         this.summary = series.value.summary;
         this.title = series.value.title;
         this.url = series.value.url;
@@ -87,7 +71,7 @@ export class SeriesViewModel {
       switch (action.type) {
         case 'SeriesCreate':
           if (action.seriesUrl !== this.url) continue;
-          await app.core.screen.replaceChildAsync(areas.library.SeriesController.createConstruct(action.seriesId, undefined, true));
+          await app.core.screen.replaceChildAsync(areas.library.SeriesController.createConstruct(action.seriesId, true));
           break;
       }
     }
@@ -98,9 +82,6 @@ export class SeriesViewModel {
   
   @mobx.observable
   imageData!: string;
-
-  @mobx.observable
-  imageId: string;
 
   @mobx.observable
   showChapters = false;

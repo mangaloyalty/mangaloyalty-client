@@ -37,7 +37,7 @@ export const language = {
   libraryChapterMarkUnread: 'Mark as Unread',
   libraryAutomation: 'Automate',
   libraryAutomationControlCancel: 'Cancel',
-  libraryAutomationControlSave: 'Save',
+  libraryAutomationControlCommit: 'Commit',
   libraryAutomationFrequency: 'Frequency',
   libraryAutomationFrequencyNever: 'NEVER CHECK',
   libraryAutomationFrequencyHourly: 'CHECK HOURLY',
