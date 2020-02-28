@@ -5,7 +5,7 @@ export class MainSettingsViewModel {
   @mobx.action
   async changePageSizeAsync(pageSize: app.PageSize) {
     if (pageSize === this.pageSize) return;
-    localStorage.setItem('SessionPageSize', app.PageSize[pageSize]);
+    localStorage.setItem('SessionPageSize', String(pageSize));
     this.pageSize = pageSize;
   }
 
@@ -15,14 +15,8 @@ export class MainSettingsViewModel {
   }
 
   @mobx.observable
-  pageSize = getLocalStorageEnum(app.PageSize, 'SessionPageSize', 'None');
+  pageSize = <app.PageSize> parseFloat(localStorage.getItem('SessionPageSize') || '0');
 
   @mobx.observable
   showDialog = false;
-}
-
-function getLocalStorageEnum<T>(type: T, key: string, defaultValue: keyof T) {
-  const value = localStorage.getItem(key) || defaultValue;
-  const typedValue = value as keyof T;
-  return type[typedValue];
 }
