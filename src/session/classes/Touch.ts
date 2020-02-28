@@ -33,7 +33,7 @@ export class Touch {
     this._elementManager.add([pinch, pan, tap]);
     this._elementManager.on('pan pinch', (ev) => this._move(ev));
     this._elementManager.on('panend pinchend', (ev) => this._end(ev));
-    this._elementManager.on('tap', (ev) => this._tap(ev));
+    this._elementManager.on('tap', (ev) => this._handleTap(ev));
   }
 
   destroy() {
@@ -49,7 +49,7 @@ export class Touch {
     this._update();
   }
 
-  private _checkSwipe(ev: HammerInput) {
+  private _handleSwipe(ev: HammerInput) {
     if (this._currentS === 1) {
       if (ev.velocityX < -0.3 && ev.distance > 32) {
         this._onEvent({type: 'Swipe', direction: app.DirectionType.Left});
@@ -63,13 +63,25 @@ export class Touch {
     }
   }
 
+  private _handleTap(ev: HammerInput) {
+    const tresholdX = innerWidth / 2;
+    const tresholdY = innerHeight / 3;
+    if (ev.center.y < tresholdY) {
+      this._onEvent({type: 'Tap', direction: app.DirectionType.Up});
+    } else if (ev.center.x < tresholdX) {
+      this._onEvent({type: 'Tap', direction: app.DirectionType.Left});
+    } else {
+      this._onEvent({type: 'Tap', direction: app.DirectionType.Right});
+    }
+  }
+
   private _end(ev: HammerInput) {
     this._beginS = this._currentS;
     this._beginX = this._currentX;
     this._beginY = this._currentY;
     switch (ev.type) {
       case 'panend':
-        this._checkSwipe(ev);
+        this._handleSwipe(ev);
         this._panTime = 0;
         break;
       case 'pinchend':
@@ -95,10 +107,6 @@ export class Touch {
     this._currentY = Math.max(this._currentY, -limitY);
     this._currentY = Math.min(this._currentY, limitY);
     this._update();
-  }
-
-  private _tap(ev: HammerInput) {
-    this._onEvent({type: 'Tap', x: ev.center.x, y: ev.center.y});
   }
 
   private _update() {
