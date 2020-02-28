@@ -16,7 +16,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     this._containerRef = React.createRef();
     this._keyHandler = (ev) => this._onKeyEvent(ev);
     this._observableDisposer = () => undefined;
-    this._touch = new app.Touch((x, y) => this._onTapEvent(x, y));
+    this._touch = new app.Touch((ev) => this._onTouchEvent(ev));
   }
 
   componentDidMount() {
@@ -47,11 +47,14 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _onImageEvent(ev: mobx.IValueDidChange<HTMLImageElement>) {
-    if (!this._containerRef.current) return;
     ev.newValue.className = this.classes.image;
-    this._removeFirstChild(this._containerRef.current);
-    this._containerRef.current.appendChild(ev.newValue);
-    this._touch.reset();
+    if (this._containerRef.current && this._containerRef.current.firstElementChild) {
+      this._containerRef.current.replaceChild(ev.newValue, this._containerRef.current.firstElementChild);
+      this._touch.reset();
+    } else if (this._containerRef.current) {
+      this._containerRef.current.appendChild(ev.newValue);
+      this._touch.reset();
+    }
   }
 
   private _onKeyEvent(ev: KeyboardEvent) {
@@ -69,7 +72,39 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     }
   }
 
-  private _onTapEvent(x: number, y: number) {
+  private _onTouchEvent(ev: app.ITouchEvent) {
+    switch (ev.type) {
+      case 'Swipe':
+        if (app.core.screen.loadCount) break;
+        this._onTouchEventSwipe(ev.direction);
+        break;
+      case 'Tap':
+        if (app.core.screen.loadCount) break;
+        this._onTouchEventTap(ev.x, ev.y);
+        break;
+    }
+  }
+
+  private _onTouchEventSwipe(direction: app.DirectionType) {
+    switch (direction) {
+      case app.DirectionType.Up:
+        if (this.props.vm.showControls) break;
+        this.props.vm.toggleControls();
+        break;
+      case app.DirectionType.Down:
+        if (!this.props.vm.showControls) break;
+        this.props.vm.toggleControls();
+        break;
+      case app.DirectionType.Left:
+        this.props.vm.pressPreviousAsync();
+        break;
+      case app.DirectionType.Right:
+      this.props.vm.pressNextAsync();
+      break;
+    }
+  }
+
+  private _onTouchEventTap(x: number, y: number) {
     const tresholdX = innerWidth / 2;
     const tresholdY = innerHeight / 3;
     if (y < tresholdY) {
@@ -79,11 +114,6 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     } else {
       this.props.vm.pressPreviousAsync();
     }
-  }
-
-  private _removeFirstChild(container: HTMLElement) {
-    const firstElementChild = container.firstElementChild;
-    if (firstElementChild) container.removeChild(firstElementChild);
   }
 }
 
