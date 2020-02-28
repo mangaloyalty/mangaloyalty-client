@@ -136,7 +136,6 @@ export class SeriesListViewModel {
     });
   }
 
-
   private _viewModelFor(chapter: app.ILibrarySeriesChapter, sessionList: app.ISessionList) {
     const isSynchronizing = checkSynchronizing(chapter, sessionList, this._series.id);
     const vm = this.items && this.items.find((vm) => chapter.id === vm.id) || new app.SeriesListItemViewModel(this._series);

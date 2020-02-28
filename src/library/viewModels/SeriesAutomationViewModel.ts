@@ -51,7 +51,7 @@ export class SeriesAutomationViewModel {
       this.strategy = this.state.strategy;
       this.showDialog = true;
     } else {
-      this.showDialog = false;      
+      this.showDialog = false;
     }
   }
   
@@ -65,5 +65,5 @@ export class SeriesAutomationViewModel {
   strategy!: app.IEnumeratorStrategy;
 
   @mobx.observable
-  private state!: {id: string, frequency: app.IEnumeratorFrequency, strategy: app.IEnumeratorStrategy}
+  private state!: {id: string, frequency: app.IEnumeratorFrequency, strategy: app.IEnumeratorStrategy};
 }

@@ -13,6 +13,9 @@ export class MainIconComponent extends app.BaseComponent<typeof MainIconComponen
         <app.ButtonComponent color="inherit" title={language.sessionIconPreviousChapter} onClick={() => this.props.vm.chapterPreviousAsync()}>
           <app.icons.ArrowForward />
         </app.ButtonComponent>
+        <app.ButtonComponent color="inherit" title={language.sessionIconSettings} onClick={() => this.props.vm.settings.toggleDialog()}>
+          <app.icons.Settings />
+        </app.ButtonComponent>
       </mui.Grid>
     );
   }

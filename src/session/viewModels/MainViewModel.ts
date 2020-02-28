@@ -13,12 +13,13 @@ export class MainViewModel {
   private _trackPromise: Promise<boolean>;
 
   constructor(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
-    this._loader = new app.Loader(session);
+    this._loader = new app.Loader(session, this.settings.pageSize);
     this._navigator = navigator;
     this._session = session;
     this._pageNumber = pageNumber || 1;
     this._title = title;
     this._trackPromise = Promise.resolve(false);
+    mobx.observe(this.settings, 'pageSize', (ev) => this._changePageSizeAsync(ev.newValue));
   }
 
   @mobx.action
@@ -116,7 +117,15 @@ export class MainViewModel {
   imageNode!: HTMLImageElement;
   
   @mobx.observable
+  settings = new app.MainSettingsViewModel();
+
+  @mobx.observable
   showControls = false;
+
+  private async _changePageSizeAsync(pageSize: app.PageSize) {
+    this._loader.changePageSize(pageSize);
+    await this.updateAsync();
+  }
 
   private _queueTrack(pageNumber: number) {
     if (!this._navigator.trackAsync) return;
