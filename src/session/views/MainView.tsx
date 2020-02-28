@@ -27,7 +27,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
 
   componentWillReceiveProps(props: {vm: app.MainViewModel}) {
     this._observableDisposer();
-    this._observableDisposer = mobx.observe(props.vm, 'imageNode', (ev) => this._onImageEvent(ev), true);
+    this._observableDisposer = mobx.observe(props.vm, 'imageNode', (ev) => this._onChangeEvent(ev), true);
   }
 
   componentDidUpdate() {
@@ -46,7 +46,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     return <mui.Grid className={this.classes.container} ref={this._containerRef} />;
   }
 
-  private _onImageEvent(ev: mobx.IValueDidChange<HTMLImageElement>) {
+  private _onChangeEvent(ev: mobx.IValueDidChange<HTMLCanvasElement | HTMLImageElement>) {
     ev.newValue.className = this.classes.image;
     if (this._containerRef.current && this._containerRef.current.firstElementChild) {
       this._containerRef.current.replaceChild(ev.newValue, this._containerRef.current.firstElementChild);
@@ -80,7 +80,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         break;
       case 'Tap':
         if (app.core.screen.loadCount) break;
-        this._onTouchEventTap(ev.x, ev.y);
+        this._onTouchEventTap(ev.direction);
         break;
     }
   }
@@ -99,20 +99,22 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         this.props.vm.pressPreviousAsync();
         break;
       case app.DirectionType.Right:
-      this.props.vm.pressNextAsync();
-      break;
+        this.props.vm.pressNextAsync();
+        break;
     }
   }
 
-  private _onTouchEventTap(x: number, y: number) {
-    const tresholdX = innerWidth / 2;
-    const tresholdY = innerHeight / 3;
-    if (y < tresholdY) {
-      this.props.vm.toggleControls();
-    } else if (x < tresholdX) {
-      this.props.vm.pressNextAsync();
-    } else {
-      this.props.vm.pressPreviousAsync();
+  private _onTouchEventTap(direction: app.DirectionType) {
+    switch (direction) {
+      case app.DirectionType.Up:
+        this.props.vm.toggleControls();
+        break;
+      case app.DirectionType.Left:
+        this.props.vm.pressNextAsync();
+        break;
+      case app.DirectionType.Right:
+        this.props.vm.pressPreviousAsync();
+        break;
     }
   }
 }
