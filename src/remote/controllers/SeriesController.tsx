@@ -4,10 +4,10 @@ import * as React from 'react';
 
 @mobxReact.observer
 export class SeriesController extends React.Component<{queue: app.ContextSocketQueue, vm: app.SeriesViewModel}> {
-  static createConstruct(imageId: string, url: string) {
+  static createConstruct(url: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
       const queue = app.api.socket.createQueue().attach();
-      const vm = new app.SeriesViewModel(imageId, url, restoreState);
+      const vm = new app.SeriesViewModel(url, restoreState);
       await vm.refreshAsync();
       return <SeriesController queue={queue} vm={vm} />;
     };

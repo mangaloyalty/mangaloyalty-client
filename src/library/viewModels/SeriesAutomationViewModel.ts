@@ -19,6 +19,18 @@ export class SeriesAutomationViewModel {
   }
   
   @mobx.action
+  async commitAsync() {
+    await app.core.screen.loadAsync(async () => {
+      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.strategy);
+      if (response.status === 200) {
+        this.showDialog = false;
+      } else if (response.status !== 404) {
+        await app.core.dialog.errorAsync(() => this.commitAsync(), response.error);
+      }
+    });
+  }
+
+  @mobx.action
   refreshWith(series: app.ILibrarySeries) {
     if (!this.state) {
       this.frequency = series.automation.frequency;
@@ -30,18 +42,6 @@ export class SeriesAutomationViewModel {
       this.state.strategy = series.automation.strategy;
       return this;
     }
-  }
-
-  @mobx.action
-  async saveAsync() {
-    await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.strategy);
-      if (response.status === 200) {
-        this.showDialog = false;
-      } else if (response.status !== 404) {
-        await app.core.dialog.errorAsync(() => this.saveAsync(), response.error);
-      }
-    });
   }
 
   @mobx.action

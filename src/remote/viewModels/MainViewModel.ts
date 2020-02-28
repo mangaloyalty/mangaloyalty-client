@@ -26,17 +26,15 @@ export class MainViewModel {
   @mobx.action
   async openAsync(series: app.IRemoteListItem) {
     await app.core.screen.loadAsync(async () => {
-      const libraryQueue = app.api.socket.createQueue().attach();
       const library = await findByUrlAsync(series);
       if (library) {
-        const constructAsync = areas.library.SeriesController.createConstruct(library.id, libraryQueue);
+        const constructAsync = areas.library.SeriesController.createConstruct(library.id);
         const restoreState = new app.MainRestoreState(this.currentPage, this.search);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else {
-        const constructAsync = app.SeriesController.createConstruct(series.imageId, series.url);
+        const constructAsync = app.SeriesController.createConstruct(series.url);
         const restoreState = new app.MainRestoreState(this.currentPage, this.search);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
-        libraryQueue.detach();
       }
     });
   }

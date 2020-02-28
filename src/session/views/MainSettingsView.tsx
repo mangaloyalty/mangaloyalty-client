@@ -33,7 +33,7 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
         </mui.DialogContent>
         <mui.DialogActions>
           <mui.Button color="primary" onClick={() => this.props.vm.toggleDialog()}>
-            {language.sessionSettingsControlClose}
+            {language.sessionSettingsControl}
           </mui.Button>
         </mui.DialogActions>
       </mui.Dialog>
