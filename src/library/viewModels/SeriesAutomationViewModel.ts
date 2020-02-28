@@ -7,13 +7,13 @@ export class SeriesAutomationViewModel {
   }
 
   @mobx.action
-  async changeFrequency(frequency: app.IEnumeratorFrequency) {
+  changeFrequency(frequency: app.IEnumeratorFrequency) {
     if (frequency === this.frequency) return;
     this.frequency = frequency;
   }
   
   @mobx.action
-  async changeStrategy(strategy: app.IEnumeratorStrategy) {
+  changeStrategy(strategy: app.IEnumeratorStrategy) {
     if (strategy === this.strategy) return;
     this.strategy = strategy;
   }

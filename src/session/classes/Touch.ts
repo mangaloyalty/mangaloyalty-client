@@ -11,9 +11,9 @@ export class Touch {
   private _element?: HTMLElement;
   private _elementManager?: HammerManager;
   private _panTime = 0;
-  private _onEvent: (event: app.ITouchEvent) => void;
+  private _onEvent: (event: app.INavigationEvent) => void;
 
-  constructor(onEvent: (event: app.ITouchEvent) => void) {
+  constructor(onEvent: (event: app.INavigationEvent) => void) {
     this._onEvent = onEvent;
   }
 

@@ -15,12 +15,34 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
         <mui.DialogContent>
           <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
+              {language.sessionSettingsMode}:
+            </mui.InputLabel>
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableModeRTL} onChange={() => this.props.vm.toggleModeRTL()} />}
+              label={language.sessionSettingsModeRTL} />
+          </mui.FormGroup>
+          <mui.FormGroup className={this.classes.formGroup}>
+            <mui.InputLabel>
+              {language.sessionSettingsNavigation}:
+            </mui.InputLabel>
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableNavigationKeyboard} onChange={() => this.props.vm.toggleNavigationKeyboard()} />}
+              label={language.sessionSettingsNavigationKeyboard} />
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableNavigationSwipe} onChange={() => this.props.vm.toggleNavigationSwipe()} />}
+              label={language.sessionSettingsNavigationSwipe} />
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableNavigationTap} disabled={true} />}
+              label={language.sessionSettingsNavigationTap} />
+          </mui.FormGroup>
+          <mui.FormGroup className={this.classes.formGroup}>
+            <mui.InputLabel>
               {language.sessionSettingsPageSize}:
             </mui.InputLabel>
             <mui.FormControl fullWidth>
               <mui.Select value={this.props.vm.pageSize}
                 MenuProps={{transitionDuration: 0}}
-                onChange={(ev) => this.props.vm.changePageSizeAsync(ev.target.value as any)}>
+                onChange={(ev) => this.props.vm.changePageSize(ev.target.value as any)}>
                 <mui.MenuItem value={app.PageSize.None}>{language.sessionSettingsPageSizeNone}</mui.MenuItem>
                 <mui.MenuItem value={app.PageSize.Paperback}>{language.sessionSettingsPageSizePaperback}</mui.MenuItem>
                 <mui.MenuItem value={app.PageSize.Digest}>{language.sessionSettingsPageSizeDigest}</mui.MenuItem>
@@ -33,7 +55,7 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
         </mui.DialogContent>
         <mui.DialogActions>
           <mui.Button color="primary" onClick={() => this.props.vm.toggleDialog()}>
-            {language.sessionSettingsControl}
+            {language.sessionSettingsAction}
           </mui.Button>
         </mui.DialogActions>
       </mui.Dialog>
