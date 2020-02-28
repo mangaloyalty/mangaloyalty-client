@@ -21,6 +21,7 @@ export class MainController extends React.Component<{queue: app.ContextSocketQue
           icon={<app.MainIconComponent vm={this.props.vm} />}
           onBack={() => app.core.screen.leaveAsync()} />}
         <app.ActionComponent queue={this.props.queue} onActionAsync={(actions) => this.props.vm.socketActionAsync(actions)} />
+        <app.MainSettingsView vm={this.props.vm.settings} />
         <app.MainView vm={this.props.vm} />
       </mui.Grid>
     );

@@ -46,7 +46,7 @@ export class SeriesAutomationView extends app.BaseComponent<typeof SeriesAutomat
         </mui.DialogContent>
         <mui.DialogActions>
           <mui.Button onClick={() => this.props.vm.toggleDialog()}>
-            {language.libraryAutomationControlClose}
+            {language.libraryAutomationControlCancel}
           </mui.Button>
           <mui.Button color="primary" onClick={() => this.props.vm.saveAsync()}>
             {language.libraryAutomationControlSave}

@@ -9,7 +9,6 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
   render() {
     return (
       <mui.Grid>
-        <app.SeriesAutomationView vm={this.props.vm.automation} />
         <mui.Paper className={this.classes.container} square={true}>
           <mui.Tabs indicatorColor="primary" variant="fullWidth"
             value={Number(this.props.vm.showChapters)}
