@@ -16,4 +16,4 @@ export const enum PageSize {
 
 export type ITouchEvent =
   {type: 'Swipe', direction: DirectionType} |
-  {type: 'Tap', x: number, y: number};
+  {type: 'Tap', direction: DirectionType};

@@ -114,7 +114,7 @@ export class MainViewModel {
   }
 
   @mobx.observable
-  imageNode!: HTMLImageElement;
+  imageNode!: HTMLCanvasElement | HTMLImageElement;
   
   @mobx.observable
   settings = new app.MainSettingsViewModel();
