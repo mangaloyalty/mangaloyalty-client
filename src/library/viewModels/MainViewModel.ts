@@ -9,24 +9,24 @@ export class MainViewModel {
   @mobx.action
   async changeFilterReadStatusAsync(filterReadStatus: app.IEnumeratorReadStatus) {
     if (filterReadStatus === this.filterReadStatus) return;
-    localStorage.setItem('LibraryFilterReadStatus', filterReadStatus);
     this.filterReadStatus = filterReadStatus;
+    localStorage.setItem('LibraryFilterReadStatus', this.filterReadStatus);
     await this.refreshAsync().then(() => scrollTo(0, 0));
   }
   
   @mobx.action
   async changeFilterSeriesStatusAsync(filterSeriesStatus: app.IEnumeratorSeriesStatus) {
     if (filterSeriesStatus === this.filterSeriesStatus) return;
-    localStorage.setItem('LibraryFilterSeriesStatus', filterSeriesStatus);
     this.filterSeriesStatus = filterSeriesStatus;
+    localStorage.setItem('LibraryFilterSeriesStatus', this.filterSeriesStatus);
     await this.refreshAsync().then(() => scrollTo(0, 0));
   }
   
   @mobx.action
   async changeFilterSortKeyAsync(filterSortKey: app.IEnumeratorSortKey) {
     if (filterSortKey === this.filterSortKey) return;
-    localStorage.setItem('LibraryFilterSortKey', filterSortKey);
     this.filterSortKey = filterSortKey;
+    localStorage.setItem('LibraryFilterSortKey', this.filterSortKey);
     await this.refreshAsync().then(() => scrollTo(0, 0));
   }
 

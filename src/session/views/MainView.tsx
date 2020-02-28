@@ -14,9 +14,9 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
     this._containerRef = React.createRef();
-    this._keyHandler = (ev) => this._onKeyEvent(ev);
+    this._keyHandler = (ev) => this._reassignKeyEvent(ev);
     this._observableDisposer = () => undefined;
-    this._touch = new app.Touch((ev) => this._onTouchEvent(ev));
+    this._touch = new app.Touch((ev) => this._reassignTouchEvent(ev));
   }
 
   componentDidMount() {
@@ -46,6 +46,13 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     return <mui.Grid className={this.classes.container} ref={this._containerRef} />;
   }
 
+  private _isBusy() {
+    if (app.core.dialog.isChildVisible) return true;
+    if (app.core.screen.loadCount) return true;
+    if (this.props.vm.settings.showDialog) return true;
+    return false;
+  }
+
   private _onChangeEvent(ev: mobx.IValueDidChange<HTMLCanvasElement | HTMLImageElement>) {
     ev.newValue.className = this.classes.image;
     if (this._containerRef.current && this._containerRef.current.firstElementChild) {
@@ -57,64 +64,109 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     }
   }
 
-  private _onKeyEvent(ev: KeyboardEvent) {
-    switch (ev.key) {
-      case 'ArrowLeft':
-      case 'Left':
-        if (app.core.screen.loadCount) return;
-        this.props.vm.pressNextAsync();
-        break;
-      case 'ArrowRight':
-      case 'Right':
-        if (app.core.screen.loadCount) return;
-        this.props.vm.pressPreviousAsync();
-        break;
-    }
-  }
-
-  private _onTouchEvent(ev: app.ITouchEvent) {
-    switch (ev.type) {
-      case 'Swipe':
-        if (app.core.screen.loadCount) break;
-        this._onTouchEventSwipe(ev.direction);
-        break;
-      case 'Tap':
-        if (app.core.screen.loadCount) break;
-        this._onTouchEventTap(ev.direction);
-        break;
-    }
-  }
-
-  private _onTouchEventSwipe(direction: app.DirectionType) {
-    switch (direction) {
+  private _onKeyboardEvent(direction: app.DirectionType) {   
+    switch (this.props.vm.settings.enableNavigationKeyboard && direction) {
       case app.DirectionType.Up:
         if (this.props.vm.showControls) break;
         this.props.vm.toggleControls();
+        break;
+      case app.DirectionType.Right:
+        this._tryNavigateRight();
         break;
       case app.DirectionType.Down:
         if (!this.props.vm.showControls) break;
         this.props.vm.toggleControls();
         break;
       case app.DirectionType.Left:
-        this.props.vm.pressPreviousAsync();
-        break;
-      case app.DirectionType.Right:
-        this.props.vm.pressNextAsync();
+        this._tryNavigateLeft();
         break;
     }
   }
 
-  private _onTouchEventTap(direction: app.DirectionType) {
-    switch (direction) {
+  private _onSwipeEvent(direction: app.DirectionType) {
+    switch (this.props.vm.settings.enableNavigationSwipe && direction) {
       case app.DirectionType.Up:
+        if (this.props.vm.showControls) break;
+        this.props.vm.toggleControls();
+        break;
+      case app.DirectionType.Right:
+        this._tryNavigateLeft();
+        break;
+      case app.DirectionType.Down:
+        if (!this.props.vm.showControls) break;
         this.props.vm.toggleControls();
         break;
       case app.DirectionType.Left:
-        this.props.vm.pressNextAsync();
+        this._tryNavigateRight();
+        break;
+    }
+  }
+
+  private _onTapEvent(direction: app.DirectionType) {
+    switch (this.props.vm.settings.enableNavigationTap && direction) {
+      case app.DirectionType.Up:
+        this.props.vm.toggleControls();
         break;
       case app.DirectionType.Right:
-        this.props.vm.pressPreviousAsync();
+        this._tryNavigateRight();
         break;
+      case app.DirectionType.Left:
+        this._tryNavigateLeft();
+        break;
+    }
+  }
+
+  private _reassignKeyEvent(ev: KeyboardEvent) {
+    switch (ev.key) {
+      case 'ArrowUp':
+      case 'Up':
+        if (this._isBusy()) return;
+        this._onKeyboardEvent(app.DirectionType.Up);
+        break;
+      case 'ArrowRight':
+      case 'Right':
+        if (this._isBusy()) return;
+        this._onKeyboardEvent(app.DirectionType.Right);
+        break;
+      case 'ArrowDown':
+      case 'Down':
+        if (this._isBusy()) return;
+        this._onKeyboardEvent(app.DirectionType.Down);
+        break;
+      case 'ArrowLeft':
+      case 'Left':
+        if (this._isBusy()) return;
+        this._onKeyboardEvent(app.DirectionType.Left);
+        break;
+    }
+  }
+
+  private _reassignTouchEvent(ev: app.INavigationEvent) {
+    switch (ev.type) {
+      case 'Swipe':
+        if (this._isBusy()) return;
+        this._onSwipeEvent(ev.direction);
+        break;
+      case 'Tap':
+        if (this._isBusy()) return;
+        this._onTapEvent(ev.direction);
+        break;
+    }
+  }
+
+  private _tryNavigateLeft() {
+    if (this.props.vm.settings.enableModeRTL) {
+      this.props.vm.pressNextAsync();
+    } else {
+      this.props.vm.pressPreviousAsync();
+    }
+  }
+
+  private _tryNavigateRight() {
+    if (this.props.vm.settings.enableModeRTL) {
+      this.props.vm.pressPreviousAsync();
+    } else {
+      this.props.vm.pressNextAsync();
     }
   }
 }
