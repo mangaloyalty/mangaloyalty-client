@@ -1,8 +1,8 @@
 export const enum DirectionType {
-  Up = 0,
-  Right = 1,
-  Down = 2,
-  Left = 3
+  Up = 'up',
+  Right = 'right',
+  Down = 'down',
+  Left = 'left'
 }
 
 export const enum PageSize {
@@ -14,6 +14,7 @@ export const enum PageSize {
   ISOA5 = 1 / 148 * 210
 }
 
-export type ITouchEvent =
+export type INavigationEvent =
+  {type: 'Keyboard', direction: DirectionType} |
   {type: 'Swipe', direction: DirectionType} |
   {type: 'Tap', direction: DirectionType};
