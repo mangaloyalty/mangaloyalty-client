@@ -32,7 +32,7 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
               control={<mui.Switch checked={this.props.vm.enableNavigationSwipe} onChange={() => this.props.vm.toggleNavigationSwipe()} />}
               label={language.sessionSettingsNavigationSwipe} />
             <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableNavigationTap} disabled={true} />}
+              control={<mui.Switch checked={this.props.vm.enableNavigationTap} onChange={() => this.props.vm.toggleNavigationTap()} />}
               label={language.sessionSettingsNavigationTap} />
           </mui.FormGroup>
           <mui.FormGroup className={this.classes.formGroup}>
