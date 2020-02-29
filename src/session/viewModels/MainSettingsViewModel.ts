@@ -15,12 +15,6 @@ export class MainSettingsViewModel {
   }
 
   @mobx.action
-  toggleModeRTL() {
-    this.enableModeRTL = !this.enableModeRTL;
-    localStorage.setItem('SessionModeRTL', String(this.enableModeRTL));
-  }
-
-  @mobx.action
   toggleNavigationKeyboard() {
     this.enableNavigationKeyboard = !this.enableNavigationKeyboard;
     localStorage.setItem('SessionNavigationKeyboard', String(this.enableNavigationKeyboard));
@@ -38,8 +32,17 @@ export class MainSettingsViewModel {
     localStorage.setItem('SessionNavigationTap', String(this.enableNavigationTap));
   }
 
-  @mobx.observable
-  enableModeRTL = localStorage.getItem('SessionModeRTL') !== 'false';
+  @mobx.action
+  toggleOptionAutohide() {
+    this.enableOptionAutohide = !this.enableOptionAutohide;
+    localStorage.setItem('SessionOptionAutohide', String(this.enableOptionAutohide));
+  }
+
+  @mobx.action
+  toggleOptionRTL() {
+    this.enableOptionRTL = !this.enableOptionRTL;
+    localStorage.setItem('SessionOptionRTL', String(this.enableOptionRTL));
+  }
 
   @mobx.observable
   enableNavigationKeyboard = localStorage.getItem('SessionNavigationKeyboard') !== 'false';
@@ -49,6 +52,12 @@ export class MainSettingsViewModel {
 
   @mobx.observable
   enableNavigationTap = localStorage.getItem('SessionNavigationTap') !== 'false';
+
+  @mobx.observable
+  enableOptionAutohide = localStorage.getItem('SessionOptionAutohide') === 'true';
+
+  @mobx.observable
+  enableOptionRTL = localStorage.getItem('SessionOptionRTL') !== 'false';
 
   @mobx.observable
   pageSize = <app.PageSize> parseFloat(localStorage.getItem('SessionPageSize') || '0');

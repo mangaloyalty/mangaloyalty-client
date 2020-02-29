@@ -154,8 +154,15 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     }
   }
 
+  private _tryAutohide() {
+    if (!this.props.vm.settings.enableOptionAutohide) return;
+    if (!this.props.vm.showControls) return;
+    this.props.vm.toggleControls();
+  }
+
   private _tryNavigateLeft() {
-    if (this.props.vm.settings.enableModeRTL) {
+    this._tryAutohide();
+    if (this.props.vm.settings.enableOptionRTL) {
       this.props.vm.pageNextAsync();
     } else {
       this.props.vm.pagePreviousAsync();
@@ -163,7 +170,8 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _tryNavigateRight() {
-    if (this.props.vm.settings.enableModeRTL) {
+    this._tryAutohide();
+    if (this.props.vm.settings.enableOptionRTL) {
       this.props.vm.pagePreviousAsync();
     } else {
       this.props.vm.pageNextAsync();

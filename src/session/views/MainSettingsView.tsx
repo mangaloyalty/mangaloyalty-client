@@ -15,14 +15,6 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
         <mui.DialogContent>
           <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
-              {language.sessionSettingsMode}:
-            </mui.InputLabel>
-            <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableModeRTL} onChange={() => this.props.vm.toggleModeRTL()} />}
-              label={language.sessionSettingsModeRTL} />
-          </mui.FormGroup>
-          <mui.FormGroup className={this.classes.formGroup}>
-            <mui.InputLabel>
               {language.sessionSettingsNavigation}:
             </mui.InputLabel>
             <mui.FormControlLabel
@@ -34,6 +26,17 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
             <mui.FormControlLabel
               control={<mui.Switch checked={this.props.vm.enableNavigationTap} onChange={() => this.props.vm.toggleNavigationTap()} />}
               label={language.sessionSettingsNavigationTap} />
+          </mui.FormGroup>
+          <mui.FormGroup className={this.classes.formGroup}>
+            <mui.InputLabel>
+              {language.sessionSettingsOption}:
+            </mui.InputLabel>
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableOptionAutohide} onChange={() => this.props.vm.toggleOptionAutohide()} />}
+              label={language.sessionSettingsOptionAutohide} />
+            <mui.FormControlLabel
+              control={<mui.Switch checked={this.props.vm.enableOptionRTL} onChange={() => this.props.vm.toggleOptionRTL()} />}
+              label={language.sessionSettingsOptionRTL} />
           </mui.FormGroup>
           <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
