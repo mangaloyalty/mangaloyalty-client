@@ -48,7 +48,6 @@ export class MainViewModel {
 
   @mobx.action
   async pageNextAsync() {
-    this.showControls = false;
     if (this._pageNumber < this._session.pageCount) {
       this._pageNumber++;
       this._queueTrack(this._pageNumber);
@@ -65,7 +64,6 @@ export class MainViewModel {
 
   @mobx.action
   async pagePreviousAsync() {
-    this.showControls = false;
     if (this._pageNumber > 1) {
       this._pageNumber--;
       this._queueTrack(this._pageNumber);
