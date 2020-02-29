@@ -156,17 +156,17 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
 
   private _tryNavigateLeft() {
     if (this.props.vm.settings.enableModeRTL) {
-      this.props.vm.pressNextAsync();
+      this.props.vm.pageNextAsync();
     } else {
-      this.props.vm.pressPreviousAsync();
+      this.props.vm.pagePreviousAsync();
     }
   }
 
   private _tryNavigateRight() {
     if (this.props.vm.settings.enableModeRTL) {
-      this.props.vm.pressPreviousAsync();
+      this.props.vm.pagePreviousAsync();
     } else {
-      this.props.vm.pressNextAsync();
+      this.props.vm.pageNextAsync();
     }
   }
 }
