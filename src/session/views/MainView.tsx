@@ -125,6 +125,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         break;
       case 'ArrowRight':
       case 'Right':
+      case 'PageDown':
         if (this._isBusy()) return;
         this._onKeyboardEvent(app.DirectionType.Right);
         break;
@@ -135,6 +136,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         break;
       case 'ArrowLeft':
       case 'Left':
+      case 'PageUp':
         if (this._isBusy()) return;
         this._onKeyboardEvent(app.DirectionType.Left);
         break;
