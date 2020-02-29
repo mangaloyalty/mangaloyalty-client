@@ -48,9 +48,8 @@ export class MainViewModel {
 
   @mobx.action
   async pageNextAsync() {
-    if (this.showControls) {
-      this.showControls = false;
-    } else if (this._pageNumber < this._session.pageCount) {
+    this.showControls = false;
+    if (this._pageNumber < this._session.pageCount) {
       this._pageNumber++;
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
@@ -66,9 +65,8 @@ export class MainViewModel {
 
   @mobx.action
   async pagePreviousAsync() {
-    if (this.showControls) {
-      this.showControls = false;
-    } else if (this._pageNumber > 1) {
+    this.showControls = false;
+    if (this._pageNumber > 1) {
       this._pageNumber--;
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
@@ -120,7 +118,7 @@ export class MainViewModel {
   settings = new app.MainSettingsViewModel();
 
   @mobx.observable
-  showControls = false;
+  showControls = true;
 
   private async _changePageSizeAsync(pageSize: app.PageSize) {
     this._loader.changePageSize(pageSize);
