@@ -1,7 +1,7 @@
 import * as app from '..';
 
 export class Loader {
-  private readonly _cache: {[pageNumber: number]: Promise<{error?: string, status: number, value?: HTMLCanvasElement | HTMLImageElement}>};
+  private readonly _cache: {[pageNumber: number]: Promise<{error?: string, status: number, value?: HTMLImageElement}>};
   private readonly _session: app.ISessionListItem;
   private _pageSize?: app.PageSize;
 
@@ -18,18 +18,25 @@ export class Loader {
 
   async getAsync(pageNumber: number) {
     if (this._cache[pageNumber]) {
+      const sessionPage = await this._cache[pageNumber];
       this._expire(pageNumber);
       this._load(pageNumber);
-      return await this._cache[pageNumber];
+      return this._ensurePageSize(sessionPage);
     } else {
       this._cache[pageNumber] = this._pageAsync(pageNumber);
       const sessionPage = await this._cache[pageNumber];
       this._expire(pageNumber);
       this._load(pageNumber);
-      return sessionPage;
+      return this._ensurePageSize(sessionPage);
     }
   }
   
+  private _ensurePageSize(sessionPage: {error?: string, status: number, value?: HTMLImageElement}) {
+    if (!sessionPage.value || !this._pageSize) return sessionPage;
+    const value = resizeImage(sessionPage.value, this._pageSize);
+    return {error: sessionPage.error, status: sessionPage.status, value};
+  }
+
   private _expire(pageNumber?: number) {
     const minimum = pageNumber ? pageNumber - app.settings.sessionExpireRange : 0;
     const maximum = pageNumber ? pageNumber + app.settings.sessionExpireRange : 0;
@@ -50,10 +57,7 @@ export class Loader {
   
   private async _pageAsync(pageNumber: number) {
     const sessionPage = await app.api.session.pageAsync(this._session.id, pageNumber);
-    if (sessionPage.value && this._pageSize) {
-      const value = await imageAsync(sessionPage.value);
-      return {status: sessionPage.status, value: resizeImage(value, this._pageSize)};
-    } else if (sessionPage.value) {
+    if (sessionPage.value) {
       const value = await imageAsync(sessionPage.value);
       return {status: sessionPage.status, value};
     } else {
