@@ -1,8 +1,10 @@
 import * as app from '..';
+import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
+@mobxReact.observer
 export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewModel}> {
   render() {
     return (

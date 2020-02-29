@@ -47,7 +47,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async pressNextAsync() {
+  async pageNextAsync() {
     if (this.showControls) {
       this.showControls = false;
     } else if (this._pageNumber < this._session.pageCount) {
@@ -65,7 +65,7 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async pressPreviousAsync() {
+  async pagePreviousAsync() {
     if (this.showControls) {
       this.showControls = false;
     } else if (this._pageNumber > 1) {
