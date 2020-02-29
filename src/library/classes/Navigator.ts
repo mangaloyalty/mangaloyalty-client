@@ -35,7 +35,9 @@ export class Navigator implements app.INavigator {
   async trackAsync(pageCount: number, pageReadNumber: number) {
     const chapter = this._chapters[this._index];     
     const response = await app.api.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
-    return response.status === 200;
+    if (response.status !== 200) return false;
+    chapter.pageReadNumber = pageReadNumber;
+    return true;
   }
 
   private async _openAsync() {
