@@ -15,27 +15,13 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
         <mui.DialogContent>
           <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
-              {language.sessionSettingsNavigation}:
-            </mui.InputLabel>
-            <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableNavigationKeyboard} onChange={() => this.props.vm.toggleNavigationKeyboard()} />}
-              label={language.sessionSettingsNavigationKeyboard} />
-            <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableNavigationSwipe} onChange={() => this.props.vm.toggleNavigationSwipe()} />}
-              label={language.sessionSettingsNavigationSwipe} />
-            <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableNavigationTap} onChange={() => this.props.vm.toggleNavigationTap()} />}
-              label={language.sessionSettingsNavigationTap} />
-          </mui.FormGroup>
-          <mui.FormGroup className={this.classes.formGroup}>
-            <mui.InputLabel>
               {language.sessionSettingsOption}:
             </mui.InputLabel>
             <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableOptionAutohide} onChange={() => this.props.vm.toggleOptionAutohide()} />}
+              control={<mui.Switch checked={this.props.vm.optionAutohide} onChange={() => this.props.vm.toggleOptionAutohide()} />}
               label={language.sessionSettingsOptionAutohide} />
             <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.enableOptionRTL} onChange={() => this.props.vm.toggleOptionRTL()} />}
+              control={<mui.Switch checked={this.props.vm.optionRTL} onChange={() => this.props.vm.toggleOptionRTL()} />}
               label={language.sessionSettingsOptionRTL} />
           </mui.FormGroup>
           <mui.FormGroup className={this.classes.formGroup}>

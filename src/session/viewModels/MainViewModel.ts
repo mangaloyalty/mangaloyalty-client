@@ -116,7 +116,7 @@ export class MainViewModel {
   settings = new app.MainSettingsViewModel();
 
   @mobx.observable
-  showControls = true;
+  showControls = !this.settings.optionAutohide;
 
   private async _changePageSizeAsync(pageSize: app.PageSize) {
     this._loader.changePageSize(pageSize);

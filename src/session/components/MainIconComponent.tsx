@@ -9,10 +9,10 @@ export class MainIconComponent extends app.BaseComponent<typeof MainIconComponen
   render() {
     return (
       <mui.Grid className={this.classes.container}>
-        <app.ButtonComponent color="inherit" title={this.props.vm.settings.enableOptionRTL ? language.sessionIconNextChapter : language.sessionIconPreviousChapter} onClick={() => this._tryNavigateLeft()}>
+        <app.ButtonComponent color="inherit" title={this.props.vm.settings.optionRTL ? language.sessionIconNextChapter : language.sessionIconPreviousChapter} onClick={() => this._tryNavigateLeft()}>
           <app.icons.ArrowBack />
         </app.ButtonComponent>
-        <app.ButtonComponent color="inherit" title={this.props.vm.settings.enableOptionRTL ? language.sessionIconPreviousChapter : language.sessionIconNextChapter} onClick={() => this._tryNavigateRight()}>
+        <app.ButtonComponent color="inherit" title={this.props.vm.settings.optionRTL ? language.sessionIconPreviousChapter : language.sessionIconNextChapter} onClick={() => this._tryNavigateRight()}>
           <app.icons.ArrowForward />
         </app.ButtonComponent>
         <app.ButtonComponent color="inherit" title={language.sessionIconSettings} onClick={() => this.props.vm.settings.toggleDialog()}>
@@ -23,7 +23,7 @@ export class MainIconComponent extends app.BaseComponent<typeof MainIconComponen
   }
   
   private _tryNavigateLeft() {
-    if (this.props.vm.settings.enableOptionRTL) {
+    if (this.props.vm.settings.optionRTL) {
       this.props.vm.chapterNextAsync();
     } else {
       this.props.vm.chapterPreviousAsync();
@@ -31,7 +31,7 @@ export class MainIconComponent extends app.BaseComponent<typeof MainIconComponen
   }
 
   private _tryNavigateRight() {
-    if (this.props.vm.settings.enableOptionRTL) {
+    if (this.props.vm.settings.optionRTL) {
       this.props.vm.chapterPreviousAsync();
     } else {
       this.props.vm.chapterNextAsync();
