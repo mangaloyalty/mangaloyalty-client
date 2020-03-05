@@ -65,7 +65,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _onKeyboardEvent(direction: app.DirectionType) {   
-    switch (this.props.vm.settings.enableNavigationKeyboard && direction) {
+    switch (direction) {
       case app.DirectionType.Up:
         if (this.props.vm.showControls) break;
         this.props.vm.toggleControls();
@@ -84,7 +84,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _onSwipeEvent(direction: app.DirectionType) {
-    switch (this.props.vm.settings.enableNavigationSwipe && direction) {
+    switch (direction) {
       case app.DirectionType.Up:
         if (this.props.vm.showControls) break;
         this.props.vm.toggleControls();
@@ -103,7 +103,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _onTapEvent(direction: app.DirectionType) {
-    switch (this.props.vm.settings.enableNavigationTap && direction) {
+    switch (direction) {
       case app.DirectionType.Up:
         this.props.vm.toggleControls();
         break;
@@ -157,14 +157,14 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   private _tryAutohide() {
-    if (!this.props.vm.settings.enableOptionAutohide) return;
+    if (!this.props.vm.settings.optionAutohide) return;
     if (!this.props.vm.showControls) return;
     this.props.vm.toggleControls();
   }
 
   private _tryNavigateLeft() {
     this._tryAutohide();
-    if (this.props.vm.settings.enableOptionRTL) {
+    if (this.props.vm.settings.optionRTL) {
       this.props.vm.pageNextAsync();
     } else {
       this.props.vm.pagePreviousAsync();
@@ -173,7 +173,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
 
   private _tryNavigateRight() {
     this._tryAutohide();
-    if (this.props.vm.settings.enableOptionRTL) {
+    if (this.props.vm.settings.optionRTL) {
       this.props.vm.pagePreviousAsync();
     } else {
       this.props.vm.pageNextAsync();
