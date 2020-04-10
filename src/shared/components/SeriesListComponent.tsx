@@ -3,20 +3,17 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {forceCheck} from 'react-lazyload';
 
-export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComponent<typeof SeriesListComponentStyles, {emptyBody: string, emptyTitle: string, series: T[], onClick: (series: T) => void}> {
+export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComponent<typeof SeriesListComponentStyles, {empty: string, series: T[], onClick: (series: T) => void}> {
   componentDidUpdate() {
     forceCheck();
   }
 
   render() {
     return (
-      <mui.Grid>
+      <mui.Grid className={this.classes.container}>
         {this.props.series.length === 0 && <mui.Grid className={this.classes.textContent}>
-          <mui.Typography align="center" variant="h6">
-            {this.props.emptyTitle}
-          </mui.Typography>
           <mui.Typography align="justify">
-            {this.props.emptyBody}
+            {this.props.empty}
           </mui.Typography>
         </mui.Grid>}
         {this.props.series.length !== 0 && <mui.Grid className={`inset-bottom ${this.classes.seriesContent}`}>
@@ -54,10 +51,14 @@ function getUrl(series: app.ISeriesItem) {
 }
 
 export const SeriesListComponentStyles = mui.createStyles({
+  container: {
+    minHeight: 'calc(100vh - 112px)',
+    position: 'relative'
+  },
   textContent: {
     left: '50%',
     padding: 16,
-    position: 'fixed',
+    position: 'absolute',
     top: '50%',
     transform: 'translate(-50%, -50%)',
     width: 320
