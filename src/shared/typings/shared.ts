@@ -13,6 +13,7 @@ export interface ISeriesItem {
   imageId?: string;
   title: string;
   unreadCount?: number;
+  url: string;
 }
 
 export type ISocketAction = 
