@@ -115,6 +115,11 @@ export class SeriesListViewModel {
     return this.selectionMode !== 'none';
   }
 
+  @mobx.computed
+  get unreadCount() {
+    return this.items.filter((chapter) => !chapter.isReadCompleted).length;
+  }
+
   @mobx.observable
   items!: app.SeriesListItemViewModel[];
 

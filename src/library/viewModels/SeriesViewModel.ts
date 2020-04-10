@@ -54,6 +54,7 @@ export class SeriesViewModel {
       if (imageData && series.value && sessionList.value) {
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
+        this.url = series.value.source.url;
         this.automation = this.automation.refreshWith(series.value);
         this.chapters = this.chapters.refreshWith(series.value, sessionList.value);
       } else if (series.status === 404) {
@@ -112,6 +113,9 @@ export class SeriesViewModel {
 
   @mobx.observable
   title!: string;
+
+  @mobx.observable
+  url!: string;
 
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
