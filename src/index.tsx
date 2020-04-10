@@ -1,4 +1,3 @@
-// UX: Generic: EmptyComponent does not respect parent claimed tab space.
 // UX: Generic: PWA on iOS should be fullscreen like Android (no status bar), iPhone X should not have bottom insets.
 // UX: Generic: Night-mode (black background on reader, different color scheme for UI).
 // UX: Library: Provider is not visible. It should be on both list and series.

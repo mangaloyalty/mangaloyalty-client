@@ -30,8 +30,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         </mui.Paper>
         <mui.Paper className={this.classes.content} square={true}>
           <app.SeriesListComponent
-            emptyBody={language.remoteEmptyBody}
-            emptyTitle={language.remoteEmptyTitle}
+            empty={language.remoteEmpty}
             series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.openAsync(series)} />
         </mui.Paper>

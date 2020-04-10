@@ -1,8 +1,7 @@
 export const language = {
   remoteIconAdd: 'Add',
   remoteIconRead: 'Read',
-  remoteEmptyBody: 'No series have been found. When searching for a specific series, try using a different name or provider.',
-  remoteEmptyTitle: '何もない',
+  remoteEmpty: 'No series have been found. When searching for a specific series, try using a different name or provider.',
   remotePage: 'Page',
   remotePageNext: 'Next Page',
   remotePagePrevious: 'Previous Page',
