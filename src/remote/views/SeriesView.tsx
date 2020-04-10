@@ -81,11 +81,6 @@ export const SeriesViewStyles = mui.createStyles({
   seriesClear: {
     clear: 'both'
   },
-  seriesAction: {
-    bottom: 24,
-    right: 24,
-    position: 'fixed'
-  },
   chapterText: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
