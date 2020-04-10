@@ -28,13 +28,13 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
             {language.remotePage} {(this.props.vm.currentPage < 10 ? '0' : '') + this.props.vm.currentPage}
           </mui.Typography>
         </mui.Paper>
-        <mui.Grid className={this.classes.content}>
+        <mui.Paper className={this.classes.content} square={true}>
           <app.SeriesListComponent
             emptyBody={language.remoteEmptyBody}
             emptyTitle={language.remoteEmptyTitle}
             series={this.props.vm.series.items}
             onClick={(series) => this.props.vm.openAsync(series)} />
-        </mui.Grid>
+        </mui.Paper>
       </mui.Grid>
     );
   }
@@ -48,6 +48,7 @@ export const MainViewStyles = mui.createStyles({
     zIndex: 1
   }),
   content: {
+    minHeight: 'calc(100vh - 64px)',
     paddingTop: 48
   },
   pageButtonNext: {
