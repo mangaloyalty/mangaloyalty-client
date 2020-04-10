@@ -72,6 +72,7 @@ export const SeriesListComponentStyles = mui.createStyles({
   series: {
     cursor: 'pointer',
     height: 250,
+    position: 'relative',
     width: 152
   },
   image: {
