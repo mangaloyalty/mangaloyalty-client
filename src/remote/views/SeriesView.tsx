@@ -20,7 +20,7 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
         <mui.Grid className={this.classes.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
             <mui.Paper className={this.classes.seriesContent} square={true}>
-              <app.SeriesImage className={this.classes.seriesImage} src={this.props.vm.imageData} url={this.props.vm.url} />
+              <app.SeriesImage className={this.classes.seriesImage} src={this.props.vm.image} url={this.props.vm.url} />
               <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
               <mui.Grid className={this.classes.seriesClear} />
             </mui.Paper>

@@ -3,13 +3,13 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {className?: string, offset?: number, src: string, unreadCount?: number, url: string}> {
+export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {className?: string, offset?: number, src?: string, unreadCount?: number, url: string}> {
   render() {
     return (
       <mui.Grid className={`${this.classes.container} ${this.props.className}`}>
         <LazyLoad height={'100%'} offset={this.props.offset} resize>
-          <img className={`${this.classes.image} ${this.props.src.startsWith('http') && this.classes.imageFade}`} src={this.props.src}
-            onError={(ev) => ev.currentTarget.style.opacity = '1'}
+          <img className={`${this.classes.image} ${this.props.src && this.props.src.startsWith('http') && this.classes.imageFade}`} src={this.props.src}
+            onError={(ev => ev.currentTarget.style.opacity = '0')}
             onLoad={(ev) => ev.currentTarget.style.opacity = '1'} />
         </LazyLoad>
         <mui.Typography className={this.classes.provider}>{getProvider(this.props.url)}</mui.Typography>
