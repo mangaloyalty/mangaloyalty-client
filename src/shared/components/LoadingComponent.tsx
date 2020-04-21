@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as mobx from 'mobx';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
@@ -8,6 +9,17 @@ export class LoadingComponent extends app.BaseComponent<typeof LoadingComponentS
     timeoutHandle: undefined,
     showInitial: true
   };
+
+  componentDidMount() {
+    mobx.reaction(() => app.core.dialog.isChildVisible, (isChildVisible) => {
+      if (isChildVisible) {
+        this.componentWillUnmount();
+        this.setState({open: false, timeoutHandle: undefined});
+      } else {
+        this.setState({open: this.props.open});
+      }
+    });
+  }
 
   componentWillMount() {
     this.componentWillReceiveProps(this.props);
@@ -19,10 +31,10 @@ export class LoadingComponent extends app.BaseComponent<typeof LoadingComponentS
       this.setState({open: true, showInitial: false});
     } else if (!props.open) {
       this.componentWillUnmount();
-      this.setState({open: props.open, timeoutHandle: undefined});
+      this.setState({open: false, timeoutHandle: undefined});
     } else if (!this.state.timeoutHandle) {
       this.componentWillUnmount();
-      this.setState({timeoutHandle: setTimeout(() => this.setState({open: props.open}), app.settings.loadingMinimumTimeout)});
+      this.setState({timeoutHandle: setTimeout(() => this.setState({open: true}), app.settings.loadingMinimumTimeout)});
     }
   }
 
@@ -33,12 +45,10 @@ export class LoadingComponent extends app.BaseComponent<typeof LoadingComponentS
 
   render() {
     return (
-      this.props.open && <mui.Grid className={this.classes.disabler}>
-        <mui.Modal open={this.state.open}>
-          <mui.Grid className={this.classes.container}>
-            <mui.CircularProgress className={this.classes.icon} />
-          </mui.Grid>
-        </mui.Modal>
+      this.props.open && <mui.Grid className={`${this.classes.disabler} ${this.state.open && this.classes.disablerVisible}`}>
+        {this.state.open && <mui.Grid className={this.classes.container}>
+          <mui.CircularProgress className={this.classes.icon} />
+        </mui.Grid>}
       </mui.Grid>
     );
   }
@@ -53,6 +63,9 @@ export const LoadingComponentStyles = mui.createStyles({
     top: 0,
     touchAction: 'none',
     zIndex: 1250
+  },
+  disablerVisible: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   container: {
     outline: 0
