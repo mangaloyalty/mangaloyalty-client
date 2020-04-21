@@ -28,9 +28,9 @@ export class SeriesListItemViewModel {
       const session = await app.api.library.chapterReadAsync(this._series.id, this.id);
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this._series.showChapters);
-        const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1);
+        const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1) || 1;
         const navigator = new app.Navigator(this._series.id, this._series.chapters.items, this._series.chapters.items.indexOf(this));
-        const constructAsync = areas.session.MainController.createConstruct(navigator, session.value, this.title, pageNumber || 1);
+        const constructAsync = areas.session.MainController.createConstruct(navigator, pageNumber, session.value, this.title);
         await app.core.screen.openChildAsync(constructAsync, restoreState);
       } else if (session.status !== 404) {
         await app.core.dialog.errorAsync(() => this.openAsync(), session.error);

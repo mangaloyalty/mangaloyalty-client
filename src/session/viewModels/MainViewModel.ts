@@ -7,8 +7,6 @@ export class MainViewModel {
   private readonly _navigator: app.INavigator;
   private readonly _session: app.ISessionListItem;
   private readonly _title: string;
-  private _imageNextTime?: number;
-  private _imagePreviousTime?: number;
   private _pageNumber: number;
   private _trackPromise: Promise<boolean>;
 
@@ -26,10 +24,9 @@ export class MainViewModel {
   async chapterNextAsync() {
     await app.core.screen.loadAsync(async () => {
       if (!this._navigator.hasNext) {
-        app.core.toast.add(language.sessionToastNextUnavailable);
+        app.core.toast.add(language.sessionToastNext);
       } else {
-        app.core.toast.add(language.sessionToastNextActive);
-        await this._navigator.openNextAsync();
+        await this._navigator.openNextAsync(false);
       }
     });
   }
@@ -38,10 +35,9 @@ export class MainViewModel {
   async chapterPreviousAsync() {
     await app.core.screen.loadAsync(async () => {
       if (!this._navigator.hasPrevious) {
-        app.core.toast.add(language.sessionToastPreviousUnavailable);
+        app.core.toast.add(language.sessionToastPrevious);
       } else {
-        app.core.toast.add(language.sessionToastPreviousActive);
-        await this._navigator.openPreviousAsync();
+        await this._navigator.openPreviousAsync(false);
       }
     });
   }
@@ -53,12 +49,9 @@ export class MainViewModel {
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
     } else if (!this._navigator.hasNext) {
-      app.core.toast.add(language.sessionToastNextUnavailable);
-    } else if (!this._imageNextTime || this._imageNextTime < Date.now()) {
-      app.core.toast.add(language.sessionToastNextRepeat);
-      this._imageNextTime = Date.now() + app.settings.toastTimeout;
+      app.core.toast.add(language.sessionToastNext);
     } else {
-      await this.chapterNextAsync();
+      await this._navigator.openNextAsync(true);
     }
   }
 
@@ -69,12 +62,9 @@ export class MainViewModel {
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
     } else if (!this._navigator.hasPrevious) {
-      app.core.toast.add(language.sessionToastPreviousUnavailable);
-    } else if (!this._imagePreviousTime || this._imagePreviousTime < Date.now()) {
-      app.core.toast.add(language.sessionToastPreviousRepeat);
-      this._imagePreviousTime = Date.now() + app.settings.toastTimeout;
+      app.core.toast.add(language.sessionToastPrevious);
     } else {
-      await this.chapterPreviousAsync();
+      await this._navigator.openPreviousAsync(true);
     }
   }
 

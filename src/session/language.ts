@@ -14,10 +14,6 @@ export const language = {
   sessionSettingsPageSizePocket: 'FORCE POCKET SIZE',
   sessionSettingsPageSizeJapaneseB6: 'FORCE B6 SIZE',
   sessionSettingsPageSizeISOA5: 'FORCE A5 SIZE',
-  sessionToastNextActive: 'Going to the next chapter!',
-  sessionToastNextRepeat: 'Open the next chapter?',
-  sessionToastNextUnavailable: 'No next chapter available.',
-  sessionToastPreviousActive: 'Going to the previous chapter!',
-  sessionToastPreviousRepeat: 'Open the previous chapter?',
-  sessionToastPreviousUnavailable: 'No previous chapter available.'
+  sessionToastNext: 'No next chapter available.',
+  sessionToastPrevious: 'No previous chapter available.'
 };
