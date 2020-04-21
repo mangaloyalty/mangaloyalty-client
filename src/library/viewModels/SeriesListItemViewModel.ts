@@ -27,7 +27,7 @@ export class SeriesListItemViewModel {
     await app.core.screen.loadAsync(async () => {
       const session = await app.api.library.chapterReadAsync(this._series.id, this.id);
       if (session.value) {
-        const restoreState = new app.SeriesRestoreState(this._series.showChapters);
+        const restoreState = new app.SeriesRestoreState(this._series.automation.showDialog, this._series.showChapters);
         const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1) || 1;
         const navigator = new app.Navigator(this._series.id, this._series.chapters.items, this._series.chapters.items.indexOf(this));
         const constructAsync = areas.session.MainController.createConstruct(navigator, pageNumber, session.value, this.title);

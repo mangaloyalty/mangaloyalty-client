@@ -5,7 +5,7 @@ import {language} from '../language';
 export class SeriesViewModel {
   constructor(seriesId: string, showAutomation?: boolean, restoreState?: app.SeriesRestoreState) {
     this.id = seriesId;
-    this.automation = new app.SeriesAutomationViewModel(showAutomation);
+    this.automation = new app.SeriesAutomationViewModel(restoreState ? restoreState.showAutomation : showAutomation);
     this.chapters = new app.SeriesListViewModel(this);
     this.showChapters = restoreState ? restoreState.showChapters : this.showChapters;
   }
