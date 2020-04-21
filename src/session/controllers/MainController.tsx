@@ -5,7 +5,7 @@ import * as React from 'react';
 
 @mobxReact.observer
 export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
-  static createConstruct(navigator: app.INavigator, session: app.ISessionListItem, title: string, pageNumber?: number) {
+  static createConstruct(navigator: app.INavigator, pageNumber: number, session: app.ISessionListItem, title: string) {
     return async () => {
       const queue = app.api.socket.createQueue().attach();
       const vm = new app.MainViewModel(navigator, session, title, pageNumber);

@@ -3,8 +3,8 @@ import * as app from '..';
 export interface INavigator {
   hasNext: boolean;
   hasPrevious: boolean;
-  openNextAsync: () => Promise<void>;
-  openPreviousAsync: () => Promise<void>;
+  openNextAsync: (isPageNavigation: boolean) => Promise<void>;
+  openPreviousAsync: (isPageNavigation: boolean) => Promise<void>;
   trackAsync?: (pageCount: number, pageReadNumber: number) => Promise<boolean>;
 }
 
