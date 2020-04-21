@@ -9,13 +9,13 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   private readonly _containerRef: React.RefObject<HTMLImageElement>;
   private readonly _keyHandler: (ev: KeyboardEvent) => void;
   private readonly _touch: app.Touch;
-  private _observableDisposer: () => void;
+  private _reactionDisposer: () => void;
 
   constructor(props: {vm: app.MainViewModel}) {
     super(props);
     this._containerRef = React.createRef();
     this._keyHandler = (ev) => this._reassignKeyEvent(ev);
-    this._observableDisposer = () => undefined;
+    this._reactionDisposer = () => undefined;
     this._touch = new app.Touch((ev) => this._reassignTouchEvent(ev));
   }
 
@@ -26,8 +26,8 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
   }
 
   componentWillReceiveProps(props: {vm: app.MainViewModel}) {
-    this._observableDisposer();
-    this._observableDisposer = mobx.observe(props.vm, 'imageNode', (ev) => this._onChangeEvent(ev), true);
+    this._reactionDisposer();
+    this._reactionDisposer = mobx.reaction(() => props.vm.imageNode, (imageNode) => this._onImageNode(imageNode), {fireImmediately: true});
   }
 
   componentDidUpdate() {
@@ -38,7 +38,7 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
 
   componentWillUnmount() {
     removeEventListener('keydown', this._keyHandler);
-    this._observableDisposer();
+    this._reactionDisposer();
     this._touch.destroy();
   }
 
@@ -53,13 +53,13 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     return false;
   }
 
-  private _onChangeEvent(ev: mobx.IValueDidChange<HTMLCanvasElement | HTMLImageElement>) {
-    ev.newValue.className = this.classes.image;
+  private _onImageNode(imageNode: HTMLCanvasElement | HTMLImageElement) {
+    imageNode.className = this.classes.image;
     if (this._containerRef.current && this._containerRef.current.firstElementChild) {
-      this._containerRef.current.replaceChild(ev.newValue, this._containerRef.current.firstElementChild);
+      this._containerRef.current.replaceChild(imageNode, this._containerRef.current.firstElementChild);
       this._touch.reset();
     } else if (this._containerRef.current) {
-      this._containerRef.current.appendChild(ev.newValue);
+      this._containerRef.current.appendChild(imageNode);
       this._touch.reset();
     }
   }

@@ -19,7 +19,7 @@ export class MainViewModel {
     this._pageNumber = pageNumber || 1;
     this._title = title;
     this._trackPromise = Promise.resolve(false);
-    mobx.observe(this.settings, 'pageSize', (ev) => this._changePageSizeAsync(ev.newValue));
+    mobx.reaction(() => this.settings.pageSize, (pageSize) => this._changePageSizeAsync(pageSize));
   }
 
   @mobx.action
