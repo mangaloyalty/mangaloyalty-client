@@ -29,29 +29,16 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async imageDataAsync() {
-    if (this.imageData) return true;
-    return await app.core.screen.loadAsync(async () => {
-      const seriesImage = await app.api.library.seriesImageAsync(this.id);
-      if (seriesImage.value) {
-        this.imageData = seriesImage.value;
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }
-
-  @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const imageDataPromise = this.imageDataAsync();
       const seriesPromise = app.api.library.seriesReadAsync(this.id);
+      const seriesImagePromise = app.api.library.seriesImageAsync(this.id);
       const sessionListPromise = app.api.session.listAsync(this.id);
-      const imageData = await imageDataPromise;
       const series = await seriesPromise;
+      const seriesImage = await seriesImagePromise;
       const sessionList = await sessionListPromise;
-      if (imageData && series.value && sessionList.value) {
+      if (series.value && sessionList.value) {
+        this.image = seriesImage.value;
         this.summary = series.value.source.summary;
         this.title = series.value.source.title;
         this.url = series.value.source.url;
@@ -103,7 +90,7 @@ export class SeriesViewModel {
   id: string;
 
   @mobx.observable
-  imageData!: string;
+  image?: string;
 
   @mobx.observable
   showChapters = false;
