@@ -46,7 +46,6 @@ export class MainViewModel {
   async pageNextAsync() {
     if (this._pageNumber < this._session.pageCount) {
       this._pageNumber++;
-      this._queueTrack(this._pageNumber);
       await this.updateAsync();
       this.showControls = false;
     } else if (!this._navigator.hasNext) {
@@ -60,7 +59,6 @@ export class MainViewModel {
   async pagePreviousAsync() {
     if (this._pageNumber > 1) {
       this._pageNumber--;
-      this._queueTrack(this._pageNumber);
       await this.updateAsync();
       this.showControls = false;
     } else if (!this._navigator.hasPrevious) {
@@ -81,6 +79,7 @@ export class MainViewModel {
       const sessionPage = await this._loader.getAsync(this._pageNumber);
       if (sessionPage.value) {
         this.imageNode = sessionPage.value;
+        this._queueTrack(this._pageNumber);
       } else if (sessionPage.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
