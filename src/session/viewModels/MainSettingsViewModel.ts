@@ -15,22 +15,22 @@ export class MainSettingsViewModel {
   }
 
   @mobx.action
-  toggleOptionAutohide() {
-    this.optionAutohide = !this.optionAutohide;
-    localStorage.setItem('SessionOptionAutohide', String(this.optionAutohide));
+  toggleOptionOneHanded() {
+    this.optionOneHanded = !this.optionOneHanded;
+    localStorage.setItem('SessionOptionOneHanded', String(this.optionOneHanded));
   }
 
   @mobx.action
-  toggleOptionRTL() {
-    this.optionRTL = !this.optionRTL;
-    localStorage.setItem('SessionOptionRTL', String(this.optionRTL));
+  toggleOptionRightToLeft() {
+    this.optionRightToLeft = !this.optionRightToLeft;
+    localStorage.setItem('SessionOptionRightToLeft', String(this.optionRightToLeft));
   }
 
   @mobx.observable
-  optionAutohide = localStorage.getItem('SessionOptionAutohide') === 'true';
+  optionOneHanded = localStorage.getItem('SessionOptionOneHanded') === 'true';
 
   @mobx.observable
-  optionRTL = localStorage.getItem('SessionOptionRTL') !== 'false';
+  optionRightToLeft = localStorage.getItem('SessionOptionRightToLeft') !== 'false';
 
   @mobx.observable
   pageSize = <app.PageSize> parseFloat(localStorage.getItem('SessionPageSize') || '0');
