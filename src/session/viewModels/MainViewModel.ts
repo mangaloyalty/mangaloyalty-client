@@ -48,6 +48,7 @@ export class MainViewModel {
       this._pageNumber++;
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
+      this.showControls = false;
     } else if (!this._navigator.hasNext) {
       app.core.toast.add(language.sessionToastNext);
     } else {
@@ -61,6 +62,7 @@ export class MainViewModel {
       this._pageNumber--;
       this._queueTrack(this._pageNumber);
       await this.updateAsync();
+      this.showControls = false;
     } else if (!this._navigator.hasPrevious) {
       app.core.toast.add(language.sessionToastPrevious);
     } else {
@@ -106,7 +108,7 @@ export class MainViewModel {
   settings = new app.MainSettingsViewModel();
 
   @mobx.observable
-  showControls = !this.settings.optionAutohide;
+  showControls = false;
 
   private async _changePageSizeAsync(pageSize: app.PageSize) {
     this._loader.changePageSize(pageSize);

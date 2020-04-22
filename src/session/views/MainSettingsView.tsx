@@ -18,11 +18,11 @@ export class MainSettingsView extends app.BaseComponent<typeof MainSettingsViewS
               {language.sessionSettingsOption}:
             </mui.InputLabel>
             <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.optionAutohide} onChange={() => this.props.vm.toggleOptionAutohide()} />}
-              label={language.sessionSettingsOptionAutohide} />
+              control={<mui.Switch checked={this.props.vm.optionOneHanded} onChange={() => this.props.vm.toggleOptionOneHanded()} />}
+              label={language.sessionSettingsOptionOneHanded} />
             <mui.FormControlLabel
-              control={<mui.Switch checked={this.props.vm.optionRTL} onChange={() => this.props.vm.toggleOptionRTL()} />}
-              label={language.sessionSettingsOptionRTL} />
+              control={<mui.Switch checked={this.props.vm.optionRightToLeft} onChange={() => this.props.vm.toggleOptionRightToLeft()} />}
+              label={language.sessionSettingsOptionRightToLeft} />
           </mui.FormGroup>
           <mui.FormGroup className={this.classes.formGroup}>
             <mui.InputLabel>
