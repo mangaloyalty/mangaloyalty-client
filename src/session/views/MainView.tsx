@@ -90,14 +90,14 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
         this.props.vm.toggleControls();
         break;
       case app.DirectionType.Right:
-        this._tryNavigateLeft();
+        this._tryNavigateLeft(true);
         break;
       case app.DirectionType.Down:
         if (!this.props.vm.showControls) break;
         this.props.vm.toggleControls();
         break;
       case app.DirectionType.Left:
-        this._tryNavigateRight();
+        this._tryNavigateRight(true);
         break;
     }
   }
@@ -156,24 +156,20 @@ export class MainView extends app.BaseComponent<typeof MainViewStyles, {vm: app.
     }
   }
 
-  private _tryAutohide() {
-    if (!this.props.vm.settings.optionAutohide) return;
-    if (!this.props.vm.showControls) return;
-    this.props.vm.toggleControls();
-  }
-
-  private _tryNavigateLeft() {
-    this._tryAutohide();
-    if (this.props.vm.settings.optionRTL) {
+  private _tryNavigateLeft(skipOneHanded?: boolean) {
+    if (!skipOneHanded && this.props.vm.settings.optionOneHanded) {
+      this.props.vm.pageNextAsync();
+    } else if (this.props.vm.settings.optionRightToLeft) {
       this.props.vm.pageNextAsync();
     } else {
       this.props.vm.pagePreviousAsync();
     }
   }
 
-  private _tryNavigateRight() {
-    this._tryAutohide();
-    if (this.props.vm.settings.optionRTL) {
+  private _tryNavigateRight(skipOneHanded?: boolean) {
+    if (!skipOneHanded && this.props.vm.settings.optionOneHanded) {
+      this.props.vm.pageNextAsync();
+    } else if (this.props.vm.settings.optionRightToLeft) {
       this.props.vm.pagePreviousAsync();
     } else {
       this.props.vm.pageNextAsync();
