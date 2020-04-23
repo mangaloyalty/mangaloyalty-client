@@ -20,9 +20,9 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
         <mui.Grid className={this.classes.containerBody}>
           {this.props.vm.showChapters ? <app.SeriesListView vm={this.props.vm.chapters} /> : <mui.Grid>
             <mui.Paper className={this.classes.seriesContent} square={true}>
-              <app.SeriesImage className={this.classes.seriesImage} src={this.props.vm.image} unreadCount={this.props.vm.chapters.unreadCount} url={this.props.vm.url} />
-              <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.librarySeriesSummary}</mui.Typography>
-              <mui.Grid className={this.classes.seriesClear} />
+              <app.SeriesImage className={this.classes.seriesContentImage} src={this.props.vm.image} unreadCount={this.props.vm.chapters.unreadCount} url={this.props.vm.source.url} />
+              <mui.Typography className={this.classes.seriesContentSummary}>{this.props.vm.source.summary || language.librarySeriesSummary}</mui.Typography>
+              <mui.Grid className={this.classes.seriesContentClear} />
             </mui.Paper>
             <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
               <mui.Tooltip title={language.libraryIconRead}>
@@ -31,6 +31,47 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
                 </mui.Fab>
               </mui.Tooltip>
             </mui.Grid>
+            <mui.Paper className={this.classes.seriesInfo} square={true}>
+              <mui.Grid className={this.classes.seriesInfoGenre}>
+                {this.props.vm.source.genres.map((genre, i) => <mui.Chip key={i} label={genre} />)}
+              </mui.Grid>
+            </mui.Paper>
+            <mui.Paper className={this.classes.seriesInfo} square={true}>
+              <mui.Table>
+                <mui.TableBody>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoAuthor}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.source.authors.join(', ')}</mui.TableCell>
+                  </mui.TableRow>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoStatus}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.source.isCompleted ? language.librarySeriesInfoStatusCompleted : language.librarySeriesInfoStatusOngoing}</mui.TableCell>
+                  </mui.TableRow>  
+                </mui.TableBody>
+              </mui.Table>
+            </mui.Paper>
+            <mui.Paper className={this.classes.seriesInfo} square={true}>
+              <mui.Table>
+                <mui.TableBody>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoAddedAt}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.addedAt}</mui.TableCell>
+                  </mui.TableRow>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoLastChapterAddedAt}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.lastChapterAddedAt}</mui.TableCell>
+                  </mui.TableRow>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoLastPageReadAt}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.lastPageReadAt}</mui.TableCell>
+                  </mui.TableRow>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.librarySeriesInfoLastSyncAt}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.lastSyncAt}</mui.TableCell>
+                  </mui.TableRow>
+                </mui.TableBody>
+              </mui.Table>
+            </mui.Paper>
           </mui.Grid>}
         </mui.Grid>
       </mui.Grid>
@@ -49,21 +90,36 @@ export const SeriesViewStyles = mui.createStyles({
   seriesContent: {
     padding: 16
   },
-  seriesImage: {
+  seriesContentImage: {
     float: 'left',
     height: 238,
     marginRight: 8,
     width: 165
   },
-  seriesSummary: {
+  seriesContentSummary: {
     wordBreak: 'break-word'
   },
-  seriesClear: {
+  seriesContentClear: {
     clear: 'both'
+  },
+  seriesInfo: {
+    marginTop: 16
+  },
+  seriesInfoGenre: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: 8,
+    '& > *': {margin: 4}
+  },
+  seriesInfoKey: {
+    paddingRight: 0,
+    width: 144
   },
   fabContainer: {
     bottom: 0,
     height: 44,
+    marginBottom: -44,
     position: 'sticky'
   },
   fabButton: {
