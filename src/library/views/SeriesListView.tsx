@@ -9,14 +9,15 @@ export class SeriesListView extends app.BaseComponent<typeof SeriesListViewStyle
   render() {
     return (
       <mui.Grid>
-        <mui.Paper square={true}>
+        <mui.Paper className={this.classes.container} square={true}>
           <mui.List>
             <app.LazyListComponent items={this.props.vm.items} itemHeight={48} itemsPerBatch={10}>
               {(item) => <app.SeriesListItemView key={item.id} vm={item} />}
             </app.LazyListComponent>
           </mui.List>
         </mui.Paper>
-        <mui.Paper className={`${this.classes.container} ${this.props.vm.showControls && this.classes.containerControls}`} elevation={1} square={true}>
+        <mui.Paper className={this.classes.control} square={true}>
+          <mui.Divider />
           <mui.Select className={this.classes.controlSelect} disableUnderline value={this.props.vm.selectionMode}
             IconComponent={() => <span />}
             MenuProps={{anchorOrigin: {horizontal: 'left', vertical: 'top'}, getContentAnchorEl: null, transitionDuration: 0}}
@@ -27,7 +28,7 @@ export class SeriesListView extends app.BaseComponent<typeof SeriesListViewStyle
             {this.props.vm.canSelectUnread && <mui.MenuItem value="unread">{language.librarySeriesSelectionUnread}</mui.MenuItem>}
             {this.props.vm.canSelectRead && <mui.MenuItem value="read">{language.librarySeriesSelectionRead}</mui.MenuItem>}
           </mui.Select>
-          <mui.Grid className={this.classes.controlActions}>
+          {this.props.vm.showControls && <mui.Grid className={this.classes.controlActions}>
             <app.ButtonComponent color="inherit"
               title={this.props.vm.isSelectionReadCompleted ? language.libraryChapterMarkUnread : language.libraryChapterMarkRead}
               onClick={() => this.props.vm.toggleReadCompletedAsync()}>
@@ -38,7 +39,7 @@ export class SeriesListView extends app.BaseComponent<typeof SeriesListViewStyle
               onClick={() => this.props.vm.actionAsync()}>
               {this.props.vm.isSelectionSynchronizing ? <app.icons.CloudDownload /> : this.props.vm.isSelectionSynchronized ? <app.icons.Cloud /> : <app.icons.CloudQueue />}
             </app.ButtonComponent>
-          </mui.Grid>
+          </mui.Grid>}
         </mui.Paper>
       </mui.Grid>
     );
@@ -62,17 +63,17 @@ function getText(selectionMode: app.SeriesListViewModel['selectionMode']) {
 
 export const SeriesListViewStyles = mui.createStyles({
   container: app.withLimiter({
-    padding: '10px 8px 10px 16px',
-    zIndex: 1
+    minHeight: 'calc(100vh - 112px)',
+    paddingBottom: 42
   }),
-  containerControls: {
+  control: app.withLimiter({
     bottom: 0,
-    position: 'sticky'
-  },
+    position: 'fixed'
+  }),
   controlSelect: {
     fontSize: 13,
-    opacity: 0.7,
-    paddingRight: 4
+    padding: '10px 8px 10px 16px',
+    opacity: 0.7
   },
   controlActions: {
     position: 'absolute',
