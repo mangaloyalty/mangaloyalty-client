@@ -2,9 +2,7 @@
 // UX: Generic: Night-mode (black background on reader, different color scheme for UI).
 // UX: Library/Main: Automation settings for ALL series in the library.
 // UX: Library/Main: Update from source for ALL series in the library.
-// UX: Library/Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
 // UX: Library/Series: When no chapter is available, the chapter tab should have an empty message.
-// UX: Remote/Series: Author(s) and Genre(s) are not on-screen. Neither is Status (Ongoing/Completed). They should be. 
 // UX: Remote/Series: When no chapter is available, the chapter tab should have an empty message.
 import * as areas from './areas';
 import * as mobxReact from 'mobx-react';
