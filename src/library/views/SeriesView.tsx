@@ -22,7 +22,6 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
             <mui.Paper className={this.classes.seriesContent} square={true}>
               <app.SeriesImage className={this.classes.seriesContentImage} src={this.props.vm.image} unreadCount={this.props.vm.chapters.unreadCount} url={this.props.vm.source.url} />
               <mui.Typography className={this.classes.seriesContentSummary}>{this.props.vm.source.summary || language.librarySeriesSummary}</mui.Typography>
-              <mui.Grid className={this.classes.seriesContentClear} />
             </mui.Paper>
             <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
               <mui.Tooltip title={language.libraryIconRead}>
@@ -97,10 +96,9 @@ export const SeriesViewStyles = mui.createStyles({
     width: 165
   },
   seriesContentSummary: {
+    height: 238,
+    overflowY: 'auto',
     wordBreak: 'break-word'
-  },
-  seriesContentClear: {
-    clear: 'both'
   },
   seriesInfo: {
     marginTop: 16
