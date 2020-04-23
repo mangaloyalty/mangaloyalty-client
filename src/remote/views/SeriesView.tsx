@@ -30,10 +30,15 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
                   <app.icons.Add />
                 </mui.Fab>
               </mui.Tooltip>
+              <mui.Tooltip title={language.remoteIconRead}>
+                <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.startAsync()}>
+                  <app.icons.PlayArrow />
+                </mui.Fab>
+              </mui.Tooltip>
             </mui.Grid>
           </mui.Grid>}
           {this.props.vm.showChapters && <mui.Grid>
-            <mui.Paper square={true}>
+            <mui.Paper className={this.classes.chapter} square={true}>
               <mui.List>
                 <app.LazyListComponent items={this.props.vm.chapters} itemHeight={48} itemsPerBatch={10}>
                   {(chapter) => (
@@ -44,13 +49,6 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
                 </app.LazyListComponent>
               </mui.List>
             </mui.Paper>
-            <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
-              <mui.Tooltip title={language.remoteIconRead}>
-                <mui.Fab className={this.classes.fabButton} color="primary" onClick={() => this.props.vm.startAsync()}>
-                  <app.icons.PlayArrow />
-                </mui.Fab>
-              </mui.Tooltip>
-            </mui.Grid>
           </mui.Grid>}
         </mui.Grid>
       </mui.Grid>
@@ -81,6 +79,9 @@ export const SeriesViewStyles = mui.createStyles({
   seriesClear: {
     clear: 'both'
   },
+  chapter: {
+    minHeight: 'calc(100vh - 112px)'
+  },
   chapterText: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -89,11 +90,12 @@ export const SeriesViewStyles = mui.createStyles({
   fabContainer: {
     bottom: 0,
     height: 44,
-    position: 'sticky'
+    paddingRight: 16,
+    position: 'sticky',
+    textAlign: 'right'
   },
   fabButton: {
-    bottom: 16,
-    position: 'absolute',
-    right: 16
+    marginLeft: 16,
+    marginTop: -28
   }
 });
