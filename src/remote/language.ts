@@ -8,5 +8,9 @@ export const language = {
   remoteSeriesAbout: 'About',
   remoteSeriesChapters: 'Chapters',
   remoteSeriesSummary: 'No summary is available for this series.',
+  remoteSeriesInfoAuthor: 'Author',
+  remoteSeriesInfoStatus: 'Status',
+  remoteSeriesInfoStatusCompleted: 'Completed',
+  remoteSeriesInfoStatusOngoing: 'Ongoing',
   remoteSeriesToastQuickRead: 'No chapter available.',
 };

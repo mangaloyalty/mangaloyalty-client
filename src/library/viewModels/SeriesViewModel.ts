@@ -38,12 +38,14 @@ export class SeriesViewModel {
       const seriesImage = await seriesImagePromise;
       const sessionList = await sessionListPromise;
       if (series.value && sessionList.value) {
-        this.image = seriesImage.value;
-        this.summary = series.value.source.summary;
-        this.title = series.value.source.title;
-        this.url = series.value.source.url;
+        this.addedAt = formatEpoch(series.value.addedAt);
         this.automation = this.automation.refreshWith(series.value);
         this.chapters = this.chapters.refreshWith(series.value, sessionList.value);
+        this.image = seriesImage.value;
+        this.lastChapterAddedAt = formatEpoch(series.value.lastChapterAddedAt);
+        this.lastPageReadAt = formatEpoch(series.value.lastPageReadAt);
+        this.lastSyncAt = formatEpoch(series.value.lastSyncAt);
+        this.source = series.value.source;
       } else if (series.status === 404) {
         await app.core.screen.leaveAsync();
       } else {
@@ -81,6 +83,9 @@ export class SeriesViewModel {
   }
 
   @mobx.observable
+  addedAt!: string;
+
+  @mobx.observable
   automation: app.SeriesAutomationViewModel;
 
   @mobx.observable
@@ -93,16 +98,19 @@ export class SeriesViewModel {
   image?: string;
 
   @mobx.observable
+  lastChapterAddedAt!: string;
+
+  @mobx.observable
+  lastPageReadAt!: string;
+
+  @mobx.observable
+  lastSyncAt!: string;
+
+  @mobx.observable
   showChapters = false;
 
   @mobx.observable
-  summary?: string;
-
-  @mobx.observable
-  title!: string;
-
-  @mobx.observable
-  url!: string;
+  source!: app.ILibrarySeriesSource;
 
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
@@ -134,4 +142,11 @@ function checkActionRefresh(actions: app.ISocketAction[], seriesId: string) {
       default: return false;
     }
   });
+}
+
+function formatEpoch(epoch?: number) {
+  if (!epoch) return '-';
+  const locale = 'en-GB';
+  const options = {day: '2-digit', month: 'short', year: 'numeric', hour12: false, hour: '2-digit', minute: '2-digit'};
+  return new Date(epoch).toLocaleString(locale, options);
 }

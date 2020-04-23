@@ -20,9 +20,9 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
         <mui.Grid className={this.classes.containerBody}>
           {!this.props.vm.showChapters && <mui.Grid>
             <mui.Paper className={this.classes.seriesContent} square={true}>
-              <app.SeriesImage className={this.classes.seriesImage} src={this.props.vm.image} url={this.props.vm.url} />
-              <mui.Typography className={this.classes.seriesSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
-              <mui.Grid className={this.classes.seriesClear} />
+              <app.SeriesImage className={this.classes.seriesContentImage} src={this.props.vm.image} url={this.props.vm.url} />
+              <mui.Typography className={this.classes.seriesContentSummary}>{this.props.vm.summary || language.remoteSeriesSummary}</mui.Typography>
+              <mui.Grid className={this.classes.seriesContentClear} />
             </mui.Paper>
             <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
               <mui.Tooltip title={language.remoteIconAdd}>
@@ -36,6 +36,25 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
                 </mui.Fab>
               </mui.Tooltip>
             </mui.Grid>
+            <mui.Paper className={this.classes.seriesInfo} square={true}>
+              <mui.Grid className={this.classes.seriesInfoGenre}>
+                {this.props.vm.genres.map((genre, i) => <mui.Chip key={i} label={genre} />)}
+              </mui.Grid>
+            </mui.Paper>
+            <mui.Paper className={this.classes.seriesInfo} square={true}>
+              <mui.Table>
+                <mui.TableBody>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.remoteSeriesInfoAuthor}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.authors.join(', ')}</mui.TableCell>
+                  </mui.TableRow>
+                  <mui.TableRow>
+                    <mui.TableCell className={this.classes.seriesInfoKey}>{language.remoteSeriesInfoStatus}</mui.TableCell>
+                    <mui.TableCell>{this.props.vm.isCompleted ? language.remoteSeriesInfoStatusCompleted : language.remoteSeriesInfoStatusOngoing}</mui.TableCell>
+                  </mui.TableRow>  
+                </mui.TableBody>
+              </mui.Table>
+            </mui.Paper>
           </mui.Grid>}
           {this.props.vm.showChapters && <mui.Grid>
             <mui.Paper className={this.classes.chapter} square={true}>
@@ -67,16 +86,16 @@ export const SeriesViewStyles = mui.createStyles({
   seriesContent: {
     padding: 16
   },
-  seriesImage: {
+  seriesContentImage: {
     float: 'left',
     height: 238,
     marginRight: 8,
     width: 165
   },
-  seriesSummary: {
+  seriesContentSummary: {
     wordBreak: 'break-word'
   },
-  seriesClear: {
+  seriesContentClear: {
     clear: 'both'
   },
   chapter: {
@@ -87,9 +106,24 @@ export const SeriesViewStyles = mui.createStyles({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
   },
+  seriesInfo: {
+    marginTop: 16
+  },
+  seriesInfoGenre: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: 8,
+    '& > *': {margin: 4}
+  },
+  seriesInfoKey: {
+    paddingRight: 0,
+    width: 144
+  },
   fabContainer: {
     bottom: 0,
     height: 44,
+    marginBottom: -44,
     paddingRight: 16,
     position: 'sticky',
     textAlign: 'right'
