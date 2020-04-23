@@ -48,7 +48,10 @@ export class SeriesViewModel {
       const series = await app.api.remote.seriesAsync(this.url);
       if (series.value) {
         const seriesImage = await app.api.remote.imageDataAsync(series.value.imageId)
+        this.authors = series.value.authors;
         this.chapters = series.value.chapters;
+        this.genres = series.value.genres;
+        this.isCompleted = series.value.isCompleted;
         this.image = seriesImage.value;
         this.summary = series.value.summary;
         this.title = series.value.title;
@@ -78,7 +81,16 @@ export class SeriesViewModel {
   }
 
   @mobx.observable
+  authors!: string[];
+
+  @mobx.observable
   chapters!: app.IRemoteSeriesChapter[];
+  
+  @mobx.observable
+  genres!: string[];
+  
+  @mobx.observable
+  isCompleted!: boolean;
   
   @mobx.observable
   image?: string;
