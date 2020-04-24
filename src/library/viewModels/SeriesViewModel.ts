@@ -137,8 +137,8 @@ function checkActionRefresh(actions: app.ISocketAction[], seriesId: string) {
       case 'SeriesUpdate' : return action.seriesId === seriesId;
       case 'ChapterDelete': return action.seriesId === seriesId;
       case 'ChapterPatch' : return action.seriesId === seriesId;
-      case 'ChapterUpdate': return action.seriesId === seriesId;
       case 'SessionCreate': return action.session.library && action.session.library.seriesId === seriesId && action.session.library.sync;
+      case 'SessionUpdate': return action.session.library && action.session.library.seriesId === seriesId && action.session.library.sync;
       default: return false;
     }
   });
