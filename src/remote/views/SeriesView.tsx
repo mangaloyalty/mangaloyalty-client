@@ -14,7 +14,7 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
             value={Number(this.props.vm.showChapters)}
             onChange={(_, value) => this.props.vm.changeShowChapters(Boolean(value))}>
             <mui.Tab label={language.remoteSeriesAbout} value={0} />
-            <mui.Tab label={`${language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} value={1} />
+            <mui.Tab label={`${language.remoteSeriesChapters} (${this.props.vm.chapters.length})`} disabled={!this.props.vm.chapters.length} value={1} />
           </mui.Tabs>
         </mui.Paper>
         <mui.Grid className={this.classes.containerBody}>

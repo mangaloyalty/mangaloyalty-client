@@ -1,9 +1,3 @@
-// UX: Generic: PWA on iOS should be fullscreen like Android (no status bar), iPhone X should not have bottom insets.
-// UX: Generic: Night-mode (black background on reader, different color scheme for UI).
-// UX: Library/Main: Automation settings for ALL series in the library.
-// UX: Library/Main: Update from source for ALL series in the library.
-// UX: Library/Series: When no chapter is available, the chapter tab should have an empty message.
-// UX: Remote/Series: When no chapter is available, the chapter tab should have an empty message.
 import * as areas from './areas';
 import * as mobxReact from 'mobx-react';
 import * as mui from '@material-ui/core';
