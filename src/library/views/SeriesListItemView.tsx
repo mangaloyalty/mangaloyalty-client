@@ -8,9 +8,9 @@ import {language} from '../language';
 export class SeriesListItemView extends app.BaseComponent<typeof SeriesListItemViewStyles, {vm: app.SeriesListItemViewModel}> {
   render() {
     return (
-      <mui.ListItem button onClick={() => this.props.vm.openAsync()}>
-        <mui.ListItemIcon className={this.classes.controlContainer}>
-          <mui.Checkbox className={this.classes.controlCheckbox} edge="start"
+      <mui.ListItem button dense onClick={() => this.props.vm.openAsync()}>
+        <mui.ListItemIcon className={this.classes.checkboxContainer}>
+          <mui.Checkbox edge="start"
             checked={this.props.vm.isChecked}
             onChange={() => this.props.vm.setChecked(!this.props.vm.isChecked)}
             onClick={(ev) => ev.stopPropagation()} />
@@ -34,12 +34,8 @@ export class SeriesListItemView extends app.BaseComponent<typeof SeriesListItemV
 }
 
 export const SeriesListItemViewStyles = mui.createStyles({
-  controlContainer: {
+  checkboxContainer: {
     minWidth: 0
-  },
-  controlCheckbox: {
-    padding: '4px 9px',
-    marginTop: -2
   },
   text: {
     overflow: 'hidden',
