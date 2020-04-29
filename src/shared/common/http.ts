@@ -30,19 +30,9 @@ export const http = {
 
 function createWrapper<T>(method: string, url: string, data?: T) {
   const blob = () => requestAsync(method, url, data, (response) => response.blob());
-  const imageData = () => requestAsync(method, url, data, (response) => response.blob().then(imageDataAsync));
   const json = <T>() => requestAsync(method, url, data, (response) => response.json() as Promise<T>);
   const status = () => requestAsync(method, url, data, () => Promise.resolve());
-  return {blob, imageData, json, status};
-}
-
-function imageDataAsync(blob: Blob) {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.addEventListener('error', () => reject());
-    reader.addEventListener('load', () => resolve(reader.result as string));
-    reader.readAsDataURL(blob);
-  });
+  return {blob, json, status};
 }
 
 async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valueFactory?: (response: Response) => Promise<TV>) {

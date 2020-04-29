@@ -1,4 +1,5 @@
 export const settings = {
+  lazyLoadOffset: 516,
   loadingMinimumTimeout: 300,
   socketMountTimeout: 120000,
   sessionExpireRange: 5,

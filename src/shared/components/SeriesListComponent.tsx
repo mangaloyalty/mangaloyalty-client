@@ -18,8 +18,8 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComp
         </mui.Grid>}
         {this.props.series.length !== 0 && <mui.Grid className={`inset-bottom ${this.classes.seriesContent}`}>
           {this.props.series.map((series) => (
-            <mui.Grid className={this.classes.series} key={getKey(series)} onClick={() => this.props.onClick(series)}>
-              <app.SeriesImage className={this.classes.image} offset={516} src={getSrc(series)} unreadCount={series.unreadCount} url={series.url} />
+            <mui.Grid className={this.classes.series} key={getId(series)} onClick={() => this.props.onClick(series)}>
+              <app.SeriesImage className={this.classes.image} image={() => getImage(series)} unreadCount={series.unreadCount} url={series.url} />
               <mui.Typography className={this.classes.title}>{series.title}</mui.Typography>
             </mui.Grid>
           ))}
@@ -29,7 +29,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComp
   }
 }
 
-function getKey(series: app.ISeriesItem) {
+function getId(series: app.ISeriesItem) {
   if (series.id) {
     return series.id;
   } else if (series.imageId) {
@@ -39,11 +39,11 @@ function getKey(series: app.ISeriesItem) {
   }
 }
 
-function getSrc(series: app.ISeriesItem) {
+function getImage(series: app.ISeriesItem) {
   if (series.id) {
-    return app.api.library.seriesImageUrl(series.id);
+    return app.api.library.seriesImageAsync(series.id);
   } else if (series.imageId) {
-    return app.api.remote.imageUrl(series.imageId);
+    return app.api.remote.imageAsync(series.imageId);
   } else {
     throw new Error();
   }
