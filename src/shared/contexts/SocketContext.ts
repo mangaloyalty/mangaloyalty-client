@@ -1,7 +1,7 @@
 import * as app from '..';
 import * as io from 'socket.io-client';
 
-export class ContextSocketApi {
+export class ContextSocketApi implements app.ISocketContext {
   private readonly _baseUrl: string;
   private readonly _queueHandlers: ((action: app.ISocketAction) => void)[];
   private _socket?: SocketIOClient.Socket;
@@ -19,7 +19,7 @@ export class ContextSocketApi {
   }
 
   createQueue() {
-    return new app.ContextSocketQueue(this._queueHandlers);
+    return new app.SocketQueue(this._queueHandlers);
   }
 
   private _onAction(action: app.ISocketAction) {

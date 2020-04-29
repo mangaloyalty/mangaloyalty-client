@@ -4,7 +4,7 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class MainController extends React.Component<{queue: app.ContextSocketQueue, vm: app.MainViewModel}> {
+export class MainController extends React.Component<{queue: app.ISocketQueue, vm: app.MainViewModel}> {
   static createConstruct(navigator: app.INavigator, pageNumber: number, session: app.ISessionListItem, title: string) {
     return async () => {
       const queue = app.api.socket.createQueue().attach();

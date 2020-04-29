@@ -3,7 +3,7 @@ import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
 @mobxReact.observer
-export class SeriesController extends React.Component<{queue: app.ContextSocketQueue, vm: app.SeriesViewModel}> {
+export class SeriesController extends React.Component<{queue: app.ISocketQueue, vm: app.SeriesViewModel}> {
   static createConstruct(url: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
       const queue = app.api.socket.createQueue().attach();
