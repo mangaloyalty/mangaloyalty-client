@@ -32,17 +32,12 @@ export class LibraryContext implements app.ILibraryContext {
     return Promise.resolve({status: 200});
   }
 
-  async seriesImageDataAsync(seriesId: string) {
-    const request = app.http.get(this.seriesImageUrl(seriesId));
-    const response = await request.imageData();
+  async seriesImageAsync(seriesId: string) {
+    const request = app.http.get(`${this._baseUrl}/api/library/${encodeURIComponent(seriesId)}/image`);
+    const response = await request.blob();
     return response;
   }
   
-  seriesImageUrl(seriesId: string) {
-    const requestUrl = `${this._baseUrl}/api/library/${encodeURIComponent(seriesId)}/image`;
-    return requestUrl;
-  }
-
   async seriesReadAsync(seriesId: string) {
     const request = app.http.get(`${this._baseUrl}/api/library/${encodeURIComponent(seriesId)}`);
     const response = await request.json<app.ILibrarySeriesReadResponse>();

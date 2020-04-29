@@ -7,16 +7,11 @@ export class RemoteContext implements app.IRemoteContext {
     this._baseUrl = baseUrl;
   }
 
-  async imageDataAsync(imageId: string) {
-    const request = app.http.get(this.imageUrl(imageId));
-    const response = await request.imageData();
-    return response;
-  }
-
-  imageUrl(imageId: string) {
+  async imageAsync(imageId: string) {
     const query = app.http.query(['imageId', imageId]);
-    const requestUrl = `${this._baseUrl}/api/remote/image` + query;
-    return requestUrl;
+    const request = app.http.get(`${this._baseUrl}/api/remote/image` + query);
+    const response = await request.blob();
+    return response;
   }
 
   async popularAsync(providerName: app.IEnumeratorProvider, pageNumber?: number) {

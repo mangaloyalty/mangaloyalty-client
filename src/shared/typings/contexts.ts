@@ -6,8 +6,7 @@ export interface ILibraryContext {
   seriesCreateAsync(url: string): app.ContextResult<app.ILibrarySeriesCreateResponse>;
   seriesDeleteAsync(seriesId: string): app.ContextResult<void>;
   seriesDumpAsync(seriesId: string): app.ContextResult<void>;
-  seriesImageDataAsync(seriesId: string): app.ContextResult<string>;
-  seriesImageUrl(seriesId: string): string; // TODO: Make it async() so app-impl can produce a data-url upon show.
+  seriesImageAsync(seriesId: string): app.ContextResult<Blob>;
   seriesReadAsync(seriesId: string): app.ContextResult<app.ILibrarySeries>;
   seriesPatchAsync(seriesId: string, frequency: app.IEnumeratorFrequency, strategy: app.IEnumeratorStrategy): app.ContextResult<void>;
   seriesUpdateAsync(seriesId: string): app.ContextResult<void>;
@@ -18,8 +17,7 @@ export interface ILibraryContext {
 }
 
 export interface IRemoteContext {
-  imageDataAsync(imageId: string): app.ContextResult<string>;
-  imageUrl(imageId: string): string; // TODO: Make it async() so app-impl can produce a data-url upon show.
+  imageAsync(imageId: string): app.ContextResult<Blob>;
   popularAsync(providerName: app.IEnumeratorProvider, pageNumber?: number): app.ContextResult<app.IRemotePopularResponse>;
   searchAsync(providerName: app.IEnumeratorProvider, title: string, pageNumber?: number): app.ContextResult<app.IRemoteSearchResponse>;
   seriesAsync(url: string): app.ContextResult<app.IRemoteSeriesResponse>;
