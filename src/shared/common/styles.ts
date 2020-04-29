@@ -1,5 +1,5 @@
 import * as mui from '@material-ui/core';
-import * as React from 'React';
+import * as React from 'react';
 
 export function connectStyles(source: Record<any, any>) {
   for (const key in source) {

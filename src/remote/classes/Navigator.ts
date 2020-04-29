@@ -1,5 +1,5 @@
 import * as app from '..';
-import * as areas from '../../areas';
+import * as areas from '../..';
 
 export class Navigator implements app.INavigator {
   private readonly _chapters: app.IRemoteSeriesChapter[];

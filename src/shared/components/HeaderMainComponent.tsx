@@ -1,5 +1,5 @@
 import * as app from '..';
-import * as areas from '../../areas';
+import * as areas from '../..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
