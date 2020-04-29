@@ -1,7 +1,7 @@
 const compression = require('compression');
 const express = require('express');
 
-// Initialize the server router.
+// Initialize the router.
 const router = express.Router();
 router.use(compression());
 router.use('/', express.static(`${__dirname}/public`));

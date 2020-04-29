@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './dist',
+  entry: './dist/app',
   output: {filename: 'app.min.js', path: `${__dirname}/public`},
   performance: {hints: false},
   mode: 'production'
