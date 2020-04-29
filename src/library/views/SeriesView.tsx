@@ -20,7 +20,7 @@ export class SeriesView extends app.BaseComponent<typeof SeriesViewStyles, {vm: 
         <mui.Grid className={this.classes.containerBody}>
           {this.props.vm.showChapters ? <app.SeriesListView vm={this.props.vm.chapters} /> : <mui.Grid>
             <mui.Paper className={this.classes.seriesContent} square={true}>
-              <app.SeriesImage className={this.classes.seriesContentImage} src={this.props.vm.imageData} unreadCount={this.props.vm.chapters.unreadCount} url={this.props.vm.source.url} />
+              <app.SeriesImage className={this.classes.seriesContentImage} image={() => this.props.vm.image} unreadCount={this.props.vm.chapters.unreadCount} url={this.props.vm.source.url} />
               <mui.Typography className={this.classes.seriesContentSummary}>{this.props.vm.source.summary || language.librarySeriesSummary}</mui.Typography>
             </mui.Paper>
             <mui.Grid className={`inset-bottom ${this.classes.fabContainer}`}>
