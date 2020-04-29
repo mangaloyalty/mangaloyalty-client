@@ -1,5 +1,5 @@
 import * as app from '..';
-import * as areas from '../../areas'
+import * as areas from '../..'
 import * as mobx from 'mobx';
 import {language} from '../language';
 
