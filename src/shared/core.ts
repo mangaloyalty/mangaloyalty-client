@@ -5,20 +5,14 @@ let toast: app.ToastManager;
 
 export const core = {
   get dialog() {
-    if (dialog) return dialog;
-    dialog = new app.DialogManager();
-    return dialog;
+    return dialog || (dialog = new app.DialogManager());
   },
 
   get screen() {
-    if (screen) return screen;
-    screen = new app.ScreenManager();
-    return screen;
+    return screen || (screen = new app.ScreenManager());
   },
 
   get toast() {
-    if (toast) return toast;
-    toast = new app.ToastManager();
-    return toast;
+    return toast || (toast = new app.ToastManager());
   }
 };

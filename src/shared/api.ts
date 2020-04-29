@@ -1,32 +1,40 @@
 import * as app from '.';
-let library: app.ContextLibraryApi;
-let remote: app.ContextRemoteApi;
-let session: app.ContextSessionApi;
-let socket: app.ContextSocketApi;
+let library: app.ILibraryContext;
+let remote: app.IRemoteContext;
+let session: app.ISessionContext;
+let socket: app.ISocketContext;
 
 export const api = {  
   get library() {
-    if (library) return library;
-    library = new app.ContextLibraryApi(createUrl(), new app.HttpApi());
-    return library;
+    return library || (library = new app.LibraryContext(createUrl()));
   },
 
   get remote() {
-    if (remote) return remote;
-    remote = new app.ContextRemoteApi(createUrl(), new app.HttpApi());
-    return remote;
+    return remote || (remote = new app.RemoteContext(createUrl()));
   },
 
   get session() {
-    if (session) return session;
-    session = new app.ContextSessionApi(createUrl(), new app.HttpApi());
-    return session;
+    return session || (session = new app.SessionContext(createUrl()));
   },
 
   get socket() {
-    if (socket) return socket;
-    socket = new app.ContextSocketApi(createUrl());
-    return socket;
+    return socket || (socket = new app.ContextSocketApi(createUrl()));
+  },
+
+  set library(value: app.ILibraryContext) {
+    library = value;
+  },
+  
+  set remote(value: app.IRemoteContext) {
+    remote = value;
+  },
+  
+  set session(value: app.ISessionContext) {
+    session = value;
+  },
+  
+  set socket(value: app.ISocketContext) {
+    socket = value;
   }
 };
 

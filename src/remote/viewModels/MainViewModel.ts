@@ -90,7 +90,7 @@ export class MainViewModel {
 }
 
 async function findByUrlAsync(series: app.IRemoteListItem) {
-  const seriesList = await app.api.library.listAsync('all', 'all', 'title', series.title);
+  const seriesList = await app.api.library.listReadAsync('all', 'all', 'title', series.title);
   if (seriesList.value) {
     const url = series.url;
     return seriesList.value.find((series) => series.url === url);

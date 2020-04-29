@@ -25,23 +25,23 @@ export class SeriesViewModel {
   @mobx.action
   async dumpAsync() {
     if (await app.core.dialog.confirmAsync(language.libraryConfirmDump)) return;
-    window.location.href = app.api.library.seriesDumpUrl(this.id);
+    await app.api.library.seriesDumpAsync(this.id);
   }
 
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
       const seriesPromise = app.api.library.seriesReadAsync(this.id);
-      const seriesImagePromise = app.api.library.seriesImageAsync(this.id);
+      const seriesImageDataPromise = app.api.library.seriesImageDataAsync(this.id);
       const sessionListPromise = app.api.session.listAsync(this.id);
       const series = await seriesPromise;
-      const seriesImage = await seriesImagePromise;
+      const seriesImageData = await seriesImageDataPromise;
       const sessionList = await sessionListPromise;
       if (series.value && sessionList.value) {
         this.addedAt = formatEpoch(series.value.addedAt);
         this.automation = this.automation.refreshWith(series.value);
         this.chapters = this.chapters.refreshWith(series.value, sessionList.value);
-        this.image = seriesImage.value;
+        this.imageData = seriesImageData.value;
         this.lastChapterAddedAt = formatEpoch(series.value.lastChapterAddedAt);
         this.lastPageReadAt = formatEpoch(series.value.lastPageReadAt);
         this.lastSyncAt = formatEpoch(series.value.lastSyncAt);
@@ -95,7 +95,7 @@ export class SeriesViewModel {
   id: string;
 
   @mobx.observable
-  image?: string;
+  imageData?: string;
 
   @mobx.observable
   lastChapterAddedAt!: string;
