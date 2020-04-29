@@ -1,6 +1,6 @@
 import * as app from '..';
 
-export class ContextSocketQueue {
+export class SocketQueue implements app.ISocketQueue {
   private readonly _actionHandler: (action: app.ISocketAction) => void;
   private readonly _actionQueue: app.ISocketAction[];
   private readonly _queueHandlers: ((action: app.ISocketAction) => void)[];
@@ -40,7 +40,7 @@ export class ContextSocketQueue {
     if (this._consumeAsync) return;
     this._clearTimeout();
     this._consumeAsync = consumeAsync;
-    this._tryRun();
+    this._run();
   }
 
   private _clearTimeout() {
@@ -51,15 +51,15 @@ export class ContextSocketQueue {
 
   private _onAction(action: app.ISocketAction) {
     this._actionQueue.push(action);
-    this._tryRun();
+    this._run();
   }
 
   private _onEnd() {
     this._isRunning = false;
-    this._tryRun();
+    this._run();
   }
 
-  private _tryRun() {
+  private _run() {
     if (!this._actionQueue.length || !this._consumeAsync || this._isRunning) return;
     const endHandler = () => this._onEnd();
     this._isRunning = true;
