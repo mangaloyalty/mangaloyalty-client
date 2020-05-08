@@ -1,6 +1,6 @@
 export const language = {
-  libraryConfirmDelete: 'You are about to delete the item from the server. Are you sure?',
-  libraryConfirmDeleteAll: 'You are about to delete multiple items from the server. Are you sure?',
+  libraryConfirmDelete: 'You are about to delete the item from disk. Are you sure?',
+  libraryConfirmDeleteAll: 'You are about to delete multiple items from disk. Are you sure?',
   libraryConfirmSynchronizeAll: 'Synchronizing multiple items is discouraged in favor of automations. Continue anyway?',
   libraryConfirmDump: 'You are about to export the series as an archive. Are you sure?',
   libraryEmpty: 'No series have been found. Series can be added to the library using a provider. When filtering, try different options.',
