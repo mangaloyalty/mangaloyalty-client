@@ -2,10 +2,10 @@
   "author": "Roel van Uden",
   "description": "Your personal manga collection on your server. Your content, your rules.",
   "license": "MIT",
-  "main": "dist",
+  "main": "public/app.min.js",
   "name": "mangaloyalty-client",
   "repository": "git://github.com/mangaloyalty/mangaloyalty-client",
-  "version": "0.12.0-b2",
+  "version": "0.12.0-b3",
   "bin": {
     "mangaloyalty-client": "./bin/mangaloyalty-client"
   },
