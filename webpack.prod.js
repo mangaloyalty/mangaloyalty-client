@@ -1,6 +1,6 @@
 module.exports = {
-  entry: './dist/app',
-  output: {filename: 'app.min.js', path: `${__dirname}/public`},
+  entry: './dist',
+  output: {filename: 'app.min.js', library: 'mangaloyalty', libraryTarget: 'umd', path: `${__dirname}/public`},
   performance: {hints: false},
   mode: 'production'
 };
