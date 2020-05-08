@@ -7,6 +7,10 @@ export class LibraryContext implements app.ILibraryContext {
     this._baseUrl = baseUrl;
   }
 
+  get enable() {
+    return {seriesDump: true};
+  }
+
   async listReadAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string) {
     const query = app.http.query(['readStatus', readStatus], ['seriesStatus', seriesStatus], ['sortKey', sortKey], ['title', title]);
     const request = app.http.get(`${this._baseUrl}/api/library` + query);
