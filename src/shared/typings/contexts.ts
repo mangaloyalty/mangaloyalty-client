@@ -2,6 +2,7 @@ import * as app from '..';
 export type ContextResult<T> = Promise<{error?: string, status: number, value?: T}>;
 
 export interface ILibraryContext {
+  readonly enable: {seriesDump: boolean};
   listReadAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string): app.ContextResult<app.ILibraryListResponse>;
   seriesCreateAsync(url: string): app.ContextResult<app.ILibrarySeriesCreateResponse>;
   seriesDeleteAsync(seriesId: string): app.ContextResult<void>;

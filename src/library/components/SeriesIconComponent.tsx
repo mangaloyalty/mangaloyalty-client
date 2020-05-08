@@ -27,13 +27,15 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
           </mui.ListItemIcon>
           <mui.ListItemText primary={language.libraryIconMenuUpdate} />
         </mui.MenuItem>
-        <mui.Divider />
-        <mui.MenuItem onClick={() => this.props.vm.dumpAsync()}>
-          <mui.ListItemIcon>
-            <app.icons.GetApp />
-          </mui.ListItemIcon>
-          <mui.ListItemText primary={language.libraryIconMenuDump} />
-        </mui.MenuItem>
+        {app.api.library.enable.seriesDump && <mui.Grid>
+          <mui.Divider />
+          <mui.MenuItem onClick={() => this.props.vm.dumpAsync()}>
+            <mui.ListItemIcon>
+              <app.icons.GetApp />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={language.libraryIconMenuDump} />
+          </mui.MenuItem>
+        </mui.Grid>}
       </app.MenuComponent>
     );
   }
