@@ -6,7 +6,7 @@ import * as React from 'react';
 export class SeriesController extends React.Component<{queue: app.ISocketQueue, vm: app.SeriesViewModel}> {
   static createConstruct(url: string) {
     return async (restoreState?: app.SeriesRestoreState) => {
-      const queue = app.api.socket.createQueue().attach();
+      const queue = app.core.context.socket.createQueue().attach();
       const vm = new app.SeriesViewModel(url, restoreState);
       await vm.refreshAsync();
       return <SeriesController queue={queue} vm={vm} />;
@@ -15,8 +15,7 @@ export class SeriesController extends React.Component<{queue: app.ISocketQueue, 
 
   render() {
     return (
-      <app.HeaderTitleComponent title={this.props.vm.title}
-        onBack={() => app.core.screen.leaveAsync()}>
+      <app.HeaderTitleComponent title={this.props.vm.title}>
         <app.ActionComponent queue={this.props.queue} onActionAsync={(actions) => this.props.vm.socketActionAsync(actions)} />
         <app.SeriesView vm={this.props.vm} />
       </app.HeaderTitleComponent>

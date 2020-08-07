@@ -7,7 +7,7 @@ import * as React from 'react';
 export class MainController extends React.Component<{queue: app.ISocketQueue, vm: app.MainViewModel}> {
   static createConstruct(navigator: app.INavigator, pageNumber: number, session: app.ISessionListItem, title: string) {
     return async () => {
-      const queue = app.api.socket.createQueue().attach();
+      const queue = app.core.context.socket.createQueue().attach();
       const vm = new app.MainViewModel(navigator, session, title, pageNumber);
       await vm.updateAsync();
       return <MainController queue={queue} vm={vm} />;
@@ -17,9 +17,7 @@ export class MainController extends React.Component<{queue: app.ISocketQueue, vm
   render() {
     return (
       <mui.Grid>
-        {this.props.vm.showControls && <app.HeaderTitleComponent title={this.props.vm.title}
-          icon={<app.MainIconComponent vm={this.props.vm} />}
-          onBack={() => app.core.screen.leaveAsync()} />}
+        {this.props.vm.showControls && <app.HeaderTitleComponent icon={<app.MainIconComponent vm={this.props.vm} />} title={this.props.vm.title} />}
         <app.ActionComponent queue={this.props.queue} onActionAsync={(actions) => this.props.vm.socketActionAsync(actions)} />
         <app.MainSettingsView vm={this.props.vm.settings} />
         <app.MainView vm={this.props.vm} />

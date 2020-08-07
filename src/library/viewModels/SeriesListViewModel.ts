@@ -28,7 +28,7 @@ export class SeriesListViewModel {
   async toggleReadCompletedAsync() {
     await app.core.screen.loadAsync(async () => {
       const items = this.selectionItems.filter((chapter) => this.isSelectionReadCompleted ? chapter.isReadCompleted : !chapter.isReadCompleted);
-      const responses = await Promise.all(items.map((chapter) => app.api.library.chapterPatchAsync(this._series.id, chapter.id, !chapter.isReadCompleted, chapter.isReadCompleted ? 1 : undefined)));
+      const responses = await Promise.all(items.map((chapter) => app.core.context.library.chapterPatchAsync(this._series.id, chapter.id, !chapter.isReadCompleted, chapter.isReadCompleted ? 1 : undefined)));
       const fault = responses.find((response) => response.status !== 200 && response.status !== 404);
       if (fault) await app.core.dialog.errorAsync(() => this.toggleReadCompletedAsync(), fault.error);
     });
@@ -126,7 +126,7 @@ export class SeriesListViewModel {
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
       const items = this.selectionItems.filter((chapter) => chapter.syncAt);
-      const responses = await Promise.all(items.map((chapter) => app.api.library.chapterDeleteAsync(this._series.id, chapter.id)));
+      const responses = await Promise.all(items.map((chapter) => app.core.context.library.chapterDeleteAsync(this._series.id, chapter.id)));
       const fault = responses.find((response) => response.status !== 200 && response.status !== 404);
       if (fault) await app.core.dialog.errorAsync(() => this._deleteAsync(), fault.error);
     });
@@ -135,7 +135,7 @@ export class SeriesListViewModel {
   private async _synchronizeAsync() {
     await app.core.screen.loadAsync(async () => {
       const items = this.selectionItems.filter((chapter) => !chapter.syncAt && !chapter.isSynchronizing);
-      const responses = await Promise.all(items.map((chapter) => app.api.library.chapterUpdateAsync(this._series.id, chapter.id)));
+      const responses = await Promise.all(items.map((chapter) => app.core.context.library.chapterUpdateAsync(this._series.id, chapter.id)));
       const fault = responses.find((response) => response.status !== 200 && response.status !== 404);
       if (fault) await app.core.dialog.errorAsync(() => this._synchronizeAsync(), fault.error);
     });

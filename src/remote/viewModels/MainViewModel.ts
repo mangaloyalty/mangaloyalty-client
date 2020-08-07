@@ -55,7 +55,7 @@ export class MainViewModel {
   async refreshAsync(nextPage?: number) {
     await app.core.screen.loadAsync(async () => {
       const currentPage = nextPage || this.currentPage;
-      const seriesListPromise = this.search ? app.api.remote.searchAsync(this.providerName, this.search, currentPage) : app.api.remote.popularAsync(this.providerName, currentPage);
+      const seriesListPromise = this.search ? app.core.context.remote.searchAsync(this.providerName, this.search, currentPage) : app.core.context.remote.popularAsync(this.providerName, currentPage);
       const seriesList = await seriesListPromise;
       if (seriesList.value) {
         this.currentPage = currentPage;
@@ -90,7 +90,7 @@ export class MainViewModel {
 }
 
 async function findByUrlAsync(series: app.IRemoteListItem) {
-  const seriesList = await app.api.library.listReadAsync('all', 'all', 'title', series.title);
+  const seriesList = await app.core.context.library.listReadAsync('all', 'all', 'title', series.title);
   if (seriesList.value) {
     const url = series.url;
     return seriesList.value.find((series) => series.url === url);

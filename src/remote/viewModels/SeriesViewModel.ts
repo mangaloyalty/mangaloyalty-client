@@ -12,7 +12,7 @@ export class SeriesViewModel {
   @mobx.action
   async addAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesCreateAsync(this.url);
+      const response = await app.core.context.library.seriesCreateAsync(this.url);
       if (response.value) {
         return;
       } else {
@@ -30,7 +30,7 @@ export class SeriesViewModel {
   @mobx.action
   async openAsync(chapter: app.IRemoteSeriesChapter) {
     await app.core.screen.loadAsync(async () => {
-      const session = await app.api.remote.startAsync(chapter.url);
+      const session = await app.core.context.remote.startAsync(chapter.url);
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this.showChapters);
         const navigator = new app.Navigator(this.chapters, this.chapters.indexOf(chapter));
@@ -45,7 +45,7 @@ export class SeriesViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const series = await app.api.remote.seriesAsync(this.url);
+      const series = await app.core.context.remote.seriesAsync(this.url);
       if (series.value) {
         this.authors = series.value.authors;
         this.chapters = series.value.chapters;
@@ -81,7 +81,7 @@ export class SeriesViewModel {
 
   @mobx.computed
   get image() {
-    return app.api.remote.imageAsync(this.imageId);
+    return app.core.context.remote.imageAsync(this.imageId);
   }
 
   @mobx.observable

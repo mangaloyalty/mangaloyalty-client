@@ -39,7 +39,7 @@ export class Touch {
   destroy() {
     if (!this._elementManager) return;
     this._elementManager.destroy();
-    this._elementManager = undefined;
+    delete this._elementManager;
   }
 
   reset() {

@@ -56,7 +56,7 @@ export class Loader {
   }
   
   private async _pageAsync(pageNumber: number) {
-    const sessionPage = await app.api.session.pageAsync(this._session.id, pageNumber);
+    const sessionPage = await app.core.context.session.pageAsync(this._session.id, pageNumber);
     if (sessionPage.value) {
       const value = await imageAsync(sessionPage.value);
       return {status: sessionPage.status, value};

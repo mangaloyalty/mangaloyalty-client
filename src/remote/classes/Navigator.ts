@@ -32,7 +32,7 @@ export class Navigator implements app.INavigator {
 
   private async _openAsync(isReverse: boolean) {
     const chapter = this._chapters[this._index];
-    const session = await app.api.remote.startAsync(chapter.url);
+    const session = await app.core.context.remote.startAsync(chapter.url);
     if (session.value) {
       const pageNumber = isReverse ? session.value.pageCount : 1;
       const constructAsync = areas.session.MainController.createConstruct(this, pageNumber, session.value, chapter.title);

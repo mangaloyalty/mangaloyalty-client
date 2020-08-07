@@ -16,6 +16,9 @@ export class HeaderMainComponent extends app.BaseComponent<typeof HeaderMainComp
         <mui.AppBar className="disablePadding">
           <mui.Grid className="inset-top">
             <mui.Toolbar className={this.classes.toolBar}>
+              <app.ButtonComponent className={this.classes.back} color="inherit" title={language.iconBack} onClick={() => this._onBackAsync()}>
+                <app.icons.ArrowBackIos />
+              </app.ButtonComponent>
               <mui.Grid className={this.classes.selectContainer}>
                 <mui.Select className={this.classes.select} disableUnderline displayEmpty value={String(this.props.currentProvider)}
                   IconComponent={() => <app.icons.ArrowDropDown className={this.classes.selectIcon} />}
@@ -49,9 +52,14 @@ export class HeaderMainComponent extends app.BaseComponent<typeof HeaderMainComp
     );
   }
 
+  private async _onBackAsync() {
+    if (await app.core.dialog.confirmAsync(language.confirmDisconnect)) return;
+    await app.core.screen.leaveAsync()
+  }
+
   private async _onChangeAsync(providerName?: app.IEnumeratorProvider) {
     if (providerName === this.props.currentProvider) return;
-    await app.core.screen.openAsync(providerName
+    await app.core.screen.replaceChildAsync(providerName
       ? areas.remote.MainController.createConstruct(providerName, this.state.currentSearch)
       : areas.library.MainController.createConstruct(this.state.currentSearch));
   }
@@ -77,6 +85,11 @@ export const HeaderMainComponentStyles = mui.createStyles({
     paddingLeft: 16,
     paddingRight: 16
   }),
+  back: {
+    marginLeft: -16,
+    paddingLeft: 16,
+    paddingRight: 6
+  },
   selectContainer: {
     flex: 1
   },

@@ -34,7 +34,7 @@ export class Navigator implements app.INavigator {
   
   async trackAsync(pageCount: number, pageReadNumber: number) {
     const chapter = this._chapters[this._index];     
-    const response = await app.api.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
+    const response = await app.core.context.library.chapterPatchAsync(this._seriesId, chapter.id, pageReadNumber >= pageCount || undefined, pageReadNumber);
     if (response.status !== 200) return false;
     chapter.pageReadNumber = pageReadNumber;
     return true;
@@ -42,7 +42,7 @@ export class Navigator implements app.INavigator {
 
   private async _openAsync(isReverse: boolean) {
     const chapter = this._chapters[this._index];
-    const session = await app.api.library.chapterReadAsync(this._seriesId, chapter.id);
+    const session = await app.core.context.library.chapterReadAsync(this._seriesId, chapter.id);
     if (session.value) {
       const pageNumber = isReverse ? session.value.pageCount : 1;
       const constructAsync = areas.session.MainController.createConstruct(this, pageNumber, session.value, chapter.title);

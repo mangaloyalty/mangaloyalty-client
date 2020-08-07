@@ -5,7 +5,6 @@ import * as ReactDOM from 'react-dom';
 
 export function boot(container: HTMLElement | null) {
   areas.shared.connectStyles(areas);
-  areas.shared.api.socket.attach();
-  areas.shared.core.screen.openAsync(areas.library.MainController.createConstruct());
+  areas.shared.core.screen.openAsync(areas.connect.MainController.createConstruct());
   ReactDOM.render(<app.MainView />, container);
 }

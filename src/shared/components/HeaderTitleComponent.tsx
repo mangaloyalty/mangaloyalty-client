@@ -3,14 +3,14 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 import {language} from '../language';
 
-export class HeaderTitleComponent extends app.BaseComponent<typeof HeaderTitleComponentStyles, {icon?: React.ReactElement<any>, title: string, onBack: () => void}> {
+export class HeaderTitleComponent extends app.BaseComponent<typeof HeaderTitleComponentStyles, {icon?: React.ReactElement<any>, title: string}> {
   render() {
     return (
       <mui.Grid>
         <mui.AppBar className="disablePadding">
           <mui.Grid className="inset-top">
             <mui.Toolbar className={this.classes.toolBar}>
-              <app.ButtonComponent className={this.classes.back} color="inherit" title={language.iconBack} onClick={() => this.props.onBack()}>
+              <app.ButtonComponent className={this.classes.back} color="inherit" title={language.iconBack} onClick={() => app.core.screen.leaveAsync()}>
                 <app.icons.ArrowBackIos />
               </app.ButtonComponent>
               <mui.Typography className={this.classes.title} color="inherit" variant="h6">

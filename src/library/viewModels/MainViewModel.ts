@@ -49,7 +49,7 @@ export class MainViewModel {
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const seriesList = await app.api.library.listReadAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
+      const seriesList = await app.core.context.library.listReadAsync(this.filterReadStatus, this.filterSeriesStatus, this.filterSortKey, this.search);
       if (seriesList.value) {
         this.series = seriesList.value;
       } else {

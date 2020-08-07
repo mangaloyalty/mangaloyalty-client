@@ -21,7 +21,7 @@ export class SeriesAutomationViewModel {
   @mobx.action
   async commitAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesPatchAsync(this.state.id, this.frequency, this.strategy);
+      const response = await app.core.context.library.seriesPatchAsync(this.state.id, this.frequency, this.strategy);
       if (response.status === 200) {
         this.showDialog = false;
       } else if (response.status !== 404) {
