@@ -1,7 +1,7 @@
 import * as app from '..';
 import * as io from 'socket.io-client';
 
-export class ContextSocketApi implements app.ISocketContext {
+export class SocketContext implements app.ISocketContext {
   private readonly _baseUrl: string;
   private readonly _queueHandlers: ((action: app.ISocketAction) => void)[];
   private _socket?: SocketIOClient.Socket;
@@ -16,6 +16,11 @@ export class ContextSocketApi implements app.ISocketContext {
     this._socket = io.connect(this._baseUrl);
     this._socket.on('action', (action: app.ISocketAction) => this._onAction(action));
     this._socket.on('reconnect', () => this._onReconnect());
+  }
+
+  detach() {
+    this._socket?.disconnect();
+    delete this._socket;
   }
 
   createQueue() {

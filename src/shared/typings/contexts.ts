@@ -1,6 +1,13 @@
 import * as app from '..';
 export type ContextResult<T> = Promise<{error?: string, status: number, value?: T}>;
 
+export interface IConnectContext {
+  readonly library: app.ILibraryContext;
+  readonly remote: app.IRemoteContext;
+  readonly session: app.ISessionContext;
+  readonly socket: app.ISocketContext;
+}
+
 export interface ILibraryContext {
   readonly enable: {seriesDump: boolean};
   listReadAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string): app.ContextResult<app.ILibraryListResponse>;
@@ -32,6 +39,7 @@ export interface ISessionContext {
 
 export interface ISocketContext {
   attach(): void;
+  detach(): void;
   createQueue(): app.ISocketQueue;
 }
 

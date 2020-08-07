@@ -25,14 +25,14 @@ export class SeriesViewModel {
   @mobx.action
   async dumpAsync() {
     if (await app.core.dialog.confirmAsync(language.libraryConfirmDump)) return;
-    await app.api.library.seriesDumpAsync(this.id);
+    await app.core.context.library.seriesDumpAsync(this.id);
   }
 
   @mobx.action
   async refreshAsync() {
     await app.core.screen.loadAsync(async () => {
-      const seriesPromise = app.api.library.seriesReadAsync(this.id);
-      const sessionListPromise = app.api.session.listAsync(this.id);
+      const seriesPromise = app.core.context.library.seriesReadAsync(this.id);
+      const sessionListPromise = app.core.context.session.listAsync(this.id);
       const series = await seriesPromise;
       const sessionList = await sessionListPromise;
       if (series.value && sessionList.value) {
@@ -65,7 +65,7 @@ export class SeriesViewModel {
   @mobx.action
   async updateAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesUpdateAsync(this.id);
+      const response = await app.core.context.library.seriesUpdateAsync(this.id);
       if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.updateAsync(), response.error);
     });
   }
@@ -81,7 +81,7 @@ export class SeriesViewModel {
 
   @mobx.computed
   get image() {
-    return app.api.library.seriesImageAsync(this.id);
+    return app.core.context.library.seriesImageAsync(this.id);
   }
 
   @mobx.observable
@@ -113,7 +113,7 @@ export class SeriesViewModel {
 
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.seriesDeleteAsync(this.id);
+      const response = await app.core.context.library.seriesDeleteAsync(this.id);
       if (response.status !== 200 && response.status !== 404)  await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     });
   }

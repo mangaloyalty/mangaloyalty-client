@@ -41,9 +41,9 @@ function getId(series: app.ISeriesItem) {
 
 function getImage(series: app.ISeriesItem) {
   if (series.id) {
-    return app.api.library.seriesImageAsync(series.id);
+    return app.core.context.library.seriesImageAsync(series.id);
   } else if (series.imageId) {
-    return app.api.remote.imageAsync(series.imageId);
+    return app.core.context.remote.imageAsync(series.imageId);
   } else {
     throw new Error();
   }

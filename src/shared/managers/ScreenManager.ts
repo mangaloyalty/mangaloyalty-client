@@ -13,7 +13,7 @@ export class ScreenManager {
       const topView = this.views[this.views.length - 1];
       await this._replaceAsync(topView.constructAsync, topView.restoreState, topView.restoreX, topView.restoreY);
     } else {
-      this.presentView = undefined;
+      delete this.presentView;
     }
   }
 

@@ -1,9 +1,14 @@
 import * as app from '.';
+let context: app.IConnectContext;
 let dialog: app.DialogManager;
 let screen: app.ScreenManager;
 let toast: app.ToastManager;
 
 export const core = {
+  get context() {
+    return context || (context = new app.ConnectContext(location.origin));
+  },
+
   get dialog() {
     return dialog || (dialog = new app.DialogManager());
   },
@@ -14,5 +19,9 @@ export const core = {
 
   get toast() {
     return toast || (toast = new app.ToastManager());
+  },
+
+  set context(value: app.IConnectContext) {
+    context = value;
   }
 };

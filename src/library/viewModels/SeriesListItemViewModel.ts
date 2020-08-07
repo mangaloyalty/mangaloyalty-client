@@ -25,7 +25,7 @@ export class SeriesListItemViewModel {
   @mobx.action
   async openAsync() {
     await app.core.screen.loadAsync(async () => {
-      const session = await app.api.library.chapterReadAsync(this._series.id, this.id);
+      const session = await app.core.context.library.chapterReadAsync(this._series.id, this.id);
       if (session.value) {
         const restoreState = new app.SeriesRestoreState(this._series.automation.showDialog, this._series.showChapters);
         const pageNumber = this.pageReadNumber && this.pageReadNumber < session.value.pageCount && Math.max(Math.min(this.pageReadNumber, session.value.pageCount), 1) || 1;
@@ -58,7 +58,7 @@ export class SeriesListItemViewModel {
   async toggleReadCompletedAsync() {
     await app.core.screen.loadAsync(async () => {
       const pageReadNumber = this.isReadCompleted ? 1 : undefined;
-      const response = await app.api.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted, pageReadNumber);
+      const response = await app.core.context.library.chapterPatchAsync(this._series.id, this.id, !this.isReadCompleted, pageReadNumber);
       if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this.toggleReadCompletedAsync(), response.error);
     });
   }
@@ -86,14 +86,14 @@ export class SeriesListItemViewModel {
 
   private async _deleteAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.chapterDeleteAsync(this._series.id, this.id);
+      const response = await app.core.context.library.chapterDeleteAsync(this._series.id, this.id);
       if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this._deleteAsync(), response.error);
     });
   }
 
   private async _synchronizeAsync() {
     await app.core.screen.loadAsync(async () => {
-      const response = await app.api.library.chapterUpdateAsync(this._series.id, this.id);
+      const response = await app.core.context.library.chapterUpdateAsync(this._series.id, this.id);
       if (response.status !== 200 && response.status !== 404) await app.core.dialog.errorAsync(() => this._synchronizeAsync(), response.error);
     });
   }

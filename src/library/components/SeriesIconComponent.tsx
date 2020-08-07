@@ -27,7 +27,7 @@ export class SeriesIconComponent extends React.Component<{vm: app.SeriesViewMode
           </mui.ListItemIcon>
           <mui.ListItemText primary={language.libraryIconMenuUpdate} />
         </mui.MenuItem>
-        {app.api.library.enable.seriesDump && <mui.Grid>
+        {app.core.context.library.enable.seriesDump && <mui.Grid>
           <mui.Divider />
           <mui.MenuItem onClick={() => this.props.vm.dumpAsync()}>
             <mui.ListItemIcon>

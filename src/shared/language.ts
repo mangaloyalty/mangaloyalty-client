@@ -1,6 +1,7 @@
 export const language = {
   confirmButtons: ['Yes', 'No'],
-  errorBody: 'The service could not be reached or returned an error.',
+  confirmDisconnect: 'You are about to disconnect from the server. Are you sure?',
+  errorBody: 'The server could not be reached or returned an error.',
   errorButtons: ['Retry'],
   iconBack: 'Back',
   iconClose: 'Clear',

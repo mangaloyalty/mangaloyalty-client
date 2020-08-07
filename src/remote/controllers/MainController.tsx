@@ -14,9 +14,7 @@ export class MainController extends React.Component<{vm: app.MainViewModel}> {
 
   render() {
     return (
-      <app.HeaderMainComponent currentProvider={this.props.vm.providerName}
-        defaultSearch={this.props.vm.search}
-        onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
+      <app.HeaderMainComponent currentProvider={this.props.vm.providerName} defaultSearch={this.props.vm.search} onSearch={(value) => this.props.vm.changeSearchAsync(value)}>
         <app.MainView vm={this.props.vm} />
       </app.HeaderMainComponent>
     );

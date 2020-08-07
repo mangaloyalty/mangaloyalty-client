@@ -1,4 +1,3 @@
-export * from './api';
 export * from './core';
 export * from './settings';
 export * from './common/http';
@@ -15,6 +14,7 @@ export * from './components/LoadingComponent';
 export * from './components/MenuComponent';
 export * from './components/SeriesImageComponent';
 export * from './components/SeriesListComponent';
+export * from './contexts/ConnectContext';
 export * from './contexts/LibraryContext';
 export * from './contexts/RemoteContext';
 export * from './contexts/SessionContext';
