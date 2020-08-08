@@ -1,10 +1,9 @@
 import * as app from '..';
-import * as io from 'socket.io-client';
 
 export class SocketContext implements app.ISocketContext {
   private readonly _baseUrl: string;
   private readonly _queueHandlers: ((action: app.ISocketAction) => void)[];
-  private _socket?: SocketIOClient.Socket;
+  private _socket?: WebSocket;
 
   constructor(baseUrl: string) {
     this._baseUrl = baseUrl;
@@ -13,25 +12,29 @@ export class SocketContext implements app.ISocketContext {
 
   attach() {
     if (this._socket) return;
-    this._socket = io.connect(this._baseUrl);
-    this._socket.on('action', (action: app.ISocketAction) => this._onAction(action));
-    this._socket.on('reconnect', () => this._onReconnect());
+    this._socket = new WebSocket(this._baseUrl.replace(/^http/, 'ws'));
+    this._socket.addEventListener('close', () => this._onClose());
+    this._socket.addEventListener('message', (ev) => this._onAction(JSON.parse(ev.data)));
+    this._socket.addEventListener('open', () => this._onAction({type: 'SocketConnect'}));
   }
 
   detach() {
-    this._socket?.disconnect();
+    const socket = this._socket;
     delete this._socket;
+    socket?.close();
   }
 
   createQueue() {
     return new app.SocketQueue(this._queueHandlers);
   }
 
-  private _onAction(action: app.ISocketAction) {
-    this._queueHandlers.forEach((queueHandler) => queueHandler(action));
+  private _onClose() {
+    if (!this._socket) return;
+    delete this._socket;
+    this.attach();
   }
 
-  private _onReconnect() {
-    this._onAction({type: 'SocketConnect'});
+  private _onAction(action: app.ISocketAction) {
+    this._queueHandlers.forEach((queueHandler) => queueHandler(action));
   }
 }
