@@ -6,7 +6,7 @@
   "name": "mangaloyalty-client",
   "repository": "git://github.com/mangaloyalty/mangaloyalty-client",
   "types": "dist",
-  "version": "0.13.0-b1",
+  "version": "0.13.0-b2",
   "bin": {
     "mangaloyalty-client": "./bin/mangaloyalty-client"
   },
