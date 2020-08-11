@@ -89,8 +89,8 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async socketActionAsync(actions: app.ISocketAction[]) {
-    if (checkActionLeave(actions, this._session.id)) {
+  async socketActionAsync(actionList: app.IClientActionList) {
+    if (checkActionLeave(actionList, this._session.id)) {
       await app.core.screen.leaveAsync();
     }
   }
@@ -121,10 +121,10 @@ export class MainViewModel {
   }
 }
 
-function checkActionLeave(actions: app.ISocketAction[], sessionId: string) {
-  return actions.some((action) => {
+function checkActionLeave(actionList: app.IClientActionList, sessionId: string) {
+  return actionList.some((action) => {
     switch (action.type) {
-      case 'SessionDelete': return action.session.id === sessionId;
+      case 'SessionDelete': return action.sessionId === sessionId;
       default: return false;
     }
   });

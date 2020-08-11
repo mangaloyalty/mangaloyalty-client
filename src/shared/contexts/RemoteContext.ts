@@ -1,6 +1,6 @@
 import * as app from '..';
 
-export class RemoteContext implements app.IRemoteContext {
+export class RemoteContext {
   private readonly _baseUrl: string;
 
   constructor(baseUrl: string) {

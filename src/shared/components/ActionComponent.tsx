@@ -2,7 +2,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class ActionComponent extends React.Component<{queue: app.ISocketQueue, onActionAsync: (actions: app.ISocketAction[]) => Promise<void>}> {
+export class ActionComponent extends React.Component<{queue: app.ActionQueue, onActionAsync: (actionList: app.IClientActionList) => Promise<void>}> {
   componentDidMount() {
     this.props.queue.attach();
     this.props.queue.mount((actions) => this._runAsync(actions));
@@ -20,11 +20,11 @@ export class ActionComponent extends React.Component<{queue: app.ISocketQueue, o
     );
   }
   
-  private async _runAsync(actions: app.ISocketAction[]) {
+  private async _runAsync(actionList: app.IClientActionList) {
     try {
-      await this.props.onActionAsync(actions);
+      await this.props.onActionAsync(actionList);
     } catch (error) {
-      await app.core.dialog.errorAsync(() => this._runAsync(actions), error);
+      await app.core.dialog.errorAsync(() => this._runAsync(actionList), error);
     }
   }
 }

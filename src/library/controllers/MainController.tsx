@@ -3,10 +3,10 @@ import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
 @mobxReact.observer
-export class MainController extends React.Component<{queue: app.ISocketQueue, vm: app.MainViewModel}> {
+export class MainController extends React.Component<{queue: app.ActionQueue, vm: app.MainViewModel}> {
   static createConstruct(search?: string) {
     return async (restoreState?: app.MainRestoreState) => {
-      const queue = app.core.context.socket.createQueue().attach();
+      const queue = app.core.context.action.poll.queue().attach();
       const vm = new app.MainViewModel(search, restoreState);
       await vm.refreshAsync();
       return <MainController queue={queue} vm={vm} />;

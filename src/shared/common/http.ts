@@ -1,3 +1,5 @@
+import * as app from '..';
+
 export const http = {
   delete<T>(url: string, data?: T) {
     return createWrapper('DELETE', url, data);
@@ -35,7 +37,7 @@ function createWrapper<T>(method: string, url: string, data?: T) {
   return {blob, json, status};
 }
 
-async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valueFactory?: (response: Response) => Promise<TV>) {
+async function requestAsync<TK, TV>(method: string, url: string, data?: TK, valueFactory?: (response: Response) => Promise<TV>): Promise<app.IHttpResult<TV>> {
   try {
     const body = data && JSON.stringify(data);
     const headers = data && {'Content-Type': 'application/json'};

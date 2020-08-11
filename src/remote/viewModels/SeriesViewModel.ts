@@ -68,8 +68,8 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async socketActionAsync(actions: app.ISocketAction[]) {
-    for (const action of actions) {
+  async socketActionAsync(actionList: app.IClientActionList) {
+    for (const action of actionList) {
       switch (action.type) {
         case 'SeriesCreate':
           if (action.seriesUrl !== this.url) continue;
@@ -77,11 +77,6 @@ export class SeriesViewModel {
           break;
       }
     }
-  }
-
-  @mobx.computed
-  get image() {
-    return app.core.context.remote.imageAsync(this.imageId);
   }
 
   @mobx.observable
