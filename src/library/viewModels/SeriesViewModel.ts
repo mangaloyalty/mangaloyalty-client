@@ -71,17 +71,12 @@ export class SeriesViewModel {
   }
 
   @mobx.action
-  async socketActionAsync(actions: app.ISocketAction[]) {
-    if (checkActionLeave(actions, this.id)) {
+  async socketActionAsync(actionList: app.IClientActionList) {
+    if (checkActionLeave(actionList, this.id)) {
       await app.core.screen.leaveAsync();
-    } else if (checkActionRefresh(actions, this.id)) {
+    } else if (checkActionRefresh(actionList, this.id)) {
       await this.refreshAsync();
     }
-  }
-
-  @mobx.computed
-  get image() {
-    return app.core.context.library.seriesImageAsync(this.id);
   }
 
   @mobx.observable
@@ -119,8 +114,8 @@ export class SeriesViewModel {
   }
 }
 
-function checkActionLeave(actions: app.ISocketAction[], seriesId: string) {
-  return actions.some((action) => {
+function checkActionLeave(actionList: app.IClientActionList, seriesId: string) {
+  return actionList.some((action) => {
     switch (action.type) {
       case 'SeriesDelete': return action.seriesId === seriesId;
       default: return false;
@@ -128,16 +123,16 @@ function checkActionLeave(actions: app.ISocketAction[], seriesId: string) {
   });
 }
 
-function checkActionRefresh(actions: app.ISocketAction[], seriesId: string) {
-  return actions.some((action) => {
+function checkActionRefresh(actionList: app.IClientActionList, seriesId: string) {
+  return actionList.some((action) => {
     switch (action.type) {
       case 'SocketConnect': return true;
       case 'SeriesPatch'  : return action.seriesId === seriesId;
       case 'SeriesUpdate' : return action.seriesId === seriesId;
       case 'ChapterDelete': return action.seriesId === seriesId;
       case 'ChapterPatch' : return action.seriesId === seriesId;
-      case 'SessionCreate': return action.session.library && action.session.library.seriesId === seriesId && action.session.library.sync;
-      case 'SessionUpdate': return action.session.library && action.session.library.seriesId === seriesId && action.session.library.sync;
+      case 'SessionCreate': return action.seriesId === seriesId && action.sync;
+      case 'SessionUpdate': return action.seriesId === seriesId && action.sync;
       default: return false;
     }
   });

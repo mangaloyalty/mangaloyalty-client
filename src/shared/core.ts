@@ -1,5 +1,5 @@
 import * as app from '.';
-let context: app.IConnectContext;
+let context: app.ConnectContext;
 let dialog: app.DialogManager;
 let screen: app.ScreenManager;
 let toast: app.ToastManager;
@@ -21,7 +21,7 @@ export const core = {
     return toast || (toast = new app.ToastManager());
   },
 
-  set context(value: app.IConnectContext) {
+  set context(value: app.ConnectContext) {
     context = value;
   }
 };

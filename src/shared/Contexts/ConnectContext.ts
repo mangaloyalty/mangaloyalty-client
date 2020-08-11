@@ -1,15 +1,15 @@
 import * as app from '..';
 
-export class ConnectContext implements app.IConnectContext {
+export class ConnectContext {
   constructor(baseUrl: string) {
+    this.action = new app.ActionContext(baseUrl);
     this.library = new app.LibraryContext(baseUrl);
     this.remote = new app.RemoteContext(baseUrl);
     this.session = new app.SessionContext(baseUrl);
-    this.socket = new app.SocketContext(baseUrl);
   }
 
-  readonly library: app.ILibraryContext;
-  readonly remote: app.IRemoteContext;
-  readonly session: app.ISessionContext;
-  readonly socket: app.ISocketContext;
+  readonly action: app.ActionContext;
+  readonly library: app.LibraryContext;
+  readonly remote: app.RemoteContext;
+  readonly session: app.SessionContext;
 }

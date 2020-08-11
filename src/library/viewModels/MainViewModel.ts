@@ -59,8 +59,8 @@ export class MainViewModel {
   }
 
   @mobx.action
-  async socketActionAsync(actions: app.ISocketAction[]) {
-    if (checkActionRefresh(actions)) {
+  async socketActionAsync(actionList: app.IClientActionList) {
+    if (checkActionRefresh(actionList)) {
       await this.refreshAsync();
     }
   }
@@ -81,8 +81,8 @@ export class MainViewModel {
   series!: app.ILibraryList;
 }
 
-function checkActionRefresh(actions: app.ISocketAction[]) {
-  return actions.some((action) => {
+function checkActionRefresh(actionList: app.IClientActionList) {
+  return actionList.some((action) => {
     switch (action.type) {
       case 'SocketConnect': return true;
       case 'SeriesCreate' : return true;

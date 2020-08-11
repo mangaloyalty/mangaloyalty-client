@@ -5,7 +5,7 @@ let checkAutomatic = true;
 
 export class MainViewModel {
   constructor() {
-    app.core.context.socket.detach();
+    app.core.context.action.poll.detach();
     this._automaticAsync();
   }
 
@@ -46,14 +46,14 @@ export class MainViewModel {
   private async _connectAsync() {
     await app.core.screen.loadAsync(async () => {
       const context = new app.ConnectContext(normalizeServer(this.server));
-      const sessionList = await context.session.listAsync();
-      if (sessionList.value) {
+      const actionList = await context.action.listReadAsync(false);
+      if (actionList.value) {
         app.core.context = context;
-        app.core.context.socket.attach();
+        app.core.context.action.poll.attach(actionList.value);
         await areas.shared.core.screen.openChildAsync(areas.library.MainController.createConstruct());
         localStorage.setItem('ConnectServer', this.server);
       } else {
-        await app.core.dialog.errorAsync(() => Promise.resolve(), sessionList.error);
+        await app.core.dialog.errorAsync(() => Promise.resolve(), actionList.error);
         localStorage.removeItem('ConnectServer');
       }
     });

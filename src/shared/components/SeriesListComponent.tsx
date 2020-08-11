@@ -19,7 +19,7 @@ export class SeriesListComponent<T extends app.ISeriesItem> extends app.BaseComp
         {this.props.series.length !== 0 && <mui.Grid className={`inset-bottom ${this.classes.seriesContent}`}>
           {this.props.series.map((series) => (
             <mui.Grid className={this.classes.series} key={getId(series)} onClick={() => this.props.onClick(series)}>
-              <app.SeriesImage className={this.classes.image} image={() => getImage(series)} unreadCount={series.unreadCount} url={series.url} />
+              <app.SeriesImage className={this.classes.image} imageAsync={() => getImageAsync(series)} unreadCount={series.unreadCount} url={series.url} />
               <mui.Typography className={this.classes.title}>{series.title}</mui.Typography>
             </mui.Grid>
           ))}
@@ -39,7 +39,7 @@ function getId(series: app.ISeriesItem) {
   }
 }
 
-function getImage(series: app.ISeriesItem) {
+function getImageAsync(series: app.ISeriesItem) {
   if (series.id) {
     return app.core.context.library.seriesImageAsync(series.id);
   } else if (series.imageId) {

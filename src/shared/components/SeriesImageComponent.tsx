@@ -3,7 +3,7 @@ import * as app from '..';
 import * as mui from '@material-ui/core';
 import * as React from 'react';
 
-export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {className: string, image: () => app.ContextResult<Blob>, unreadCount?: number, url: string}> {
+export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {className: string, imageAsync: () => Promise<app.IHttpResult<Blob>>, unreadCount?: number, url: string}> {
   private _imageRef?: HTMLElement;
   
   render() {
@@ -19,7 +19,7 @@ export class SeriesImage extends app.BaseComponent<typeof SeriesImageStyles, {cl
   }
   
   private async _loadAsync(imageRef: HTMLImageElement) {
-    const response = await this.props.image();
+    const response = await this.props.imageAsync();
     const revokeUrl = () => Boolean(URL.revokeObjectURL(imageRef.src));
     imageRef.addEventListener('error', () => revokeUrl() || Boolean(imageRef.style.opacity = '0'));
     imageRef.addEventListener('load', () => revokeUrl() || Boolean(imageRef.style.opacity = '1'));

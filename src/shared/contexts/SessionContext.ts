@@ -1,6 +1,6 @@
 import * as app from '..';
 
-export class SessionContext implements app.ISessionContext {
+export class SessionContext {
   private readonly _baseUrl: string;
 
   constructor(baseUrl: string) {

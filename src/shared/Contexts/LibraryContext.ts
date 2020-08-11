@@ -1,20 +1,16 @@
 import * as app from '..';
 
-export class LibraryContext implements app.ILibraryContext {
+export class LibraryContext {
   private readonly _baseUrl: string;
 
   constructor(baseUrl: string) {
     this._baseUrl = baseUrl;
   }
 
-  get enable() {
-    return {seriesDump: true};
-  }
-
   async listReadAsync(readStatus: app.IEnumeratorReadStatus, seriesStatus: app.IEnumeratorSeriesStatus, sortKey: app.IEnumeratorSortKey, title?: string) {
     const query = app.http.query(['readStatus', readStatus], ['seriesStatus', seriesStatus], ['sortKey', sortKey], ['title', title]);
     const request = app.http.get(`${this._baseUrl}/api/library` + query);
-    const response = await request.json<app.ILibraryListResponse>();
+    const response = await request.json<app.ILibraryListReadResponse>();
     return response;
   }
 

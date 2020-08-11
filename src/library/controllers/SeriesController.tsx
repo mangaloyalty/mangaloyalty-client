@@ -3,10 +3,10 @@ import * as mobxReact from 'mobx-react';
 import * as React from 'react';
 
 @mobxReact.observer
-export class SeriesController extends React.Component<{queue: app.ISocketQueue, vm: app.SeriesViewModel}> {
+export class SeriesController extends React.Component<{queue: app.ActionQueue, vm: app.SeriesViewModel}> {
   static createConstruct(seriesId: string, showAutomation?: boolean) {
     return async (restoreState?: app.SeriesRestoreState) => {
-      const queue = app.core.context.socket.createQueue().attach();
+      const queue = app.core.context.action.poll.queue().attach();
       const vm = new app.SeriesViewModel(seriesId, showAutomation, restoreState);
       await vm.refreshAsync();
       return <SeriesController queue={queue} vm={vm} />;

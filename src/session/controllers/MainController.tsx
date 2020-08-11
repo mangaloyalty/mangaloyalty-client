@@ -4,10 +4,10 @@ import * as mui from '@material-ui/core';
 import * as React from 'react';
 
 @mobxReact.observer
-export class MainController extends React.Component<{queue: app.ISocketQueue, vm: app.MainViewModel}> {
+export class MainController extends React.Component<{queue: app.ActionQueue, vm: app.MainViewModel}> {
   static createConstruct(navigator: app.INavigator, pageNumber: number, session: app.ISessionListItem, title: string) {
     return async () => {
-      const queue = app.core.context.socket.createQueue().attach();
+      const queue = app.core.context.action.poll.queue().attach();
       const vm = new app.MainViewModel(navigator, session, title, pageNumber);
       await vm.updateAsync();
       return <MainController queue={queue} vm={vm} />;
