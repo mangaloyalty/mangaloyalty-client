@@ -44,7 +44,7 @@ export class DialogManager {
 }
 
 function convertErrorText(error?: any) {
-  if (error instanceof Error) return error.stack;
-  else if (error) return String(error) || undefined;
-  else return;
+  if (error instanceof Error) return String(error.stack || error.message || error);
+  else if (error) return String(error);
+  else return '';
 }
